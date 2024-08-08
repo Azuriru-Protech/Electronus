@@ -1,20 +1,13 @@
-import { useEffect } from 'react'
-import './Settings.scss'
-import { Outlet, redirect, replace, useNavigate } from 'react-router'
-import PageWrapper from '@renderer/components/layout/PageWrapper/PageWrapper'
+import SettingsSidebar from '@renderer/components/layouts/SettingsSidebar/SettingsSidebar'
+import '@renderer/styles/settings.scss'
+import { Outlet } from 'react-router'
+import styles from './Settings.module.scss'
 
-type Props = {
-  children: React.ReactNode
-}
-
-export default function Settings(): JSX.Element {
-  const navigate = useNavigate()
-
+export default function Settings() {
   return (
-    <div style={{ color: 'red' }}>
-      <PageWrapper>
-        <Outlet />
-      </PageWrapper>
+    <div className={styles.wrapper}>
+      <SettingsSidebar />
+      <Outlet />
     </div>
   )
 }

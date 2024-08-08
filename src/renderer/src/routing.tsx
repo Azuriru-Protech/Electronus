@@ -1,27 +1,39 @@
 import { createBrowserRouter } from 'react-router-dom'
-import Test from './pages/Test/Test'
 import Fallback from './pages/Fallback/Fallback'
-import Template from './pages/Template'
 import Settings from './pages/Settings/Settings'
 import Privacy from './pages/Settings/Privacy/Privacy'
+import Home from './pages/Home/Home'
+import PersonalInformation from './pages/Settings/PersonalInformation/PersonalInformation'
+import AccountSecurity from './pages/Settings/AccountSecurity/AccountSecurity'
+import SystemSettings from './pages/Settings/SystemSettings/SystemSettings'
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Test />,
-    errorElement: <Fallback />
-  },
-  {
-    path: '/template',
-    element: <Template />
-  },
-  {
-    path: '/settings',
-    element: <Settings />,
+    element: <Home />,
+    errorElement: <Fallback />,
     children: [
       {
-        path: 'privacy',
-        element: <Privacy />
+        path: '/settings',
+        element: <Settings />,
+        children: [
+          {
+            path: 'privacy',
+            element: <Privacy />
+          },
+          {
+            path: 'personal-information',
+            element: <PersonalInformation />
+          },
+          {
+            path: 'account-security',
+            element: <AccountSecurity />
+          },
+          {
+            path: 'system-settings',
+            element: <SystemSettings />
+          }
+        ]
       }
     ]
   }
