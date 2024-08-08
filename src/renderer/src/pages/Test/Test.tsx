@@ -1,6 +1,6 @@
 import './Test.scss'
 import { useAppSelector, useAppDispatch } from '../../store'
-import { increment, decrement, incrementByAmount } from '../../features/counter/counterSlice'
+
 import { Button, Modal } from 'antd'
 import { useState } from 'react'
 export default function Test(): JSX.Element {
@@ -32,10 +32,6 @@ export default function Test(): JSX.Element {
         <p>Some contents...</p>
         <p>Some contents...</p>
       </Modal>
-
-      <button onClick={() => dispatch(increment())}>Increment</button>
-      <button onClick={() => dispatch(decrement())}>Decrement</button>
-      <button onClick={() => dispatch(incrementByAmount(5))}>Increment by 5</button>
     </div>
   )
 }
