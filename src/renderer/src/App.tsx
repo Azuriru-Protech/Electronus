@@ -4,6 +4,7 @@ import Template from './pages/Template'
 import Test from './pages/Test/Test'
 import Settings from './pages/Settings/Settings'
 import Privacy from './pages/Settings/Privacy/Privacy'
+import './i18n/config'
 
 function App(): JSX.Element {
   const router = createBrowserRouter([

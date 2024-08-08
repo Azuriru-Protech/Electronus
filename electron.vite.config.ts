@@ -20,7 +20,7 @@ export default defineConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@import "@renderer/src/styles/utilities.scss" @import "@renderer/src/styles/variables.scss" @import "@renderer/src/styles/__variables.scss";` // Adjust if needed
+          additionalData: `@import "@renderer/styles/_variables.scss"; @import "@renderer/styles/utilities.scss"; @import "@renderer/styles/breakpoint.scss";`
         }
       }
     }
