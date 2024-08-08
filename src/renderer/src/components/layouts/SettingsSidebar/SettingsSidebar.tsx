@@ -1,7 +1,7 @@
 import styles from './SettingsSidebar.module.scss'
 import Icon from '@renderer/components/widgets/Icon/Icon'
 import { MaterialSymbol } from 'material-symbols'
-import { useLocation } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
 interface Navigation {

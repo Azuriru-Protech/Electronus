@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, createHashRouter } from 'react-router-dom'
 import Fallback from './pages/Fallback/Fallback'
 import Settings from './pages/Settings/Settings'
 import Privacy from './pages/Settings/Privacy/Privacy'
@@ -7,8 +7,9 @@ import PersonalInformation from './pages/Settings/PersonalInformation/PersonalIn
 import AccountSecurity from './pages/Settings/AccountSecurity/AccountSecurity'
 import SystemSettings from './pages/Settings/SystemSettings/SystemSettings'
 import Login from './pages/Login/Login'
+import ShareInvite from './pages/Settings/ShareInvite/ShareInvite'
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
     path: '/',
     element: <Home />,
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
           {
             path: 'system-settings',
             element: <SystemSettings />
+          },
+          {
+            path: 'share-invite',
+            element: <ShareInvite />
           }
         ]
       }
