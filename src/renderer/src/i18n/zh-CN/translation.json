@@ -1,3 +1,4 @@
 {
-  "hello": "你好，Electron!"
+  "hello": "你好，Electron!",
+  "world": "世界，Electron!"
 }

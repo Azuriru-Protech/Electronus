@@ -1,2 +1,3 @@
 .test-wrapper {
+  @include flex-box(column, center, center, 0.5rem);
 }

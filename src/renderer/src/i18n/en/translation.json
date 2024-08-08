@@ -1,3 +1,4 @@
 {
-  "hello": "hello, Electron!"
+  "hello": "hello, Electron!",
+  "world": "world, Electron!"
 }
