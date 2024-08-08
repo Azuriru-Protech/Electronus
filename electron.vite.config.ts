@@ -11,7 +11,13 @@ export default defineConfig({
     plugins: [externalizeDepsPlugin()]
   },
   renderer: {
-    plugins: [react()],
+    plugins: [
+      react({
+        babel: {
+          plugins: ['styled-jsx/babel']
+        }
+      })
+    ],
     resolve: {
       alias: {
         '@renderer': resolve('src/renderer/src') // Simplified alias
