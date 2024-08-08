@@ -1,0 +1,5 @@
+@import '@renderer/styles/utilities.scss';
+
+.page-wrapper {
+  @include flex-box(row, start, start);
+}

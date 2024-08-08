@@ -1,0 +1,30 @@
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin box-shadow($shadow) {
+  -webkit-box-shadow: $shadow;
+  -moz-box-shadow: $shadow;
+  box-shadow: $shadow;
+}
+
+@mixin flex-box($direction: row, $justify: center, $align: center, $gap: 0) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+  box-sizing: border-box;
+  gap: $gap;
+}
+
+@mixin card-box-shadow() {
+  @include box-shadow(0px 4px 4px rgba(255, 255, 255, 0.25));
+}
+
+@mixin button() {
+  cursor: pointer;
+  border: none;
+  outline: none;
+}

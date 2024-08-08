@@ -1,0 +1,29 @@
+@import "_variables";
+
+@mixin breakpoint($point) {
+  @if $point == mobile {
+    @media screen and (max-width: #{$screen-sm-min - 1px}) {
+      @content;
+    }
+  } @else if $point == tablet or $point == sm {
+    @media screen and (min-width: #{$screen-sm-min}) {
+      @content;
+    }
+  } @else if $point == desktop or $point == md {
+    @media screen and (min-width: #{$screen-md-min}) {
+      @content;
+    }
+  } @else if $point == wide or $point == lg {
+    @media screen and (min-width: #{$screen-lg-min}) {
+      @content;
+    }
+  } @else if $point == xl {
+    @media screen and (min-width: #{$screen-xl-min}) {
+      @content;
+    }
+  } @else if $point == 2xl {
+    @media screen and (min-width: #{$screen-2xl-min}) {
+      @content;
+    }
+  }
+}

@@ -1,0 +1,26 @@
+$screen-sm-min: 640px;
+$screen-md-min: 768px;
+$screen-lg-min: 1024px;
+$screen-xl-min: 1280px;
+$screen-xl-min: 1536px;
+
+$primary: #00c2c7;
+$secondary: #0086ad;
+$primary-dark: #005582;
+$primary-light: #97ebdb;
+
+$primary-gradient: linear-gradient(
+  0deg,
+  rgba(0, 194, 199, 1) 0%,
+  rgba(0, 134, 173, 1) 100%
+);
+$secondary-gradient: linear-gradient(
+  90deg,
+  rgba(151, 235, 219, 1) 0%,
+  rgba(0, 134, 173, 1) 100%
+);
+$tertiary-gradient: linear-gradient(
+  90deg,
+  rgba(0, 134, 173, 1) 0%,
+  rgba(0, 194, 199, 1) 100%
+);

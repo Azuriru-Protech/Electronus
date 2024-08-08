@@ -1,0 +1,49 @@
+@import '@renderer/styles/utilities.scss';
+
+.settingsSidebarWrapper {
+  width: 350px;
+  background-color: #f7f7f7;
+  @include flex-box(column, start, start, 0rem);
+  border-right: 1px solid #e6e6e6;
+  font-weight: 600;
+  color: black;
+}
+
+.settingsSidebarTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 1rem;
+}
+
+.settingsSidebarList {
+  @include flex-box(column, start, center);
+  width: 100%;
+}
+
+.settingsSidebarButton {
+  background: white;
+  width: 100%;
+  @include flex-box(row, start, center, 1rem);
+  transition: all 0.2s ease-in-out;
+
+  //add hover effect
+  &:hover {
+    background: #ededed;
+  }
+  cursor: pointer;
+}
+
+.settingsIcon {
+  padding: 0.5em;
+  background: pink;
+  border-radius: 0.5rem;
+  margin: 1em 0em 1em 1em;
+  @include flex-box(row, center, center, 0.5rem);
+}
+
+.settingsSidebarText {
+  border-bottom: 1px solid #e6e6e6;
+  width: 100%;
+  height: 100%;
+  @include flex-box(row, start, center, 0.5rem);
+}
