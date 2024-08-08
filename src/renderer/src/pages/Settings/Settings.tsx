@@ -5,9 +5,16 @@ import styles from './Settings.module.scss'
 
 export default function Settings() {
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.settingsWrapper}>
       <SettingsSidebar />
-      <Outlet />
+      <div className={styles.settingsContentWrapper}>
+        <div className={styles.settingsHeader}>
+          <h1>Settings</h1>
+        </div>
+        <div className={styles.settingsContent}>
+          <Outlet />
+        </div>
+      </div>
     </div>
   )
 }
