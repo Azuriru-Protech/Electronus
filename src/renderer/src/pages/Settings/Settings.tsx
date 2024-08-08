@@ -8,12 +8,7 @@ export default function Settings() {
     <div className={styles.settingsWrapper}>
       <SettingsSidebar />
       <div className={styles.settingsContentWrapper}>
-        <div className={styles.settingsHeader}>
-          <h1>Settings</h1>
-        </div>
-        <div className={styles.settingsContent}>
-          <Outlet />
-        </div>
+        <Outlet />
       </div>
     </div>
   )

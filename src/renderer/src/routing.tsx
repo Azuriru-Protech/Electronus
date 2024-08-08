@@ -7,6 +7,7 @@ import PersonalInformation from './pages/Settings/PersonalInformation/PersonalIn
 import AccountSecurity from './pages/Settings/AccountSecurity/AccountSecurity'
 import SystemSettings from './pages/Settings/SystemSettings/SystemSettings'
 import Login from './pages/Login/Login'
+import DeviceManagement from './pages/Settings/AccountSecurity/DeviceManagement/DeviceManagement'
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
           {
             path: 'account-security',
             element: <AccountSecurity />
+          },
+          {
+            path: 'account-security/device-management',
+            element: <DeviceManagement />
           },
           {
             path: 'system-settings',

@@ -3,6 +3,7 @@ import '@renderer/styles/settings.scss'
 import { Avatar, Button, Input, Modal, Radio, RadioChangeEvent } from 'antd'
 import { useState } from 'react'
 import SampleProfilePic from '@renderer/assets/images/sample-profile-pic.jpg'
+import SettingsTopbar from '@renderer/components/layouts/SettingsTopbar/SettingsTopbar'
 
 export default function PersonalInformation() {
   const [value, setValue] = useState('male')
@@ -19,6 +20,7 @@ export default function PersonalInformation() {
   }
   return (
     <>
+      <SettingsTopbar>Personal Information</SettingsTopbar>
       <div className="settingsCardList">
         <div className="settingsCard">
           <div className="settingsCardItem">
@@ -129,6 +131,9 @@ export default function PersonalInformation() {
       <Modal
         title="个性签名"
         open={isSignatureModalOpen}
+        onCancel={() => {
+          setIsSignatureModalOpen(false)
+        }}
         footer={
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
