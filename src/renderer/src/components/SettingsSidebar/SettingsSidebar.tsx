@@ -6,6 +6,7 @@ import SettingsIcon from '../../assets/images/icons/settings-icon.svg'
 import ShareIcon from '../../assets/images/icons/share-icon.svg'
 import FeedbackIcon from '../../assets/images/icons/feedback-icon.svg'
 import CustomerServiceIcon from '../../assets/images/icons/customer-service-icon.svg'
+import { Modal } from 'antd'
 
 type Props = {}
 
