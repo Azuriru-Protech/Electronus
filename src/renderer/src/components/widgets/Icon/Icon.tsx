@@ -44,7 +44,10 @@ export default function Icon({
         className={`material-symbols-${type} ${className}`}
         style={{
           color,
-          fontSize
+          fontSize,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
         }}
       >
         {name}

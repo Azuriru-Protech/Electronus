@@ -1,0 +1,23 @@
+.tabWrapper {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  width: 100%;
+  gap: 1rem;
+}
+
+.tabItem {
+  display: flex;
+  flex-direction: column;
+  padding: 0.2rem 0rem;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+
+  p {
+    font-weight: 500;
+  }
+}
+
+.active {
+  color: $primary-dark;
+}
