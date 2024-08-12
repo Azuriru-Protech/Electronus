@@ -8,6 +8,7 @@ import AccountSecurity from './pages/Settings/AccountSecurity/AccountSecurity'
 import SystemSettings from './pages/Settings/SystemSettings/SystemSettings'
 import Login from './pages/Login/Login'
 import ShareInvite from './pages/Settings/ShareInvite/ShareInvite'
+import Feedback from './pages/Settings/Feedback/Feedback'
 
 export const router = createHashRouter([
   {
@@ -42,6 +43,10 @@ export const router = createHashRouter([
           {
             path: 'share-invite',
             element: <ShareInvite />
+          },
+          {
+            path: 'feedback',
+            element: <Feedback />
           }
         ]
       }

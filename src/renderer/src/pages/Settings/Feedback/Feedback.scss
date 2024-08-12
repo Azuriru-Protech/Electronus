@@ -1,0 +1,99 @@
+.feedback-wrapper {
+  @include flex-box(column, center, center, 0rem);
+  background: #fff;
+  padding: 2em;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.title {
+  @include flex-box(row, start, center, 1rem);
+  font-size: 1rem;
+  font-weight: 700;
+  width: 100%;
+}
+
+.feedback-type-wrapper {
+  @include flex-box(row, space-between, center, 1rem);
+  width: 100%;
+
+  text-align: center;
+}
+.feedback-button-wrapper {
+  @include flex-box(row, end, center, 1rem);
+  width: 100%;
+  text-align: center;
+}
+.feedback-button {
+  @include flex-box(row, center, center, 1rem);
+
+  text-align: center;
+  font-size: 0.8rem;
+  color: #6d6c72;
+  cursor: pointer;
+  padding: 0.5em 1em;
+  border: 1px solid #d7d7d7;
+}
+
+.feedback-description-container {
+  width: 100%;
+  @include flex-box(column, start, center, 1rem);
+}
+
+.feedback-screenshot-wrapper {
+  width: 100%;
+  @include flex-box(row, start, start);
+  padding-bottom: 2rem;
+}
+
+.screenshot-wrapper {
+  position: relative;
+  display: inline-block;
+}
+.close-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+.screenshot {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  border: 1px dotted #d7d7d7;
+}
+
+.screenshot-input {
+  display: none;
+}
+
+.custom-file-upload {
+  @include flex-box(column center, center);
+  width: 100px;
+  height: 100px;
+  border: 1px dotted #d7d7d7;
+  border-radius: 4px;
+}
+
+.upload-screenshot-wrapper {
+  @include flex-box(column, center, center);
+  width: 100%;
+  height: 100px;
+  cursor: pointer;
+}
+
+.add-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.upload-screenshot-text {
+  font-size: 10px;
+  color: #6d6c72;
+}

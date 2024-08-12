@@ -1,0 +1,14 @@
+.privacy-page-wrapper {
+  @include flex-box(column, center, center, 1rem);
+  background: #f5f5f5;
+  border-radius: 8px;
+  width: 600px;
+}
+
+.privacy-data-wrapper {
+  @include flex-box(row, space-between, center, 1rem);
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  padding: 1em;
+}
