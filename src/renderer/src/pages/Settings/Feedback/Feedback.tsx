@@ -3,6 +3,7 @@ import './Feedback.scss'
 import { Button, Divider, Input } from 'antd'
 import CloseIcon from '@renderer/assets/images/icons/close-icon.svg'
 import AddIcon from '@renderer/assets/images/icons/add-icon.svg'
+import SettingsTopbar from '@renderer/components/layouts/SettingsTopbar/SettingsTopbar'
 
 export default function Feedback() {
   const [feedbackType, setFeedbackType] = useState(0)
@@ -30,7 +31,8 @@ export default function Feedback() {
   }
 
   return (
-    <div>
+    <>
+      <SettingsTopbar>Feedback</SettingsTopbar>
       <div className="feedback-wrapper">
         <div className="feedback-type-wrapper">
           <div className="title">Feedback Type</div>
@@ -99,6 +101,6 @@ export default function Feedback() {
           </Button>
         </div>
       </div>
-    </div>
+    </>
   )
 }

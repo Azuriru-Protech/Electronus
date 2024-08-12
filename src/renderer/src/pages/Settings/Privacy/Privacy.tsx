@@ -3,6 +3,7 @@ import { Switch } from 'antd'
 import RightIcon from '../../../assets/images/icons/right-icon.svg'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import SettingsTopbar from '@renderer/components/layouts/SettingsTopbar/SettingsTopbar'
 
 export default function Privacy(): JSX.Element {
   const [addingFriendVerification, setAddingFriendVerification] = useState(false)
@@ -13,7 +14,8 @@ export default function Privacy(): JSX.Element {
   const [myQRCode, setMyQRCode] = useState(false)
 
   return (
-    <div>
+    <>
+      <SettingsTopbar>Privacy</SettingsTopbar>
       <div className="privacy-page-wrapper">
         <div className="privacy-data-wrapper">
           Adding Friend Verification
@@ -64,6 +66,6 @@ export default function Privacy(): JSX.Element {
           </Link>
         </div>
       </div>
-    </div>
+    </>
   )
 }

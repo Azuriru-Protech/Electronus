@@ -4,6 +4,7 @@ import ProfilePicture from '../../../assets/images/misc/profile-picture.jpg'
 import { QRCode } from 'antd'
 import { useState } from 'react'
 import { makeRandomID } from '@renderer/utilities/Utilities'
+import SettingsTopbar from '@renderer/components/layouts/SettingsTopbar/SettingsTopbar'
 export default function ShareInvite() {
   const [qrCode, setQrCode] = useState(makeRandomID(100))
 
@@ -12,7 +13,8 @@ export default function ShareInvite() {
   }
 
   return (
-    <div>
+    <>
+      <SettingsTopbar>Share Invite</SettingsTopbar>
       <div className="share-invite-wrapper">
         <div className="avatar-wrapper">
           <Avatar size={48} src={ProfilePicture} />
@@ -50,6 +52,6 @@ export default function ShareInvite() {
           </Button>
         </div>
       </div>
-    </div>
+    </>
   )
 }
