@@ -108,9 +108,9 @@ export default function SystemSettings() {
           </div>
         </div>
       </div>
-      {clearCacheContextHolder}
-      {logoutContextHolder}
-      {clearChatHistoryContextHolder}
+      <div>{clearCacheContextHolder}</div>
+      <div>{logoutContextHolder}</div>
+      <div>{clearChatHistoryContextHolder}</div>
     </>
   )
 }
