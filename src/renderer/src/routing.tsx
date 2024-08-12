@@ -9,6 +9,8 @@ import SystemSettings from './pages/Settings/SystemSettings/SystemSettings'
 import Login from './pages/Login/Login'
 import ShareInvite from './pages/Settings/ShareInvite/ShareInvite'
 import Feedback from './pages/Settings/Feedback/Feedback'
+import CustomerService from './pages/Settings/CustomerService/CustomerService'
+import Blacklist from './pages/Settings/Privacy/Blacklist/Blacklist'
 
 export const router = createHashRouter([
   {
@@ -47,6 +49,14 @@ export const router = createHashRouter([
           {
             path: 'feedback',
             element: <Feedback />
+          },
+          {
+            path: 'customer-service',
+            element: <CustomerService />
+          },
+          {
+            path: 'privacy/blacklist',
+            element: <Blacklist />
           }
         ]
       }
