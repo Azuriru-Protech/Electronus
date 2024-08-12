@@ -10,6 +10,7 @@ import Login from './pages/Login/Login'
 import DeviceManagement from './pages/Settings/AccountSecurity/DeviceManagement/DeviceManagement'
 import ChangeLanguage from './pages/Settings/SystemSettings/ChangeLanguage/ChangeLanguage'
 import Notification from './pages/Settings/SystemSettings/Notification/Notification'
+import AboutUs from './pages/Settings/SystemSettings/AboutUs/AboutUs'
 
 export const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ export const router = createBrowserRouter([
           {
             path: 'system-settings/change-language',
             element: <ChangeLanguage />
+          },
+          {
+            path: 'system-settings/about-us',
+            element: <AboutUs />
           }
         ]
       }

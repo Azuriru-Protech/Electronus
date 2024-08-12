@@ -6,8 +6,9 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 export default function SystemSettings() {
-  const { t, i18n } = useTranslation()
+  const { t, i18n } = useTranslation('translation', { keyPrefix: 'pages.settings.systemSettings' })
   const [clearCacheModal, clearCacheContextHolder] = Modal.useModal()
+  const [clearChatHistoryModal, clearChatHistoryContextHolder] = Modal.useModal()
   const [logoutModal, logoutContextHolder] = Modal.useModal()
   const clearCache = async () => {
     const confirm = await clearCacheModal.confirm({
@@ -20,6 +21,19 @@ export default function SystemSettings() {
     })
     if (confirm) {
       console.log('proceed to clear cache')
+    }
+  }
+  const clearChatHistory = async () => {
+    const confirm = await clearChatHistoryModal.confirm({
+      title: t('clearChatHistory'),
+      content: t('clearChatHistoryWarning'),
+      okText: t('confirm'),
+      cancelText: t('cancel'),
+      icon: null,
+      centered: true
+    })
+    if (confirm) {
+      console.log('proceed to clear chat history')
     }
   }
   const logout = async () => {
@@ -40,6 +54,7 @@ export default function SystemSettings() {
     } else if (i18n.language === 'zh-CN') {
       return '简体中文'
     }
+    return ''
   }
   return (
     <>
@@ -68,14 +83,14 @@ export default function SystemSettings() {
             <h3>{t('clearCache')}</h3>
             <Icon name="chevron_right" weight={200} color="#505050" />
           </div>
-          <div className="settingsCardItem">
+          <div className="settingsCardItem" onClick={clearChatHistory}>
             <h3>{t('clearChatHistory')}</h3>
             <Icon name="chevron_right" weight={200} color="#505050" />
           </div>
-          <div className="settingsCardItem">
+          <Link to="/settings/system-settings/about-us" className="settingsCardItem">
             <h3>{t('aboutUs')}</h3>
             <Icon name="chevron_right" weight={200} color="#505050" />
-          </div>
+          </Link>
         </div>
         <div className="settingsCard">
           <div className="settingsCardItem">
@@ -95,6 +110,7 @@ export default function SystemSettings() {
       </div>
       {clearCacheContextHolder}
       {logoutContextHolder}
+      {clearChatHistoryContextHolder}
     </>
   )
 }

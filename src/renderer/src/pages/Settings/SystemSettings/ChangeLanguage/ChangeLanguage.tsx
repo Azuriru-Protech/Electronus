@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 export default function ChangeLanguage() {
-  const { t, i18n } = useTranslation()
+  const { t, i18n } = useTranslation('translation', { keyPrefix: 'pages.settings.systemSettings' })
   const changeLanguage = (language: string) => {
     i18n.changeLanguage(language)
   }

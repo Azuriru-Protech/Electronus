@@ -8,7 +8,7 @@ import styles from './PersonalInformation.module.scss'
 import { useTranslation } from 'react-i18next'
 
 export default function PersonalInformation() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('translation', { keyPrefix: 'pages.settings.personalInformation' })
   const [value, setValue] = useState('male')
   const [isProfilePictureModalOpen, setIsProfilePictureModalOpen] = useState(false)
   const [isIdModalOpen, setIsIdModalOpen] = useState(false)

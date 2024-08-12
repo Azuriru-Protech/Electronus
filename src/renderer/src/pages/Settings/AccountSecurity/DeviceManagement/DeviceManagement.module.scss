@@ -18,3 +18,49 @@
     background-color: #dddddd;
   }
 }
+
+.deviceManagementDescription {
+  color: #78787d;
+  font-size: 0.9rem;
+  max-width: 600px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: start;
+}
+
+.deviceManagementDetail {
+  font-weight: 600;
+}
+
+.deviceManagementActionWrapper {
+  display: flex;
+  gap: 1rem;
+}
+
+.deviceManagementAction {
+  cursor: pointer;
+}
+
+.deviceManagementCurrent {
+  background-color: #3347f9;
+  border-radius: 0 0.5rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.1rem 0.5rem;
+  font-weight: 600;
+  color: white;
+  font-size: 0.8rem;
+}
+
+.deviceManagementDetailWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.deviceManagementDetailDate {
+  color: #78787d;
+  font-size: 0.8rem;
+  font-weight: 600;
+}

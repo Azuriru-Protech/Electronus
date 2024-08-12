@@ -8,7 +8,7 @@ import SettingsTopbar from '@renderer/components/layouts/SettingsTopbar/Settings
 import { useTranslation } from 'react-i18next'
 
 export default function AccountSecurity() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('translation', { keyPrefix: 'pages.settings.accountSecurity' })
   const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false)
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
   const [phone, setPhone] = useState('')

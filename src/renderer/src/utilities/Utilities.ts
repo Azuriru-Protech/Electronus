@@ -1,17 +1,21 @@
 export const debugPrint = (...args: any) => {
   if (isDebug()) {
-    console.log(...args);
+    console.log(...args)
   }
-};
+}
 
 export const isDebug = () => {
-  return !process.env.NODE_ENV || process.env.NODE_ENV === "development";
-};
+  return !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
+}
 
 export const getToken = () => {
-  return localStorage.getItem("token");
-};
+  return localStorage.getItem('token')
+}
 
 export const getSessionId = () => {
-  return sessionStorage.getItem("sessionId");
-};
+  return sessionStorage.getItem('sessionId')
+}
+
+export const padZero = (num: number, places: number) => {
+  return String(num).padStart(places, '0')
+}

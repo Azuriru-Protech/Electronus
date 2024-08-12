@@ -14,7 +14,7 @@ interface Navigation {
 
 export default function SettingsSidebar() {
   const { pathname } = useLocation()
-  const { t } = useTranslation()
+  const { t } = useTranslation('translation', { keyPrefix: 'layouts.settingsSidebar' })
   const sideBarNavigations: Navigation[] = [
     {
       name: t('personalInformation'),
@@ -67,7 +67,7 @@ export default function SettingsSidebar() {
         {sideBarNavigations.map((item, index) => (
           <Link
             to={item.link}
-            className={`${styles.settingsSidebarButton} ${pathname === item.link && styles.active}`}
+            className={`${styles.settingsSidebarButton} ${pathname.includes(item.link) && styles.active}`}
             key={index}
           >
             <div

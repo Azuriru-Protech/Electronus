@@ -3,9 +3,14 @@ import styles from './Notification.module.scss'
 import Icon from '@renderer/components/widgets/Icon/Icon'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { Switch } from 'antd'
+import { useState } from 'react'
 
 export default function Notification() {
-  const { t } = useTranslation()
+  const { t } = useTranslation('translation', { keyPrefix: 'pages.settings.systemSettings' })
+  const [notification, setNotification] = useState(false)
+  const [notificationAlert, setNotificationAlert] = useState(false)
+
   return (
     <>
       <SettingsTopbar>
@@ -20,7 +25,11 @@ export default function Notification() {
         <div className="settingsCard">
           <div className="settingsCardItem">
             <h3>{t('notification')}</h3>
-            <Icon name="chevron_right" weight={200} />
+            <Switch checked={notification} onChange={setNotification} size="small" />
+          </div>
+          <div className="settingsCardItem">
+            <h3>{t('notificationAlert')}</h3>
+            <Switch checked={notificationAlert} onChange={setNotificationAlert} size="small" />
           </div>
         </div>
       </div>
