@@ -1,28 +1,36 @@
-.personalInfomationWrapper {
-  @include flex-box(column, start, center, 1rem);
-  padding: 1rem 6rem;
-  width: 100%;
-  font-weight: 600;
+.fileInput {
+  visibility: hidden;
+  position: absolute;
 }
 
-.cardWrapper {
-  @include flex-box(flex, start, center, 1rem);
-  width: 100%;
-  background: white;
-  border-radius: 4px;
-  padding: 1em;
+.profilePictureModalContent {
+  padding: 0;
 }
 
-.personalWrapper {
-  @include flex-box(column, start, start, 1rem);
-  width: 100%;
-  background: white;
-  padding: 1em;
+.profilePictureModalHeader {
+  padding: 16px 24px;
+  margin: 0;
 }
 
-.rowWrapper {
-  @include flex-box(row, space-between, start, 1rem);
-  width: 100%;
-  background: white;
-  cursor: pointer;
+.profilePictureModalFooterWrapper {
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+}
+
+.profilePictureModalFooter {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.signatureModalFooterWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.signatureModalFooter {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
 }

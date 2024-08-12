@@ -1,4 +1,74 @@
 {
-  "hello": "hello, Electron!",
-  "world": "world, Electron!"
+  "pages": {
+    "settings": {
+      "personalInformation": {
+        "personalInformation": "Personal Information",
+        "myQrCode": "My QR Code",
+        "gender": "Gender",
+        "male": "Male",
+        "female": "Female",
+        "personalizedSignature": "Personalized Signature",
+        "changeProfilePicture": "Change Profile Picture",
+        "yourIdIs": "Your ID is",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      },
+      "accountSecurity": {
+        "accountSecurity": "Account Security",
+        "phoneNumber": "Phone Number",
+        "changePassword": "Change Password",
+        "deviceManagement": "Device Management",
+        "deleteAccount": "Delete Account",
+        "bindPhoneNumber": "Bind Phone Number",
+        "bindPhoneNumberDescription": "After binding your mobile phone number, you can use it to log in next time.",
+        "countryRegion": "Country/Region",
+        "pleaseFillInPhoneNumber": "Please fill in your phone number",
+        "continue": "Continue",
+        "changePasswordDescription": "After modification, you can log in with the new password.",
+        "currentPassword": "Current Password",
+        "pleaseFillInCurrentPassword": "Please fill in current password",
+        "newPassword": "New Password",
+        "pleaseFillInNewPassword": "Please fill in new password",
+        "confirmPassword": "Confirm Password",
+        "pleaseFillInConfirmPassword": "Please fill in confirm password",
+        "passwordRequirements": "The password must be a combination of 8-16 English letters, numbers, and characters (not pure numbers)",
+        "deleteAccountWarning": "After deletion, all your data will be cleared and cannot be restored. Are you sure you want to delete your account?",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "deviceManagementDescription": "You can delete a device from the list. After deleting it, you will need to verify your identity when logging in with that device.",
+        "currentDevice": "Current Device"
+      },
+      "systemSettings": {
+        "systemSettings": "System Settings",
+        "notification": "Notification",
+        "changeLanguage": "Change Language",
+        "clearCache": "Clear Cache",
+        "clearChatHistory": "Clear Chat History",
+        "aboutUs": "About Us",
+        "switchAccount": "Switch Account",
+        "logout": "Logout",
+        "logoutWarning": "Are you sure you want to logout?",
+        "clearCacheWarning": "The cache contains attachments. Clearing the cache will free up your computer's storage space. This operation is secure and reliable, and will not lose your personal and group chat records.",
+        "clearChatHistoryWarning": "All chat history will be cleared. Are you sure you want to clear all personal and group chat history?",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "notificationAlert": "Notification Alert",
+        "checkForNewVersions": "Check for new versions",
+        "userAgreement": "User Agreement",
+        "privacyPolicy": "Privacy Policy"
+      }
+    }
+  },
+  "layouts": {
+    "settingsSidebar": {
+      "settings": "Settings",
+      "personalInformation": "Personal Information",
+      "accountSecurity": "Account Security",
+      "privacy": "Privacy",
+      "systemSettings": "System Settings",
+      "shareInvite": "Share Invite",
+      "feedback": "Feedback",
+      "customerService": "Customer Service"
+    }
+  }
 }

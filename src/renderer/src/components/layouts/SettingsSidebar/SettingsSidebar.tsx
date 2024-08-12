@@ -2,6 +2,7 @@ import styles from './SettingsSidebar.module.scss'
 import Icon from '@renderer/components/widgets/Icon/Icon'
 import { MaterialSymbol } from 'material-symbols'
 import { useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 interface Navigation {
@@ -13,45 +14,46 @@ interface Navigation {
 
 export default function SettingsSidebar() {
   const { pathname } = useLocation()
+  const { t } = useTranslation('translation', { keyPrefix: 'layouts.settingsSidebar' })
   const sideBarNavigations: Navigation[] = [
     {
-      name: 'Personal Information',
+      name: t('personalInformation'),
       icon: 'id_card',
       link: '/settings/personal-information',
       color: '#b654cb'
     },
     {
-      name: 'Account Security',
+      name: t('accountSecurity'),
       icon: 'lock',
       link: '/settings/account-security',
       color: '#f1760d'
     },
     {
-      name: 'Privacy',
+      name: t('privacy'),
       icon: 'verified_user',
       link: '/settings/privacy',
       color: '#0084fd'
     },
     {
-      name: 'System Settings',
+      name: t('systemSettings'),
       icon: 'settings',
       link: '/settings/system-settings',
       color: '#00cb69'
     },
     {
-      name: 'Share Invite',
+      name: t('shareInvite'),
       icon: 'share',
       link: '/settings/share-invite',
       color: '#e00501'
     },
     {
-      name: 'Feedback',
+      name: t('feedback'),
       icon: 'rate_review',
       link: '/settings/feedback',
       color: '#0042ff'
     },
     {
-      name: 'Customer Service',
+      name: t('customerService'),
       icon: 'support_agent',
       link: '/settings/customer-service',
       color: '#ff3705'
@@ -60,12 +62,12 @@ export default function SettingsSidebar() {
 
   return (
     <div className={styles.settingsSidebarWrapper}>
-      <div className={styles.settingsSidebarTitle}>Settings</div>
+      <div className={styles.settingsSidebarTitle}>{t('settings')}</div>
       <div className={styles.settingsSidebarList}>
         {sideBarNavigations.map((item, index) => (
           <Link
             to={item.link}
-            className={`${styles.settingsSidebarButton} ${pathname === item.link && styles.active}`}
+            className={`${styles.settingsSidebarButton} ${pathname.includes(item.link) && styles.active}`}
             key={index}
           >
             <div
