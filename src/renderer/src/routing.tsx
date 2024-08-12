@@ -17,6 +17,7 @@ import Notification from './pages/Settings/SystemSettings/Notification/Notificat
 import AboutUs from './pages/Settings/SystemSettings/AboutUs/AboutUs'
 import Register from './pages/Register/Register'
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword'
+import Chat from './pages/Chat/Chat'
 
 export const router = createHashRouter([
   {
@@ -25,7 +26,11 @@ export const router = createHashRouter([
     errorElement: <Fallback />,
     children: [
       {
-        path: '/settings',
+        path: 'chat/:chatId',
+        element: <Chat />
+      },
+      {
+        path: 'settings',
         element: <Settings />,
         children: [
           {

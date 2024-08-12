@@ -16,9 +16,9 @@ export default function Sidebar({}: Props) {
         <div className={styles.avatarWrapper}>
           <Avatar src={SampleProfilePic} className={styles.avatar} />
         </div>
-        <div className={styles.iconWrapper}>
+        <Link to="/chat/system-notification" className={styles.iconWrapper}>
           <Icon name="chat" />
-        </div>
+        </Link>
         <div className={styles.iconWrapper}>
           <Icon name="contacts" />
         </div>
