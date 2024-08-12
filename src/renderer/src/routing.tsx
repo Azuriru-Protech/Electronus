@@ -8,6 +8,8 @@ import AccountSecurity from './pages/Settings/AccountSecurity/AccountSecurity'
 import SystemSettings from './pages/Settings/SystemSettings/SystemSettings'
 import Login from './pages/Login/Login'
 import DeviceManagement from './pages/Settings/AccountSecurity/DeviceManagement/DeviceManagement'
+import ChangeLanguage from './pages/Settings/SystemSettings/ChangeLanguage/ChangeLanguage'
+import Notification from './pages/Settings/SystemSettings/Notification/Notification'
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +44,14 @@ export const router = createBrowserRouter([
           {
             path: 'system-settings',
             element: <SystemSettings />
+          },
+          {
+            path: 'system-settings/notification',
+            element: <Notification />
+          },
+          {
+            path: 'system-settings/change-language',
+            element: <ChangeLanguage />
           }
         ]
       }

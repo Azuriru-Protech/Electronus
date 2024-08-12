@@ -1,11 +1,11 @@
-export default function Privacy(): JSX.Element {
+import SettingsTopbar from '@renderer/components/layouts/SettingsTopbar/SettingsTopbar'
+import { useTranslation } from 'react-i18next'
+
+export default function Privacy() {
+  const { t } = useTranslation()
   return (
-    <div
-      style={{
-        color: 'red'
-      }}
-    >
-      Privacy Settings
-    </div>
+    <>
+      <SettingsTopbar>{t('privacy')}</SettingsTopbar>
+    </>
   )
 }

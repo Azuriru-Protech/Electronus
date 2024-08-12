@@ -33,5 +33,12 @@
   "passwordRequirements": "The password must be a combination of 8-16 English letters, numbers, and characters (not pure numbers)",
   "deviceManagement": "Device Management",
   "deleteAccount": "Delete Account",
-  "deleteAccountWarning": "After deletion, all your data will be cleared and cannot be restored. Are you sure you want to delete your account?"
+  "deleteAccountWarning": "After deletion, all your data will be cleared and cannot be restored. Are you sure you want to delete your account?",
+  "notification": "Notification",
+  "changeLanguage": "Change Language",
+  "clearCache": "Clear Cache",
+  "clearChatHistory": "Clear Chat History",
+  "aboutUs": "About Us",
+  "switchAccount": "Switch Account",
+  "logout": "Logout"
 }

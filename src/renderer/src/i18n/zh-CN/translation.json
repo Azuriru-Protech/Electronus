@@ -33,5 +33,14 @@
   "passwordRequirements": "密码必须是8-16位英文字母、数字、字符组合（不能是纯数字）",
   "deviceManagement": "设备管理",
   "deleteAccount": "注销账号",
-  "deleteAccountWarning": "注销成功后将清除您的所有数据，并且无法恢复。确定注销吗?"
+  "deleteAccountWarning": "注销成功后将清除您的所有数据，并且无法恢复。确定注销吗?",
+  "notification": "消息通知",
+  "changeLanguage": "切换语言",
+  "clearCache": "清理缓存",
+  "clearChatHistory": "清空聊天记录",
+  "aboutUs": "关于我们",
+  "switchAccount": "切换账号",
+  "logout": "退出登录",
+  "clearCacheWarning": "缓存中包含的消息附件，清除后可以回收电脑储存空间，该操作安全可靠，不会丢失您的好友/群组信息和聊天记录?",
+  "clearChatHistoryWarning": "被清空的聊天记录将无法恢复，确认是否清空所有个人和群组聊天记录?"
 }
