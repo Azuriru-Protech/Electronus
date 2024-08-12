@@ -1,4 +1,14 @@
 @import '@renderer/styles/font.scss';
+:root {
+  --primary: $primary;
+  --secondary: $secondary;
+  --primary-dark: $primary-dark;
+  --primary-light: $primary-light;
+  --primary-gradient: $primary-gradient;
+  --secondary-gradient: $secondary-gradient;
+  --tertiary-gradient: $tertiary-gradient;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

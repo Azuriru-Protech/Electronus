@@ -15,6 +15,8 @@ import DeviceManagement from './pages/Settings/AccountSecurity/DeviceManagement/
 import ChangeLanguage from './pages/Settings/SystemSettings/ChangeLanguage/ChangeLanguage'
 import Notification from './pages/Settings/SystemSettings/Notification/Notification'
 import AboutUs from './pages/Settings/SystemSettings/AboutUs/AboutUs'
+import Register from './pages/Register/Register'
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword'
 
 export const router = createHashRouter([
   {
@@ -22,10 +24,6 @@ export const router = createHashRouter([
     element: <Home />,
     errorElement: <Fallback />,
     children: [
-      {
-        path: '/login',
-        element: <Login />
-      },
       {
         path: '/settings',
         element: <Settings />,
@@ -81,5 +79,17 @@ export const router = createHashRouter([
         ]
       }
     ]
+  },
+  {
+    path: '/login',
+    element: <Login />
+  },
+  {
+    path: '/register',
+    element: <Register />
+  },
+  {
+    path: '/forgot-password',
+    element: <ForgotPassword />
   }
 ])

@@ -1,0 +1,81 @@
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1rem;
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+
+    .otp {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      gap: 0.4rem;
+    }
+
+    .tnc {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.4rem;
+
+      span {
+        color: $primary-dark;
+        cursor: pointer;
+      }
+    }
+
+    .loginBtn {
+      transition: all 0.15s ease-in-out;
+      width: 100%;
+
+      &:hover {
+        opacity: 0.85;
+        background-color: $primary-dark;
+        border: 1px solid $primary-dark;
+        color: #ffffff;
+      }
+    }
+
+    .otpBtn {
+      transition: all 0.2s ease-in-out;
+      border: 1px solid transparent;
+      box-shadow: none;
+      width: 250px;
+      background-color: $primary-dark;
+      color: #ffffff;
+
+      &:hover {
+        opacity: 0.85;
+        background-color: $primary-dark;
+        border: 1px solid transparent;
+        color: #ffffff;
+      }
+    }
+
+    .otpBtnAvailable {
+      width: 90px !important;
+    }
+
+    .otpBtnDisabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+  }
+
+  .otherFunctions {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 2rem;
+  }
+}
