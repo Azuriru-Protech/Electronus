@@ -9,6 +9,7 @@ import { TextAreaRef } from 'antd/es/input/TextArea'
 import { padZero } from '@renderer/utilities/Utilities'
 import Separator from '@renderer/components/widgets/Separator/Separator'
 import ChatSettingsDrawer from '@renderer/components/widgets/ChatSettingsDrawer/ChatSettingsDrawer'
+import GroupSettingsDrawer from '@renderer/components/widgets/GroupSettingsDrawer/GroupSettingsDrawer'
 
 type Message = {
   seenAt?: string | null
@@ -84,7 +85,9 @@ export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([])
   const textareaRef = useRef<TextAreaRef>(null)
   const [selectionMode, setSelectionMode] = useState(false)
-  const [isProfileDrawerOpen, setIsProfileDrawerOpen] = useState(true)
+  const [isChatSettingsDrawerOpen, setIsChatSettingsDrawerOpen] = useState(false)
+
+  const [isGroupSettingsDrawerOpen, setIsGroupSettingsDrawerOpen] = useState(true)
 
   useEffect(() => {
     const messages = sampleMessages.map((m) => ({ ...m, sendByAuthor: m.author === 1 }))
@@ -228,7 +231,14 @@ export default function Chat() {
           </Popover> */}
           <Button icon={<Icon name="send" />} type="text" />
         </div>
-        <ChatSettingsDrawer isOpen={isProfileDrawerOpen} setIsOpen={setIsProfileDrawerOpen} />
+        <ChatSettingsDrawer
+          isOpen={isChatSettingsDrawerOpen}
+          setIsOpen={setIsChatSettingsDrawerOpen}
+        />
+        <GroupSettingsDrawer
+          isOpen={isGroupSettingsDrawerOpen}
+          setIsOpen={setIsGroupSettingsDrawerOpen}
+        ></GroupSettingsDrawer>
       </div>
     </div>
   )
