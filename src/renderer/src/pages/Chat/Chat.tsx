@@ -2,215 +2,121 @@ import Icon from '@renderer/components/widgets/Icon/Icon'
 import styles from './Chat.module.scss'
 import ChatSidebar from '@renderer/components/layouts/ChatSidebar/ChatSidebar'
 import { useParams } from 'react-router-dom'
-import { Input } from 'antd'
-import { ChangeEvent, useRef, useState } from 'react'
+import { Avatar, Button, Checkbox, Drawer, Dropdown, GetProp, Input } from 'antd'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { EmojiClickData } from 'emoji-picker-react'
+import { TextAreaRef } from 'antd/es/input/TextArea'
+import { padZero } from '@renderer/utilities/Utilities'
+import Separator from '@renderer/components/widgets/Separator/Separator'
+import ChatSettingsDrawer from '@renderer/components/widgets/ChatSettingsDrawer/ChatSettingsDrawer'
 
 type Message = {
-  time: number
-  message: string
+  seenAt?: string | null
+  sentAt: string
+  receivedAt: string
   author: number
+  message: string
+  id: number
+  sendByAuthor: boolean
 }
 
-const MOCK_MESSAGES = [
-  {
-    time: 1722913151589,
-    message: 'Hey, did you see the game last night?',
-    author: 100001
-  },
-  {
-    time: 1722913152589,
-    message: "Yeah, it was intense! Can't believe they won in the last minute.",
-    author: 100000
-  },
-  {
-    time: 1722913153589,
-    message: 'I know, right? That final goal was insane.',
-    author: 100001
-  },
-  {
-    time: 1722913154589,
-    message: 'Totally. We should catch the next game together.',
-    author: 100000
-  },
-  {
-    time: 1722913155589,
-    message: "Sounds like a plan. I'll bring the snacks.",
-    author: 100001
-  },
-  {
-    time: 1722913156589,
-    message: 'Awesome. Looking forward to it.',
-    author: 100000
-  },
-  {
-    time: 1722913157589,
-    message: 'Me too! See you then.',
-    author: 100001
-  },
-  {
-    time: 1722913158589,
-    message: 'Catch you later.',
-    author: 100000
-  },
-  {
-    time: 1722913159589,
-    message: 'Later!',
-    author: 100001
-  },
-  {
-    time: 1722999580744,
-    message: 'Hey, did you finish the report?',
-    author: 100001
-  },
-  {
-    time: 1722999582244,
-    message: "Almost done. I'll send it over in an hour.",
-    author: 100000
-  },
-  {
-    time: 1722999583744,
-    message: 'Great, thanks! Let me know if you need any help.',
-    author: 100001
-  },
-  {
-    time: 1722999585244,
-    message: "Will do. How's the new project going?",
-    author: 100000
-  },
-  {
-    time: 1722999586744,
-    message: "It's going well, just a bit behind schedule.",
-    author: 100001
-  },
-  {
-    time: 1722999588244,
-    message: 'Need any assistance with that?',
-    author: 100000
-  },
-  {
-    time: 1722999589744,
-    message: 'Maybe later, but thanks for the offer.',
-    author: 100001
-  },
-  {
-    time: 1722999591244,
-    message: 'Alright, just let me know.',
-    author: 100000
-  },
-  {
-    time: 1722999592744,
-    message: 'Will do. Appreciate it!',
-    author: 100001
-  },
-  {
-    time: 1722999594244,
-    message: 'No problem. Catch you later.',
-    author: 100000
-  },
-  {
-    time: 1722999595744,
-    message: 'Later!',
-    author: 100001
-  },
-  {
-    time: 1722999455717,
-    message: "Hey, what's up?",
-    author: 100000
-  },
-  {
-    time: 1722999456717,
-    message: 'Not much, just chilling. You?',
-    author: 100001
-  },
-  {
-    time: 1722999457717,
-    message: 'Same here. Wanna grab a coffee later?',
-    author: 100000
-  },
-  {
-    time: 1722999458717,
-    message: 'Sure, sounds good!',
-    author: 100001
-  },
-  {
-    time: 1722999459717,
-    message: 'Awesome, see you at 5?',
-    author: 100000
-  },
-  {
-    time: 1722999460717,
-    message: 'Perfect. See you then.',
-    author: 100001
-  },
-  {
-    time: 1722999461717,
-    message: 'Great!',
-    author: 100000
-  },
-  {
-    time: 1722999462717,
-    message: "Don't forget to bring that book you mentioned.",
-    author: 100001
-  },
-  {
-    time: 1722999463717,
-    message: 'Will do. Thanks for reminding me.',
-    author: 100000
-  },
-  {
-    time: 1722999464717,
-    message: 'No problem. Looking forward to it.',
-    author: 100001
+function generateRecord() {
+  return {
+    seenAt: new Date().toISOString(),
+    sentAt: new Date().toISOString(),
+    receivedAt: new Date().toISOString(),
+    author: Math.floor(Math.random() * 2) + 1,
+    message: `Message ${Math.random()} from author ${Math.floor(Math.random() * 100) + 1}`,
+    id: Math.floor(Math.random() * 10000) + 1
   }
-]
-
-function groupMessages(messages: Message[]) {
-  const groupedMessages = messages.reduce(
-    (acc, msg) => {
-      const date = new Date(msg.time)
-      date.setHours(0, 0, 0, 0)
-
-      const d = date.getTime()
-      if (!acc[d]) {
-        acc[d] = []
-      }
-      acc[d].push(msg)
-
-      return acc
-    },
-    {} as Record<number, Message[]>
-  )
-
-  return groupedMessages
 }
 
-const pad = (n: number) => `${n}`.padStart(2, '0')
-
-function formatTimestamp(timestamp: number) {
-  const d = new Date(timestamp)
-
-  const h = d.getHours()
-  const m = d.getMinutes()
-
-  return `${pad(h)}:${pad(m)}`
+function generateRecords(count: number) {
+  return Array.from({ length: count }, () => generateRecord())
 }
 
-function formatDate(timestamp: number) {
-  const d = new Date(timestamp)
+const sampleMessages = generateRecords(10)
 
-  const mm = d.getMonth()
-  const dd = d.getDate()
+// function groupMessages(messages: Message[]) {
+//   const groupedMessages = messages.reduce(
+//     (acc, msg) => {
+//       const date = new Date(msg.time)
+//       date.setHours(0, 0, 0, 0)
 
-  return `${pad(dd + 1)}/${pad(mm + 1)}`
-}
+//       const d = date.getTime()
+//       if (!acc[d]) {
+//         acc[d] = []
+//       }
+//       acc[d].push(msg)
+
+//       return acc
+//     },
+//     {} as Record<number, Message[]>
+//   )
+
+//   return groupedMessages
+// }
+
+// const pad = (n: number) => `${n}`.padStart(2, '0')
+
+// function formatTimestamp(timestamp: number) {
+//   const d = new Date(timestamp)
+
+//   const h = d.getHours()
+//   const m = d.getMinutes()
+
+//   return `${pad(h)}:${pad(m)}`
+// }
+
+// function formatDate(timestamp: number) {
+//   const d = new Date(timestamp)
+
+//   const mm = d.getMonth()
+//   const dd = d.getDate()
+
+//   return `${pad(dd + 1)}/${pad(mm + 1)}`
+// }
 
 export default function Chat() {
   const { chatId } = useParams()
-  const [inputRow, setInputRow] = useState(1)
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const [chatInfo, setChatInfo] = useState<any>({})
+  const [inputValue, setInputValue] = useState('')
+  const [messages, setMessages] = useState<Message[]>([])
+  const textareaRef = useRef<TextAreaRef>(null)
+  const [selectionMode, setSelectionMode] = useState(false)
+  const [isProfileDrawerOpen, setIsProfileDrawerOpen] = useState(true)
+
+  useEffect(() => {
+    const messages = sampleMessages.map((m) => ({ ...m, sendByAuthor: m.author === 1 }))
+    setMessages(messages)
+  }, [])
 
   const inputOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setInputRow(e.target.value.split('\n').length)
+    console.log('trigger onchange')
+    const value = e.target.value
+    setInputValue(value)
+  }
+  const onEmojiClick = (emoji: EmojiClickData, event: MouseEvent) => {
+    if (!textareaRef.current) {
+      return
+    }
+    const textarea = textareaRef.current.resizableTextArea?.textArea
+    const currentValue = textarea?.value || ''
+    const cursorPositionStart = textarea?.selectionStart || 0
+    const cursorPositionEnd = textarea?.selectionEnd || 0
+    const valueFront = currentValue.slice(0, cursorPositionStart)
+    const valueBack = currentValue.slice(cursorPositionEnd)
+    const newValue = valueFront + emoji.emoji + valueBack
+    setInputValue(newValue)
+  }
+
+  const getReadableTimestamp = (timestamp: string) => {
+    const d = new Date(timestamp)
+    return `${padZero(d.getHours())}:${padZero(d.getMinutes())}`
+  }
+
+  const onChange: GetProp<typeof Checkbox.Group, 'onChange'> = (checkedValues) => {
+    console.log('checked = ', checkedValues)
   }
 
   return (
@@ -218,48 +124,112 @@ export default function Chat() {
       <ChatSidebar />
       <div className={styles.chatContainer}>
         <div style={{ height: '56px', backgroundColor: 'red' }}>topbar here</div>
-        <div className={styles.chatroom}></div>
-        <div className={styles.messageInputWrapper}>
-          <Icon name="attach_file" />
-          <Input.TextArea ref={textareaRef} onChange={inputOnChange} rows={inputRow} />
-          <Icon name="mood" />
-          <Icon name="send" />
-        </div>
-      </div>
-      {/* <div className={styles.chat}>
-        <div className={styles.chatHeader}>
-          <div className={styles.chatTitle}>My Chat</div>
-          <Icon name="view_sidebar" />
-        </div>
-        <div className={styles.chatTop}>
-          <div className={styles.chatDefault}>Default</div>
-          <Icon name="keyboard_double_arrow_up" />
-        </div>
-        <div className={styles.chatMain}>
-          {Object.entries(groupMessages(MOCK_MESSAGES)).map(([date, messages]) => {
-            return (
-              <>
-                <div key={date} className={styles.chatDate}>
-                  {formatDate(Number(date))}
+        <Checkbox.Group className={styles.chatroom} onChange={onChange}>
+          {messages.map((message) => (
+            <div className={styles.messageItem}>
+              {selectionMode && (
+                <div className={styles.messageItemCheckboxWrapper}>
+                  <Checkbox value={message.id}></Checkbox>
                 </div>
-                {messages.map(({ author, message, time }, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className={`${styles.chatMessage} ${author === 100000 ? styles.chatMessageMe : styles.chatMessageYou}`}
-                    >
-                      <div className={styles.chatMessageContent}>{message}</div>
-                      <div className={styles.chatMessageTimestamp}>
-                        {formatTimestamp(Number(time))}
-                      </div>
+              )}
+              <Dropdown
+                menu={{
+                  items: [
+                    {
+                      label: 'reply',
+                      key: 'reply'
+                    },
+                    {
+                      label: 'forward',
+                      key: 'forward'
+                    },
+                    {
+                      label: 'select',
+                      key: 'select'
+                    },
+                    {
+                      label: 'copy',
+                      key: 'copy'
+                    },
+                    {
+                      label: 'pin',
+                      key: 'pin'
+                    },
+                    {
+                      label: 'save',
+                      key: 'save'
+                    },
+                    {
+                      label: 'delete',
+                      key: 'delete'
+                    }
+                  ]
+                }}
+                trigger={['contextMenu']}
+                key={message.id}
+                className={styles.messageItemContent}
+              >
+                <div
+                  className={`${styles.messageWrapper} ${message.sendByAuthor && styles.messageWrapperAuthor}`}
+                >
+                  <div>
+                    <Avatar src={chatInfo.imageUrl} icon={<Icon name="person" fill size={24} />} />
+                  </div>
+                  <div
+                    className={`${styles.messageContainer} ${message.sendByAuthor && styles.messageContainerAuthor}`}
+                  >
+                    <p className={styles.message}>{message.message}</p>
+                    <div className={styles.messageInfo}>
+                      <p className={styles.messageTimestamp}>
+                        {getReadableTimestamp(message.sentAt)}
+                      </p>
+                      {message.sendByAuthor && message.seenAt && (
+                        <Icon name="done_all" fill color="#9e9e9e" size={14} />
+                      )}
+                      {message.sendByAuthor && !message.seenAt && message.sentAt && (
+                        <Icon name="check" fill color="#9e9e9e" size={14} />
+                      )}
                     </div>
-                  )
-                })}
-              </>
-            )
-          })}
+                  </div>
+                </div>
+              </Dropdown>
+            </div>
+          ))}
+        </Checkbox.Group>
+        <div className={styles.messageInputWrapper}>
+          <Dropdown
+            menu={{
+              items: [
+                { icon: <Icon name="image" size={20} />, label: 'Image or Video', key: 'media' },
+                { icon: <Icon name="folder_open" size={20} />, label: 'File', key: 'file' },
+                { icon: <Icon name="id_card" size={20} />, label: 'Namecard', key: 'namecard' }
+              ]
+            }}
+            placement="topLeft"
+            arrow={{ pointAtCenter: true }}
+          >
+            <Button icon={<Icon name="attach_file" />} type="text" />
+          </Dropdown>
+
+          <Input.TextArea
+            ref={textareaRef}
+            onChange={inputOnChange}
+            autoSize={{ minRows: 1, maxRows: 8 }}
+            // rows={inputRow}
+            variant="borderless"
+            value={inputValue}
+          />
+          {/* <Popover
+            content={<EmojiPicker onEmojiClick={onEmojiClick} />}
+            trigger="click"
+            overlayInnerStyle={{ padding: 0 }}
+          >
+            <Button type="text" icon={<Icon name="mood" />} />
+          </Popover> */}
+          <Button icon={<Icon name="send" />} type="text" />
         </div>
-      </div> */}
+        <ChatSettingsDrawer isOpen={isProfileDrawerOpen} setIsOpen={setIsProfileDrawerOpen} />
+      </div>
     </div>
   )
 }

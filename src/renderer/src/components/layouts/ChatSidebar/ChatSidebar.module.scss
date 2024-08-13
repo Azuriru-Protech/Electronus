@@ -14,23 +14,6 @@
   padding: 0 1rem;
 }
 
-.chatSidebarSearchBox {
-  position: relative;
-}
-
-.chatSidebarSearchBoxIcon {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 0.5rem;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.chatSidebarSearchBoxInput {
-  padding-left: 2rem;
-}
-
 .chat {
   cursor: pointer;
   background-color: white;
@@ -61,23 +44,7 @@
   border-radius: 50%;
   background: linear-gradient(to left, #f1760d, #f1760db0);
 }
-.profilePicture {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 2.25rem;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background-color: #e7e7e7;
-}
-.profilePictureImg {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  object-fit: cover;
-}
+
 .online {
   position: absolute;
   right: 0;

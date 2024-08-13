@@ -1,6 +1,6 @@
 import Icon from '@renderer/components/widgets/Icon/Icon'
 import styles from './ChatSidebar.module.scss'
-import { Button, Input } from 'antd'
+import { Avatar, Button, Input } from 'antd'
 import { useState } from 'react'
 import { padZero } from '@renderer/utilities/Utilities'
 import { Link, useLocation } from 'react-router-dom'
@@ -65,15 +65,8 @@ export default function ChatSidebar() {
   return (
     <div className={styles.chatSidebar}>
       <div className={styles.chatSidebarUtils}>
-        <div className={styles.chatSidebarSearchBox}>
-          <div className={styles.chatSidebarSearchBoxIcon}>
-            <Icon name="search" size={20} />
-          </div>
-          <Input className={styles.chatSidebarSearchBoxInput} />
-        </div>
-        <div>
-          <Button icon={<Icon name="person_add" size={16} />} />
-        </div>
+        <Input prefix={<Icon name="search" size={16} />} />
+        <Button icon={<Icon name="person_add" size={16} />} />
       </div>
       <Link
         className={`${styles.chat} ${pathname.includes('/system-notification') && styles.active}`}
@@ -105,16 +98,11 @@ export default function ChatSidebar() {
           <Link
             className={`${styles.chat} ${pathname.includes(`/chat/${chat.id}`) && styles.active}`}
             to={`/chat/${chat.id}`}
+            key={chat.id}
           >
-            <div>
-              <div className={styles.profilePicture}>
-                {chat.imageUrl ? (
-                  <img src={chat.imageUrl} className={styles.profilePictureImg} />
-                ) : (
-                  <Icon name="person" fill size={28} color="#c9c9c9" />
-                )}
-                {chat.online && <div className={styles.online}></div>}
-              </div>
+            <div style={{ position: 'relative' }}>
+              <Avatar src={chat.imageUrl} icon={<Icon name="person" fill size={24} />} />
+              <div className={styles.online}></div>
             </div>
             <div className={styles.chatContent}>
               <div className={styles.chatContentUpper}>
