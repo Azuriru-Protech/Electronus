@@ -17,6 +17,11 @@ import Notification from './pages/Settings/SystemSettings/Notification/Notificat
 import AboutUs from './pages/Settings/SystemSettings/AboutUs/AboutUs'
 import Register from './pages/Register/Register'
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword'
+import Contacts from './pages/Contacts/Contacts'
+import NewMessages from './pages/Contacts/NewMessages/NewMessages'
+import MyGroups from './pages/Contacts/MyGroups/MyGroups'
+import GroupAssistant from './pages/Contacts/GroupAssistant/GroupAssistant'
+import ContactsList from './pages/Contacts/ContactsList/ContactsList'
 
 export const router = createHashRouter([
   {
@@ -77,6 +82,32 @@ export const router = createHashRouter([
             element: <AboutUs />
           }
         ]
+      },
+      {
+        path: '/contacts',
+        element: <Contacts />,
+        children: [
+          {
+            path: 'new-messages',
+            element: <NewMessages />
+          },
+          {
+            path: 'my-group',
+            element: <MyGroups />
+          },
+          {
+            path: 'group-assistant',
+            element: <GroupAssistant />
+          },
+          {
+            path: 'contacts-list',
+            element: <ContactsList />
+          }
+        ]
+      },
+      {
+        path: '/',
+        element: ''
       }
     ]
   },

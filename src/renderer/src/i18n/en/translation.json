@@ -1,5 +1,17 @@
 {
   "pages": {
+    "contacts": {
+      "newMessages": {
+        "newMessages": "New Messages"
+      },
+      "myGroups": {
+        "myGroups": "My Groups"
+      },
+      "groupAssistant": {
+        "groupAssistant": "Group Assistant"
+      }
+    },
+
     "settings": {
       "personalInformation": {
         "personalInformation": "Personal Information",
@@ -69,6 +81,14 @@
       "shareInvite": "Share Invite",
       "feedback": "Feedback",
       "customerService": "Customer Service"
+    },
+    "contactSidebar": {
+      "contacts": "Contacts",
+      "newMessages": "New Messages",
+      "myGroup": "My Group",
+      "groupAssistant": "Group Assistant",
+      "friendsTitle": "Friends",
+      "groupingTitle": "Grouping"
     }
   }
 }

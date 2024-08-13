@@ -11,7 +11,7 @@ export default function Login() {
   const [loginStatus, setLoginStatus] = useState(0)
   const [reloadQr, setReloadQr] = useState(false)
   const [loginTab, setLoginTab] = useState(0)
-  const [page, setPage] = useState('default')
+  // const [page, setPage] = useState('default')
 
   const onLoginTabCallback = (index: number) => {
     setLoginTab(index)
