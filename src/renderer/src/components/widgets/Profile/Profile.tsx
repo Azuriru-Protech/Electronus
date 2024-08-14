@@ -25,7 +25,7 @@ export default function Profile({ imageUrl, name, id, remark, isBlock, signature
     setRemarkInput(remark)
   }, [remark])
   return (
-    <>
+    <div className={styles.profileWrapper}>
       <div className={styles.profileContainer}>
         <div>
           <Avatar src={imageUrl} icon={<Icon name="person" fill size={36} />} size={56}>
@@ -63,7 +63,10 @@ export default function Profile({ imageUrl, name, id, remark, isBlock, signature
             Start Chatting
           </Button>
         </Link>
+        <Button block type="text" style={{ color: 'red' }}>
+          Delete Friend
+        </Button>
       </div>
-    </>
+    </div>
   )
 }

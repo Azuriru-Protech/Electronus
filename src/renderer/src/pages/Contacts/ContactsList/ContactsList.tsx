@@ -9,6 +9,7 @@ import {
   ContactsExample
 } from '@renderer/components/layouts/ContactSidebar/ContactSidebar'
 import Icon from '@renderer/components/widgets/Icon/Icon'
+import Profile from '@renderer/components/widgets/Profile/Profile'
 
 export default function ContactsList() {
   const { t } = useTranslation('translation', { keyPrefix: 'pages.contacts.newMessages' })
@@ -33,22 +34,14 @@ export default function ContactsList() {
       <div className="flex-center max-wh">
         {currentContactView ? (
           <div className={styles.contactCardWrapper}>
-            <div className={styles.header}>
-              <Avatar
-                src={currentContactView.profileImg}
-                className={styles.avatar}
-                style={{
-                  color: '#1e1e1e',
-                  backgroundColor: '#1e1e1e10'
-                }}
-                icon={<Icon name="person" />}
-              />
-
-              <div className={styles.info}>
-                <p>{currentContactView.name}</p>
-                <p>{currentContactView.id}</p>
-              </div>
-            </div>
+            <Profile
+              imageUrl={currentContactView.profileImg}
+              id={currentContactView.id}
+              name={currentContactView.name}
+              remark={currentContactView.remark}
+              signature={currentContactView.whatsUp}
+              isBlock={false}
+            />
           </div>
         ) : (
           <div className="flex-center max-wh">
