@@ -3,27 +3,6 @@
   position: absolute;
 }
 
-.profilePictureModalContent {
-  padding: 0;
-}
-
-.profilePictureModalHeader {
-  padding: 16px 24px;
-  margin: 0;
-}
-
-.profilePictureModalFooterWrapper {
-  display: flex;
-  justify-content: center;
-  padding-top: 1rem;
-}
-
-.profilePictureModalFooter {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
 .signatureModalFooterWrapper {
   display: flex;
   justify-content: center;

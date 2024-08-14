@@ -1,8 +1,49 @@
-import { Avatar, Button, Drawer, Modal, Switch } from 'antd'
+import { Avatar, Badge, Button, Drawer, Modal, Switch } from 'antd'
 import ProfilePopover from '../ProfilePopover/ProfilePopover'
 import Separator from '../Separator/Separator'
 import Icon from '../Icon/Icon'
 import styles from './GroupSettingsDrawer.module.scss'
+import { useState } from 'react'
+
+interface GroupMember {
+  name: string
+  remark: string | null
+  imageUrl: string | null
+  role: string | null
+  id: number
+  isBlock: boolean
+  signature: string | null
+}
+
+const sampleGroupMembers: GroupMember[] = [
+  {
+    name: 'John',
+    remark: 'John Remark',
+    imageUrl: 'https://i.pravatar.cc/300',
+    role: 'owner',
+    id: 1,
+    isBlock: false,
+    signature: 'this is signature'
+  },
+  {
+    name: 'John1',
+    remark: null,
+    imageUrl: 'https://i.pravatar.cc/301',
+    role: 'admin',
+    id: 2,
+    isBlock: true,
+    signature: null
+  },
+  {
+    name: 'John2',
+    remark: null,
+    imageUrl: null,
+    role: null,
+    id: 3,
+    isBlock: false,
+    signature: null
+  }
+]
 
 type Props = {
   isOpen: boolean
@@ -12,6 +53,7 @@ type Props = {
 export default function GroupSettingsDrawer({ isOpen, setIsOpen }: Props) {
   const [leaveGroupModal, leaveGroupContextHolder] = Modal.useModal()
   const [clearChatHistoryModal, clearChatHistoryContextHolder] = Modal.useModal()
+  const [groupMembers, setGroupMembers] = useState(sampleGroupMembers)
 
   const clearChatHistory = async () => {
     const confirm = await clearChatHistoryModal.confirm({
@@ -101,10 +143,24 @@ export default function GroupSettingsDrawer({ isOpen, setIsOpen }: Props) {
           </div>
         </div>
         <Separator />
-        <Button type="text" className={styles.clearChatHistory} onClick={clearChatHistory}>
+        {groupMembers &&
+          groupMembers.map((member) => (
+            <ProfilePopover key={member.id} {...member}>
+              <div className={styles.groupSettingsMemberWrapper}>
+                <Avatar src={member.imageUrl} icon={<Icon name="person" fill size={20} />} />
+                <p>{member.remark ? member.remark : member.name}</p>
+                {member.role && member.role === 'owner' && <Badge count={'Owner'} color="red" />}
+                {member.role && member.role === 'admin' && <Badge count={'Admin'} color="blue" />}
+              </div>
+            </ProfilePopover>
+          ))}
+
+        <Separator />
+        <Button type="text" className={styles.clearChatHistory} onClick={clearChatHistory} block>
           Clear Chat History
         </Button>
-        <Button type="text" className={styles.clearChatHistory} onClick={leaveGroup}>
+        <Separator />
+        <Button type="text" className={styles.clearChatHistory} onClick={leaveGroup} block>
           Leave Group
         </Button>
       </Drawer>

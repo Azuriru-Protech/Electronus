@@ -129,7 +129,7 @@ export default function Chat() {
         <div style={{ height: '56px', backgroundColor: 'red' }}>topbar here</div>
         <Checkbox.Group className={styles.chatroom} onChange={onChange}>
           {messages.map((message) => (
-            <div className={styles.messageItem}>
+            <div className={styles.messageItem} key={message.id}>
               {selectionMode && (
                 <div className={styles.messageItemCheckboxWrapper}>
                   <Checkbox value={message.id}></Checkbox>
@@ -169,7 +169,6 @@ export default function Chat() {
                   ]
                 }}
                 trigger={['contextMenu']}
-                key={message.id}
                 className={styles.messageItemContent}
               >
                 <div

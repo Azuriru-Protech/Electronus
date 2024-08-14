@@ -89,6 +89,26 @@
   }
 }
 
-.groupSettingsMemberList {
+.groupSettingsMemberWrapper {
   display: grid;
+  grid-template-columns: auto 1fr auto;
+  padding: 0.5rem 1rem;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  &:hover {
+    background-color: #ededed;
+  }
+}
+
+.clearChatHistory {
+  border-radius: 0;
+  color: red !important;
+  padding: 1.5rem;
+}
+
+.leaveGroup {
+  border-radius: 0;
+  color: red !important;
+  padding: 1.5rem;
 }

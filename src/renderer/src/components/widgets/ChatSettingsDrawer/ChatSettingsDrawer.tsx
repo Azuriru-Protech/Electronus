@@ -3,14 +3,25 @@ import styles from './ChatSettingsDrawer.module.scss'
 import Icon from '../Icon/Icon'
 import Separator from '../Separator/Separator'
 import ProfilePopover from '../ProfilePopover/ProfilePopover'
+import { useState } from 'react'
 
 type Props = {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
 }
 
+const sampleUser = {
+  name: 'abc',
+  id: 1,
+  remark: 'remark',
+  isBlock: false,
+  signature: 'signature',
+  imageUrl: 'https://i.pravatar.cc/300'
+}
+
 export default function ChatSettingsDrawer({ isOpen, setIsOpen }: Props) {
   const [clearChatHistoryModal, clearChatHistoryContextHolder] = Modal.useModal()
+  const [user, setUser] = useState(sampleUser)
 
   const clearChatHistory = async () => {
     const confirm = await clearChatHistoryModal.confirm({
@@ -30,17 +41,17 @@ export default function ChatSettingsDrawer({ isOpen, setIsOpen }: Props) {
         getContainer={false}
         styles={{ body: { padding: 0, width: '100%' } }}
       >
-        <ProfilePopover placement="left">
+        <ProfilePopover placement="left" {...user}>
           <div className={styles.profileCard}>
             <div>
               <Avatar src={undefined} icon={<Icon name="person" fill />} size={36} />
             </div>
             <div className={styles.profileCardInfo}>
-              <p>abc</p>
-              <p>ID</p>
+              <p>{user.remark ? user.remark : user.name}</p>
+              <p>ID: {user.id}</p>
             </div>
             <div>
-              <Icon name="chevron_right"></Icon>
+              <Icon name="chevron_right" />
             </div>
           </div>
         </ProfilePopover>
@@ -65,7 +76,7 @@ export default function ChatSettingsDrawer({ isOpen, setIsOpen }: Props) {
           Clear Chat History
         </Button>
       </Drawer>
-      {clearChatHistoryContextHolder}
+      <div>{clearChatHistoryContextHolder}</div>
     </>
   )
 }
