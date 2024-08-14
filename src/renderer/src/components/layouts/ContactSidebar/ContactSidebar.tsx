@@ -4,8 +4,8 @@ import { MaterialSymbol } from 'material-symbols'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { Avatar, Tabs, TabsProps } from 'antd'
-import { useEffect, useState } from 'react'
+import { Avatar, Empty, Tabs, TabsProps } from 'antd'
+import React, { useEffect, useState } from 'react'
 
 interface Navigation {
   name: string
@@ -14,7 +14,7 @@ interface Navigation {
   color: string
 }
 
-type ContactInformation = {
+export type ContactInformation = {
   id: number
   profileImg: string
   name: string
@@ -25,16 +25,10 @@ type ContactInformation = {
 }
 
 type ContactListOrderedNaming = {
-  // initials: [
-  //   {
-  //     initialChar: string
-  //     contacts: ContactInformation[]
-  //   }
-  // ]
   [key: string]: ContactInformation[]
 }
 
-const ContactsExample: ContactInformation[] = [
+export const ContactsExample: ContactInformation[] = [
   {
     id: 51255,
     profileImg: '',
@@ -80,7 +74,7 @@ const onChange = (key: string) => {
 export default function ContactSidebar() {
   const { pathname } = useLocation()
   const { t } = useTranslation('translation', { keyPrefix: 'layouts.contactSidebar' })
-  const [allContacts, setAllContacts] = useState<ContactInformation[]>([])
+  const [groupedContacts, setGroupedContacts] = useState<ContactListOrderedNaming>()
   const sideBarNavigations: Navigation[] = [
     {
       name: t('newMessages'),
@@ -105,21 +99,34 @@ export default function ContactSidebar() {
   const ContactFriendsTabContent = (): React.ReactNode => {
     return (
       <div className={styles.tabItemWrapper}>
-        {allContacts.map((contact, index) => (
-          <div className={styles.contactWrapper} key={index}>
-            <Avatar
-              src={contact.profileImg}
-              className={styles.avatar}
-              style={{
-                color: '#f56a00',
-                backgroundColor: '#fde3cf'
-              }}
-            />
-            <div className={styles.nameWrapper}>
-              <p>{contact.name}</p>
+        {groupedContacts &&
+          Object.keys(groupedContacts).map((key, index) => (
+            <div
+              className={styles.contactWrapper}
+              key={index}
+              style={index === 0 ? { paddingTop: 0 } : {}}
+            >
+              <div className={styles.initialsWrapper} key={index}>
+                <p> {key.toUpperCase()}</p>
+              </div>
+              <div className={styles.contactContainer}>
+                {groupedContacts[key].map((contact, index) => (
+                  <Link to={`/contacts/${contact.id}`} className={styles.contact} key={index}>
+                    <Avatar
+                      src={contact.profileImg}
+                      className={styles.avatar}
+                      style={{
+                        color: '#1e1e1e',
+                        backgroundColor: '#1e1e1e10'
+                      }}
+                      icon={<Icon name="person" />}
+                    />
+                    {contact.name}
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     )
   }
@@ -147,21 +154,22 @@ export default function ContactSidebar() {
 
   const handleContactsAscending = (data: ContactInformation[]) => {
     if (data) {
-      let newData = data.sort((a, b) => {
+      const sortedData = data.sort((a, b) => {
         return a.name.localeCompare(b.name)
       })
-      console.log(newData)
+      const groupedData = sortedData.reduce((acc, obj) => {
+        console.log(acc)
 
-      newData.map((item, index) => {
-        let initials = newData[index].name.slice(0, 1)
-        console.log(initials)
-
-        //  let initialsgrouping
-      })
-      setAllContacts(newData)
-      return newData
+        const startingChar = obj.name.charAt(0).toLowerCase() //initials
+        if (!acc[startingChar]) {
+          acc[startingChar] = []
+        }
+        acc[startingChar].push(obj)
+        return acc
+      }, {})
+      console.log(groupedData)
+      setGroupedContacts(groupedData)
     }
-    return []
   }
 
   useEffect(() => {

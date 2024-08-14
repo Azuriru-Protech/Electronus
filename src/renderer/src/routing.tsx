@@ -100,7 +100,7 @@ export const router = createHashRouter([
             element: <GroupAssistant />
           },
           {
-            path: 'contacts-list',
+            path: ':userId',
             element: <ContactsList />
           }
         ]
