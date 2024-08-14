@@ -17,7 +17,7 @@ type SidebarContent = {
 
 const SidebarTabs: SidebarContent[] = [
   {
-    link: '/chats',
+    link: '/chat/system-notification',
     icon: 'chat'
   },
   {
