@@ -1,0 +1,25 @@
+.profilePictureModalContent {
+  padding: 0 !important;
+}
+
+.profilePictureModalHeader {
+  padding: 16px 24px !important;
+  margin: 0 !important;
+}
+
+.profilePictureModalFooterWrapper {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1rem !important;
+}
+
+.profilePictureModalFooter {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.cropper {
+  height: 400px;
+  width: 400px;
+}

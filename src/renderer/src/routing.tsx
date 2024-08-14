@@ -22,6 +22,7 @@ import NewMessages from './pages/Contacts/NewMessages/NewMessages'
 import MyGroups from './pages/Contacts/MyGroups/MyGroups'
 import GroupAssistant from './pages/Contacts/GroupAssistant/GroupAssistant'
 import ContactsList from './pages/Contacts/ContactsList/ContactsList'
+import Chat from './pages/Chat/Chat'
 
 export const router = createHashRouter([
   {
@@ -30,7 +31,11 @@ export const router = createHashRouter([
     errorElement: <Fallback />,
     children: [
       {
-        path: '/settings',
+        path: 'chat/:chatId',
+        element: <Chat />
+      },
+      {
+        path: 'settings',
         element: <Settings />,
         children: [
           {

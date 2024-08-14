@@ -26,6 +26,6 @@ export const makeRandomID = (length: number) => {
   return result
 }
 
-export const padZero = (num: number, places: number) => {
+export const padZero = (num: number, places: number = 2) => {
   return String(num).padStart(places, '0')
 }

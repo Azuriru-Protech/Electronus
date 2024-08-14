@@ -6,12 +6,12 @@ import SampleProfilePic from '@renderer/assets/images/sample-profile-pic.jpg'
 import SettingsTopbar from '@renderer/components/layouts/SettingsTopbar/SettingsTopbar'
 import styles from './PersonalInformation.module.scss'
 import { useTranslation } from 'react-i18next'
+import ChangeProfilePictureModal from '@renderer/components/widgets/ChangeProfilePictureModal/ChangeProfilePictureModal'
 
 export default function PersonalInformation() {
   const { t } = useTranslation('translation', { keyPrefix: 'pages.settings.personalInformation' })
   const [value, setValue] = useState('male')
   const [isProfilePictureModalOpen, setIsProfilePictureModalOpen] = useState(false)
-  const [isIdModalOpen, setIsIdModalOpen] = useState(false)
   const [newProfilePic, setNewProfilePic] = useState<File>()
   const [newProfilePicUrl, setNewProfilePicUrl] = useState<string>()
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false)
@@ -26,7 +26,6 @@ export default function PersonalInformation() {
   const showIdModal = async () => {
     const confirm = await idModal.confirm({
       title: `${t('yourIdIs')} abcd1234`,
-
       icon: null,
       cancelButtonProps: { style: { display: 'none' } },
       okText: t('confirm'),
@@ -94,45 +93,11 @@ export default function PersonalInformation() {
           </div>
         </div>
       </div>
-      <Modal
-        classNames={{
-          content: styles.profilePictureModalContent,
-          header: styles.profilePictureModalHeader
-        }}
-        title={t('changeProfilePicture')}
-        open={isProfilePictureModalOpen}
-        onOk={() => {
-          setIsProfilePictureModalOpen(false)
-        }}
-        onCancel={() => {
-          setIsProfilePictureModalOpen(false)
-        }}
-        footer={
-          <div className={styles.profilePictureModalFooterWrapper}>
-            <div className={styles.profilePictureModalFooter}>
-              <Button
-                onClick={() => {
-                  setIsProfilePictureModalOpen(false)
-                }}
-              >
-                {t('cancel')}
-              </Button>
-              <Button
-                type="primary"
-                onClick={() => {
-                  setIsProfilePictureModalOpen(false)
-                }}
-              >
-                {t('confirm')}
-              </Button>
-            </div>
-          </div>
-        }
-        width={350}
-        centered
-      >
-        <img src={newProfilePicUrl} style={{ width: '100%' }} />
-      </Modal>
+      <ChangeProfilePictureModal
+        isOpen={isProfilePictureModalOpen}
+        setIsOpen={setIsProfilePictureModalOpen}
+        imageUrl={newProfilePicUrl!}
+      />
       <Modal
         title={t('personalizedSignature')}
         open={isSignatureModalOpen}

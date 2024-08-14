@@ -1,0 +1,153 @@
+.chatSidebar {
+  background-color: #f7f7f7;
+  width: 260px;
+  height: 100vh;
+  height: 100dvh;
+}
+
+.chatSidebarUtils {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  height: 56px;
+  padding: 0 1rem;
+}
+
+.chat {
+  cursor: pointer;
+  background-color: white;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem;
+  &:hover {
+    background-color: #ededed;
+    transition: all 0.15s ease-in-out;
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #e6e6e6;
+  }
+}
+.chat.active {
+  background-color: #d8d8d8;
+}
+.notificationIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.25rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: linear-gradient(to left, #f1760d, #f1760db0);
+}
+
+.online {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 0.7rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: #00d400;
+}
+.chatContent {
+  flex-grow: 1;
+  overflow: hidden;
+}
+.chatContentUpper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+  .chatContentTitle {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  .chatContentTimestamp {
+    color: #9e9e9e;
+    font-size: 0.7rem;
+  }
+}
+.chatContentLower {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .chatContentDescription {
+    color: #9e9e9e;
+    font-size: 0.8rem;
+    flex-grow: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .chatContentIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+// .sidebar {
+//   @include flex(column);
+//   // background-color: blue;
+//   flex-basis: 30%;
+//   border-right: 1px solid lightgray;
+
+//   .sidebarUtils {
+//     @include flex;
+//     padding: v(4);
+//     gap: v(4);
+
+//     .search {
+//       @include flex;
+//       gap: v(2);
+//     }
+//   }
+
+//   .sidebarChats {
+//     @include flex(column, centerX);
+
+//     .sidebarItem {
+//       @include flex;
+//       padding: v(3);
+//       gap: v(3);
+
+//       &:not(:last-of-type) {
+//         border-bottom: 1px solid lightgray;
+//       }
+
+//       .sidebarIcon {
+//         @include flex(center);
+//         border-radius: 100%;
+//         width: v(12);
+//         height: v(12);
+//         background: lightblue;
+//       }
+
+//       .sidebarMetadata {
+//         @include flex(column);
+
+//         .sidebarTitle {
+//           font-size: 16px;
+//           font-weight: 500;
+//         }
+
+//         .sidebarSubtitle {
+//           color: gray;
+//         }
+//       }
+//     }
+//   }
+// }
+
+// .main {
+//   @include flex;
+//   flex-basis: 70%;
+// }
