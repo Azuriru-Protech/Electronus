@@ -23,6 +23,7 @@
   align-items: center;
   gap: 0.6rem;
   padding: 1rem;
+  height: 72px;
   &:hover {
     background-color: #ededed;
     transition: all 0.15s ease-in-out;
@@ -45,14 +46,12 @@
   background: linear-gradient(to left, #f1760d, #f1760db0);
 }
 
-.online {
-  position: absolute;
-  right: 0;
+.avatarBadge {
+  top: auto !important;
   bottom: 0;
-  width: 0.7rem;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background-color: #00d400;
+  width: 10px !important;
+  height: 10px !important;
+  transform: none !important;
 }
 .chatContent {
   flex-grow: 1;

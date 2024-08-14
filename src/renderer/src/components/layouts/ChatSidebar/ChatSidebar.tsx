@@ -1,50 +1,71 @@
 import Icon from '@renderer/components/widgets/Icon/Icon'
 import styles from './ChatSidebar.module.scss'
-import { Avatar, Button, Input } from 'antd'
+import { Avatar, Badge, Button, Input } from 'antd'
 import { useState } from 'react'
 import { padZero } from '@renderer/utilities/Utilities'
 import { Link, useLocation } from 'react-router-dom'
 
-const sampleChats = [
+interface Chat {
+  title: string
+  description: string
+  pin: boolean
+  muted: boolean
+  timestamp: Date
+  imageUrl: string | null
+  id: number
+  online: boolean | null
+  type: 'chat' | 'group'
+  unread: number | null
+}
+
+const sampleChats: Chat[] = [
   {
-    title: '123',
-    description: '123',
+    title: 'Sample Group',
+    description: 'This is a group message',
     pin: false,
     muted: false,
     timestamp: new Date(),
     imageUrl: 'https://randomuser.me/api/portraits/men/75.jpg',
     id: 1,
-    online: true
+    online: null,
+    type: 'group',
+    unread: 0
   },
   {
-    title: '234',
-    description: '234',
+    title: 'Sample Group 2',
+    description: 'another group message',
     pin: true,
     muted: false,
     timestamp: new Date(),
     imageUrl: null,
     id: 2,
-    online: false
+    online: false,
+    type: 'chat',
+    unread: 3
   },
   {
-    title: '345',
-    description: '345',
+    title: 'Sample Chat',
+    description: 'this is a chat message',
     pin: false,
     muted: true,
     timestamp: new Date(),
     imageUrl: null,
     id: 3,
-    online: true
+    online: true,
+    type: 'chat',
+    unread: 2
   },
   {
-    title: '456',
-    description: '456',
+    title: 'Sample Chat 2',
+    description: 'this is another chat message',
     pin: true,
     muted: true,
     timestamp: new Date(),
     imageUrl: null,
     id: 4,
-    online: true
+    online: true,
+    type: 'chat',
+    unread: 1
   }
 ] as const
 
@@ -100,10 +121,9 @@ export default function ChatSidebar() {
             to={`/chat/${chat.id}`}
             key={chat.id}
           >
-            <div style={{ position: 'relative' }}>
+            <Badge status="success" dot classNames={{ indicator: styles.avatarBadge }}>
               <Avatar src={chat.imageUrl} icon={<Icon name="person" fill size={24} />} />
-              <div className={styles.online}></div>
-            </div>
+            </Badge>
             <div className={styles.chatContent}>
               <div className={styles.chatContentUpper}>
                 <div className={styles.chatContentTitle}>{chat.title}</div>
@@ -119,41 +139,6 @@ export default function ChatSidebar() {
             </div>
           </Link>
         ))}
-      {/* <div className={styles.sidebarChats}>
-        <div className={styles.sidebarItem}>
-          <div className={styles.sidebarIcon}>
-            <Icon name="notifications" />
-          </div>
-          <div className={styles.sidebarMetadata}>
-            <div className={styles.sidebarTitle}>System Notifications</div>
-            <div className={styles.sidebarSubtitle}>Welcome</div>
-          </div>
-        </div>
-
-        <div className={styles.sidebarItem}>
-          <div className={styles.sidebarIcon}>
-            <Icon name="bookmark" />
-          </div>
-          <div className={styles.sidebarMetadata}>
-            <div className={styles.sidebarTitle}>Bookmarks</div>
-            <div className={styles.sidebarSubtitle}>Idk your favorites?</div>
-          </div>
-        </div>
-
-        {recents.map(({ title, subtitle }, index) => {
-          return (
-            <div key={index} className={styles.sidebarItem}>
-              <div className={styles.sidebarIcon}>
-                <Icon name="person" />
-              </div>
-              <div className={styles.sidebarMetadata}>
-                <div className={styles.sidebarTitle}>{title}</div>
-                <div className={styles.sidebarSubtitle}>{subtitle}</div>
-              </div>
-            </div>
-          )
-        })}
-      </div> */}
     </div>
   )
 }

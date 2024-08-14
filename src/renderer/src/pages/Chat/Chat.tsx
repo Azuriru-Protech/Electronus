@@ -10,6 +10,7 @@ import { padZero } from '@renderer/utilities/Utilities'
 import Separator from '@renderer/components/widgets/Separator/Separator'
 import ChatSettingsDrawer from '@renderer/components/widgets/ChatSettingsDrawer/ChatSettingsDrawer'
 import GroupSettingsDrawer from '@renderer/components/widgets/GroupSettingsDrawer/GroupSettingsDrawer'
+import Topbar from '@renderer/components/layouts/Topbar/Topbar'
 
 type Message = {
   seenAt?: string | null
@@ -38,56 +39,16 @@ function generateRecords(count: number) {
 
 const sampleMessages = generateRecords(10)
 
-// function groupMessages(messages: Message[]) {
-//   const groupedMessages = messages.reduce(
-//     (acc, msg) => {
-//       const date = new Date(msg.time)
-//       date.setHours(0, 0, 0, 0)
-
-//       const d = date.getTime()
-//       if (!acc[d]) {
-//         acc[d] = []
-//       }
-//       acc[d].push(msg)
-
-//       return acc
-//     },
-//     {} as Record<number, Message[]>
-//   )
-
-//   return groupedMessages
-// }
-
-// const pad = (n: number) => `${n}`.padStart(2, '0')
-
-// function formatTimestamp(timestamp: number) {
-//   const d = new Date(timestamp)
-
-//   const h = d.getHours()
-//   const m = d.getMinutes()
-
-//   return `${pad(h)}:${pad(m)}`
-// }
-
-// function formatDate(timestamp: number) {
-//   const d = new Date(timestamp)
-
-//   const mm = d.getMonth()
-//   const dd = d.getDate()
-
-//   return `${pad(dd + 1)}/${pad(mm + 1)}`
-// }
-
 export default function Chat() {
   const { chatId } = useParams()
+  const [chatType, setChatType] = useState('chat')
   const [chatInfo, setChatInfo] = useState<any>({})
   const [inputValue, setInputValue] = useState('')
   const [messages, setMessages] = useState<Message[]>([])
   const textareaRef = useRef<TextAreaRef>(null)
   const [selectionMode, setSelectionMode] = useState(false)
   const [isChatSettingsDrawerOpen, setIsChatSettingsDrawerOpen] = useState(false)
-
-  const [isGroupSettingsDrawerOpen, setIsGroupSettingsDrawerOpen] = useState(true)
+  const [isGroupSettingsDrawerOpen, setIsGroupSettingsDrawerOpen] = useState(false)
 
   useEffect(() => {
     const messages = sampleMessages.map((m) => ({ ...m, sendByAuthor: m.author === 1 }))
@@ -126,7 +87,23 @@ export default function Chat() {
     <div className={styles.wrapper}>
       <ChatSidebar />
       <div className={styles.chatContainer}>
-        <div style={{ height: '56px', backgroundColor: 'red' }}>topbar here</div>
+        <Topbar className={styles.chatTopbar}>
+          <div>
+            <h5>Name</h5>
+            <p className={styles.chatSubtitle}>Online</p>
+          </div>
+          <Button
+            type="text"
+            icon={<Icon name="more_horiz" />}
+            onClick={() => {
+              if (chatType === 'group') {
+                setIsGroupSettingsDrawerOpen(true)
+              } else {
+                setIsChatSettingsDrawerOpen(true)
+              }
+            }}
+          ></Button>
+        </Topbar>
         <Checkbox.Group className={styles.chatroom} onChange={onChange}>
           {messages.map((message) => (
             <div className={styles.messageItem} key={message.id}>

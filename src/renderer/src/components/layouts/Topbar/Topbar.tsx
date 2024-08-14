@@ -1,4 +1,16 @@
+import React from 'react'
 import styles from './Topbar.module.scss'
-export default function Topbar({ children }: { children: React.ReactNode }) {
-  return <div className={styles.settingsHeader}>{children}</div>
+
+type Props = {
+  children: React.ReactNode
+  className: string
+  style?: React.CSSProperties
+}
+
+export default function Topbar({ children, className, style }: Props) {
+  return (
+    <div className={`${styles.settingsHeader} ${className}`} style={style}>
+      {children}
+    </div>
+  )
 }
