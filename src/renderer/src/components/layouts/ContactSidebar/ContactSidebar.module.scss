@@ -33,6 +33,7 @@
 .settingsSidebarButton {
   background-color: white;
   width: 100%;
+
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -76,7 +77,6 @@
   align-items: flex-start;
   justify-content: center;
   width: 100%;
-  padding: 0rem 1rem;
 }
 
 .contactWrapper {
@@ -84,8 +84,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  gap: 1rem;
-  padding: 1rem 0rem;
+  // padding: 0rem 0rem 1rem 0rem;
 
   .avatar {
     width: 48px;
@@ -101,7 +100,7 @@
   width: 100%;
   border-bottom: 1px solid #e1e1e1;
   padding: 0.4rem 0.8rem;
-  // background: red;
+  background: #1e1e1e10;
 
   p {
     color: #1e1e1e;
@@ -112,12 +111,20 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 0.4rem;
+  gap: 0rem;
 
   .contact {
     display: flex;
     align-items: center;
     gap: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    padding: 0.6rem 1rem;
+
+    &:hover {
+      background: #e1e1e1;
+      color: #1e1e1e;
+    }
   }
 }
 .avatar {

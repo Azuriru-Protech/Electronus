@@ -60,7 +60,7 @@ export const ContactsExample: ContactInformation[] = [
     id: 51252,
     profileImg: '',
     name: 'Jerry',
-    remark: '',
+    remark: 'Jerry And Tom',
     grouping: '',
     whatsUp: 'I have Tom',
     block: false
