@@ -91,7 +91,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 0.1rem;
   }
+}
+
+.unreadBadge {
+  width: 16px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.65rem;
+  color: white;
 }
 // .sidebar {
 //   @include flex(column);
