@@ -5,10 +5,29 @@ import { Link } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 import SampleProfilePic from '@renderer/assets/images/sample-profile-pic.jpg'
 import { Avatar } from 'antd'
+import { useState } from 'react'
+import { MaterialSymbol } from 'material-symbols'
 
 type Props = {}
 
+type SidebarContent = {
+  link: string
+  icon: MaterialSymbol
+}
+
+const SidebarTabs: SidebarContent[] = [
+  {
+    link: '/chats',
+    icon: 'chat'
+  },
+  {
+    link: '/contacts',
+    icon: 'contacts'
+  }
+]
+
 export default function Sidebar({}: Props) {
+  const [activeTab, setActiveTab] = useState(0)
   const { pathname } = useLocation()
   return (
     <div className={styles.sidebarWrapper}>
@@ -16,12 +35,17 @@ export default function Sidebar({}: Props) {
         <div className={styles.avatarWrapper}>
           <Avatar src={SampleProfilePic} className={styles.avatar} />
         </div>
-        <div className={styles.iconWrapper}>
-          <Icon name="chat" />
-        </div>
-        <div className={styles.iconWrapper}>
-          <Icon name="contacts" />
-        </div>
+        {SidebarTabs.map((tab, index) => (
+          <Link to={tab.link}>
+            <div
+              id={`${index}`}
+              className={`${styles.iconWrapper} ${activeTab === index && styles.active}`}
+              onClick={() => setActiveTab(index)}
+            >
+              <Icon name={tab.icon} />
+            </div>
+          </Link>
+        ))}
       </div>
       <div className={styles.sidebarBottomSection}>
         <Link

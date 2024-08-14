@@ -1,5 +1,17 @@
 {
   "pages": {
+    "contacts": {
+      "newMessages": {
+        "newMessages": "新消息"
+      },
+      "myGroups": {
+        "myGroups": "我的群聊"
+      },
+      "groupAssistant": {
+        "groupAssistant": "群聊助手"
+      }
+    },
+
     "settings": {
       "personalInformation": {
         "personalInformation": "个人资料",
@@ -69,6 +81,14 @@
       "shareInvite": "分享邀请",
       "feedback": "建议反馈",
       "customerService": "联系客服"
+    },
+    "contactSidebar": {
+      "contacts": "联系人",
+      "newMessages": "新消息",
+      "myGroup": "我的群聊",
+      "groupAssistant": "聊群助手",
+      "friendsTitle": "好友",
+      "groupingTitle": "群聊"
     }
   }
 }
