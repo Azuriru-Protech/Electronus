@@ -33,7 +33,8 @@
 .settingsSidebarButton {
   background-color: white;
   width: 100%;
-
+  height: 100%;
+  max-height: 71px;
   display: flex;
   align-items: center;
   gap: 0.6rem;
