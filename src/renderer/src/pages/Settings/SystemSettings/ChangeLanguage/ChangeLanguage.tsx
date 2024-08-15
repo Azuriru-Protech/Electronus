@@ -8,6 +8,7 @@ export default function ChangeLanguage() {
   const { t, i18n } = useTranslation('translation', { keyPrefix: 'pages.settings.systemSettings' })
   const changeLanguage = (language: string) => {
     i18n.changeLanguage(language)
+    localStorage.setItem('locale', language)
   }
   return (
     <>

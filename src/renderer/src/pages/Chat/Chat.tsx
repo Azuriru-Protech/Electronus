@@ -223,7 +223,7 @@ export default function Chat() {
         <GroupSettingsDrawer
           isOpen={isGroupSettingsDrawerOpen}
           setIsOpen={setIsGroupSettingsDrawerOpen}
-        ></GroupSettingsDrawer>
+        />
       </div>
     </div>
   )
