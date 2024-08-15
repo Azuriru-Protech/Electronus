@@ -27,7 +27,6 @@ const SidebarTabs: SidebarContent[] = [
 ]
 
 export default function Sidebar({}: Props) {
-  const [activeTab, setActiveTab] = useState(0)
   const { pathname } = useLocation()
   return (
     <div className={styles.sidebarWrapper}>
@@ -36,14 +35,12 @@ export default function Sidebar({}: Props) {
           <Avatar src={SampleProfilePic} className={styles.avatar} />
         </div>
         {SidebarTabs.map((tab, index) => (
-          <Link to={tab.link} key={index}>
-            <div
-              id={`${index}`}
-              className={`${styles.iconWrapper} ${activeTab === index && styles.active}`}
-              onClick={() => setActiveTab(index)}
-            >
-              <Icon name={tab.icon} />
-            </div>
+          <Link
+            to={tab.link}
+            key={index}
+            className={`${styles.iconWrapper} ${pathname.includes(tab.link) && styles.active}`}
+          >
+            <Icon name={tab.icon} />
           </Link>
         ))}
       </div>

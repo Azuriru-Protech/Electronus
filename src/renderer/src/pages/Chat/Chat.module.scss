@@ -28,7 +28,7 @@
 }
 
 .chatroom {
-  padding: 0.5rem;
+  padding-bottom: 0.5rem;
   flex-grow: 1;
   overflow: auto;
   background-color: lightblue;
@@ -36,6 +36,7 @@
   flex-direction: column;
   gap: 0.5rem;
   flex-wrap: nowrap;
+  position: relative;
 }
 
 .messageItem {
@@ -43,6 +44,27 @@
   flex-direction: row;
   align-items: flex-start;
   gap: 1rem;
+  padding: 0 0.5rem;
+  &.selectionMode:hover {
+    cursor: pointer;
+    background-color: rgba($color: #ffffff, $alpha: 0.3);
+  }
+  &.selectionMode.selected {
+    background-color: rgba($color: #ffffff, $alpha: 0.5);
+  }
+}
+
+.dateWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dateContainer {
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.25rem;
+  background-color: #f7f7f7;
+  font-size: 0.7rem;
 }
 
 .messageItemCheckboxWrapper {
@@ -56,8 +78,8 @@
 .messageInputWrapper {
   display: flex;
   align-items: center;
-  padding: 0.75rem;
-  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  gap: 0.5rem;
 }
 
 .messageWrapper {
@@ -102,6 +124,82 @@
   font-size: 0.7rem;
   font-weight: 500;
   color: gray;
+}
+
+.replyPreviewWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f3f3f3;
+  padding: 0.5rem 1rem;
+}
+
+.replyPreviewContent {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.replyPreviewLine {
+  height: 90%;
+  width: 2px;
+  background-color: #a4bbce;
+}
+
+.replyPreview {
+  display: flex;
+  flex-direction: column;
+  background-color: #f3f3f3;
+  padding-left: 0.5rem;
+}
+
+.replyPreviewTitle {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: gray;
+}
+
+.replyPreviewMessage {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: gray;
+}
+
+.selectionActionContainer {
+  display: flex;
+  justify-content: center;
+  background-color: #f3f3f3;
+  position: relative;
+}
+
+.selectionActionWrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.selectionAction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  cursor: pointer;
+  &:hover {
+    background-color: #dddddd;
+  }
+}
+
+.selectionActionText {
+  font-size: 0.8rem;
+}
+
+.selectionClose {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 2rem;
 }
 
 .chat {

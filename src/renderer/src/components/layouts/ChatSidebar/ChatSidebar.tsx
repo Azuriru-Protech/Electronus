@@ -4,70 +4,7 @@ import { Avatar, Badge, Button, Input } from 'antd'
 import { useState } from 'react'
 import { padZero } from '@renderer/utilities/Utilities'
 import { Link, useLocation } from 'react-router-dom'
-
-export interface ChatRoom {
-  title: string
-  description: string
-  pin: boolean
-  muted: boolean
-  timestamp: Date
-  imageUrl: string | null
-  id: number
-  online: boolean | null
-  type: 'chat' | 'group'
-  unread: number | null
-}
-
-export const sampleChats: ChatRoom[] = [
-  {
-    title: 'Sample Group',
-    description: 'This is a group message',
-    pin: false,
-    muted: false,
-    timestamp: new Date(),
-    imageUrl: 'https://randomuser.me/api/portraits/men/75.jpg',
-    id: 1,
-    online: null,
-    type: 'group',
-    unread: 0
-  },
-  {
-    title: 'Sample Group 2',
-    description: 'another group message',
-    pin: true,
-    muted: false,
-    timestamp: new Date(),
-    imageUrl: null,
-    id: 2,
-    online: false,
-    type: 'group',
-    unread: 3
-  },
-  {
-    title: 'Sample Chat',
-    description: 'this is a chat message',
-    pin: false,
-    muted: true,
-    timestamp: new Date(),
-    imageUrl: null,
-    id: 3,
-    online: true,
-    type: 'chat',
-    unread: 2
-  },
-  {
-    title: 'Sample Chat 2',
-    description: 'this is another chat message',
-    pin: true,
-    muted: true,
-    timestamp: new Date(),
-    imageUrl: null,
-    id: 4,
-    online: true,
-    type: 'chat',
-    unread: 1
-  }
-] as const
+import { sampleChats } from '@renderer/sampleData'
 
 export default function ChatSidebar() {
   const [chats, setChats] = useState(sampleChats)
