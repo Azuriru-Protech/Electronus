@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { padZero } from '@renderer/utilities/Utilities'
 import { Link, useLocation } from 'react-router-dom'
 
-interface Chat {
+export interface Chat {
   title: string
   description: string
   pin: boolean
@@ -18,7 +18,7 @@ interface Chat {
   unread: number | null
 }
 
-const sampleChats: Chat[] = [
+export const sampleChats: Chat[] = [
   {
     title: 'Sample Group',
     description: 'This is a group message',
@@ -40,7 +40,7 @@ const sampleChats: Chat[] = [
     imageUrl: null,
     id: 2,
     online: false,
-    type: 'chat',
+    type: 'group',
     unread: 3
   },
   {
@@ -107,10 +107,6 @@ export default function ChatSidebar() {
             <div className={styles.chatContentDescription}>
               欢迎使用欢迎使用欢迎使用欢迎使用欢迎使用欢迎使用
             </div>
-            <div className={styles.chatContentIcon}>
-              <Icon name="keep" fill color="#9e9e9e" size={16}></Icon>
-              <Icon name="volume_off" fill color="#9e9e9e" size={16}></Icon>
-            </div>
           </div>
         </div>
       </Link>
@@ -134,6 +130,9 @@ export default function ChatSidebar() {
                 <div className={styles.chatContentIcon}>
                   {chat.pin && <Icon name="keep" fill color="#9e9e9e" size={16}></Icon>}
                   {chat.muted && <Icon name="volume_off" fill color="#9e9e9e" size={16}></Icon>}
+                  {!Number.isNaN(chat.unread) && chat.unread! > 0 && (
+                    <div className={styles.unreadBadge}>{chat.muted ? chat.unread : null}</div>
+                  )}
                 </div>
               </div>
             </div>
