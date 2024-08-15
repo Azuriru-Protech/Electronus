@@ -1,8 +1,13 @@
 import Sidebar from '@renderer/components/layouts/Sidebar/Sidebar'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import styles from './Home.module.scss'
+import { useEffect } from 'react'
 
 export default function Home() {
+  const navigate = useNavigate()
+  useEffect(() => {
+    navigate('/chat/system-notification')
+  }, [])
   return (
     <div className={styles.wrapper}>
       <Sidebar />
