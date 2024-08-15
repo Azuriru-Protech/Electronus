@@ -36,7 +36,7 @@ export default function Sidebar({}: Props) {
           <Avatar src={SampleProfilePic} className={styles.avatar} />
         </div>
         {SidebarTabs.map((tab, index) => (
-          <Link to={tab.link}>
+          <Link to={tab.link} key={index}>
             <div
               id={`${index}`}
               className={`${styles.iconWrapper} ${activeTab === index && styles.active}`}
