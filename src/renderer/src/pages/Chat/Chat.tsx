@@ -1,6 +1,9 @@
 import Icon from '@renderer/components/widgets/Icon/Icon'
 import styles from './Chat.module.scss'
-import ChatSidebar, { sampleChats } from '@renderer/components/layouts/ChatSidebar/ChatSidebar'
+import ChatSidebar, {
+  ChatRoom,
+  sampleChats
+} from '@renderer/components/layouts/ChatSidebar/ChatSidebar'
 import { useParams } from 'react-router-dom'
 import { Avatar, Button, Checkbox, Drawer, Dropdown, GetProp, Input } from 'antd'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
@@ -42,7 +45,7 @@ const sampleMessages = generateRecords(10)
 export default function Chat() {
   const { chatId } = useParams()
   const [chatType, setChatType] = useState('chat')
-  const [chatInfo, setChatInfo] = useState<any>()
+  const [chatInfo, setChatInfo] = useState<ChatRoom>(sampleChats[0])
   const [inputValue, setInputValue] = useState('')
   const [messages, setMessages] = useState<Message[]>([])
   const textareaRef = useRef<TextAreaRef>(null)
@@ -53,7 +56,10 @@ export default function Chat() {
   useEffect(() => {
     const messages = sampleMessages.map((m) => ({ ...m, sendByAuthor: m.author === 1 }))
     setMessages(messages)
-    const chatInfo = sampleChats.find((c) => c.id === Number(chatId))
+    if (Number.isNaN(Number(chatId))) {
+      return
+    }
+    const chatInfo = sampleChats.find((c) => c.id === Number(chatId))!
     setChatInfo(chatInfo)
     setChatType(chatInfo?.type || 'chat')
   }, [chatId])
