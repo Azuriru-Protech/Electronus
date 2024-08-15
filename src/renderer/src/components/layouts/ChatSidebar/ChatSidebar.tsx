@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { padZero } from '@renderer/utilities/Utilities'
 import { Link, useLocation } from 'react-router-dom'
 
-interface Chat {
+export interface Chat {
   title: string
   description: string
   pin: boolean
@@ -18,7 +18,7 @@ interface Chat {
   unread: number | null
 }
 
-const sampleChats: Chat[] = [
+export const sampleChats: Chat[] = [
   {
     title: 'Sample Group',
     description: 'This is a group message',
@@ -40,7 +40,7 @@ const sampleChats: Chat[] = [
     imageUrl: null,
     id: 2,
     online: false,
-    type: 'chat',
+    type: 'group',
     unread: 3
   },
   {
