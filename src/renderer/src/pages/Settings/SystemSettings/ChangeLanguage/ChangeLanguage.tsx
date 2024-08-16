@@ -22,7 +22,7 @@ export default function ChangeLanguage() {
       <div className="settingsCardList">
         <div className="settingsCard">
           <div className="settingsCardItem" onClick={() => changeLanguage('en')}>
-            <p>English</p>
+            <h4>English</h4>
             {i18n.language === 'en' && (
               <div className={styles.changeLanguageIconWrapper}>
                 <Icon name="check" size={12} color="white" />
@@ -30,7 +30,7 @@ export default function ChangeLanguage() {
             )}
           </div>
           <div className="settingsCardItem" onClick={() => changeLanguage('zh-CN')}>
-            <p>简体中文</p>
+            <h4>简体中文</h4>
             {i18n.language === 'zh-CN' && (
               <div className={styles.changeLanguageIconWrapper}>
                 <Icon name="check" size={12} color="white" />

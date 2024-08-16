@@ -4,6 +4,7 @@ import Separator from '../Separator/Separator'
 import Icon from '../Icon/Icon'
 import styles from './GroupSettingsDrawer.module.scss'
 import { useState } from 'react'
+import GroupSettingsEditDrawer from '../GroupSettingsEditDrawer/GroupSettingsEditDrawer'
 
 interface GroupMember {
   name: string
@@ -54,6 +55,7 @@ export default function GroupSettingsDrawer({ isOpen, setIsOpen }: Props) {
   const [leaveGroupModal, leaveGroupContextHolder] = Modal.useModal()
   const [clearChatHistoryModal, clearChatHistoryContextHolder] = Modal.useModal()
   const [groupMembers, setGroupMembers] = useState(sampleGroupMembers)
+  const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false)
 
   const clearChatHistory = async () => {
     const confirm = await clearChatHistoryModal.confirm({
@@ -78,7 +80,9 @@ export default function GroupSettingsDrawer({ isOpen, setIsOpen }: Props) {
         title={
           <div className={styles.groupSettingsTitleWrapper}>
             <h3>群聊设置</h3>
-            <Button type="text">Edit</Button>
+            <Button type="text" onClick={() => setIsEditDrawerOpen(true)}>
+              Edit
+            </Button>
           </div>
         }
         placement="right"
@@ -166,6 +170,9 @@ export default function GroupSettingsDrawer({ isOpen, setIsOpen }: Props) {
       </Drawer>
       <div>{clearChatHistoryContextHolder}</div>
       <div>{leaveGroupContextHolder}</div>
+      <div>
+        <GroupSettingsEditDrawer isOpen={isEditDrawerOpen} setIsOpen={setIsEditDrawerOpen} />
+      </div>
     </>
   )
 }

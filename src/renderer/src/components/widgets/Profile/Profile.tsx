@@ -21,8 +21,7 @@ export default function Profile({ imageUrl, name, id, remark, isBlock, signature
     setIsBlockChecked(isBlock)
   }, [isBlock])
   useEffect(() => {
-    if (!remark) return
-    setRemarkInput(remark)
+    setRemarkInput(remark || '')
   }, [remark])
   return (
     <div className={styles.profileWrapper}>

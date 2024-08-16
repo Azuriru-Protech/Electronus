@@ -23,10 +23,51 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem 2rem;
+  cursor: pointer;
+  width: 100%;
+
   &:not(:last-child) {
     border-bottom: 1px solid #e1e1e1;
   }
   &:hover {
     box-shadow: 0 0 10px #e1e1e1;
   }
+}
+
+.settingsCardContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.settingsCardContent {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0rem 2rem 1rem 2rem;
+}
+
+.settingsCardItemBorderless {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0.6rem 2rem;
+  cursor: pointer;
+
+  // &:hover {
+  //   box-shadow: 0 0 10px #e1e1e1;
+  // }
+}
+
+.small {
+  padding: 0.4rem 2rem;
+}
+
+.withContent {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }

@@ -7,6 +7,7 @@ import SettingsTopbar from '@renderer/components/layouts/SettingsTopbar/Settings
 import styles from './PersonalInformation.module.scss'
 import { useTranslation } from 'react-i18next'
 import ChangeProfilePictureModal from '@renderer/components/widgets/ChangeProfilePictureModal/ChangeProfilePictureModal'
+import InvitationQr from '@renderer/components/widgets/InvitationQr/InvitationQr'
 
 export default function PersonalInformation() {
   const { t } = useTranslation('translation', { keyPrefix: 'pages.settings.personalInformation' })
@@ -16,6 +17,7 @@ export default function PersonalInformation() {
   const [newProfilePicUrl, setNewProfilePicUrl] = useState<string>()
   const [isSignatureModalOpen, setIsSignatureModalOpen] = useState(false)
   const [signature, setSignature] = useState('')
+  const [isMyQrOpen, setIsMyQrOpen] = useState(false)
   const [idModal, idContextHolder] = Modal.useModal()
 
   const onChange = (e: RadioChangeEvent) => {
@@ -70,7 +72,7 @@ export default function PersonalInformation() {
               <Icon name="chevron_right" weight={200} />
             </div>
           </div>
-          <div className="settingsCardItem">
+          <div className="settingsCardItem" onClick={() => setIsMyQrOpen(true)}>
             <h4>{t('myQrCode')}</h4>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Icon name="qr_code" weight={200} />
@@ -128,6 +130,17 @@ export default function PersonalInformation() {
         centered
       >
         <Input.TextArea rows={4} value={signature} onChange={(e) => setSignature(e.target.value)} />
+      </Modal>
+      <Modal
+        title={'My QR Code'}
+        open={isMyQrOpen}
+        onCancel={() => {
+          setIsMyQrOpen(false)
+        }}
+        footer={null}
+        centered
+      >
+        <InvitationQr />
       </Modal>
       {idContextHolder}
     </>

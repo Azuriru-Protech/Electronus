@@ -158,7 +158,7 @@ export default function ContactSidebar() {
         return a.name.localeCompare(b.name)
       })
       const groupedData = sortedData.reduce((acc, obj) => {
-        console.log(acc)
+        // console.log(acc)
 
         const startingChar = obj.name.charAt(0).toLowerCase() //initials
         if (!acc[startingChar]) {
@@ -167,14 +167,14 @@ export default function ContactSidebar() {
         acc[startingChar].push(obj)
         return acc
       }, {})
-      console.log(groupedData)
+      // console.log(groupedData)
       setGroupedContacts(groupedData)
     }
   }
 
   useEffect(() => {
     let test = handleContactsAscending(ContactsExample)
-    console.log(test)
+    // console.log(test)
   }, [])
 
   return (

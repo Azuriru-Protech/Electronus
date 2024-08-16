@@ -21,7 +21,7 @@ export default function ContactsList() {
   useEffect(() => {
     ContactsExample.forEach((item) => {
       if (item.id === Number(userId)) {
-        console.log(item)
+        // console.log(item)
         setCurrentContactView(item)
       }
     })

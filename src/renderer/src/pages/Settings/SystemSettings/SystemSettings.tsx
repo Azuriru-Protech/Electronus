@@ -1,5 +1,6 @@
 import SettingsTopbar from '@renderer/components/layouts/SettingsTopbar/SettingsTopbar'
 import Icon from '@renderer/components/widgets/Icon/Icon'
+import SettingsCardItem from '@renderer/components/widgets/SettingsCardItem/SettingsCardItem'
 import '@renderer/styles/settings.scss'
 import { Modal } from 'antd'
 import { useTranslation } from 'react-i18next'
@@ -61,12 +62,13 @@ export default function SystemSettings() {
       <SettingsTopbar>{t('systemSettings')}</SettingsTopbar>
       <div className="settingsCardList">
         <div className="settingsCard">
-          <Link to="/settings/system-settings/notification" className="settingsCardItem">
-            <h3>{t('notification')}</h3>
-            <Icon name="chevron_right" weight={200} />
-          </Link>
+          <SettingsCardItem
+            title={t('notification')}
+            link={'/settings/system-settings/notification'}
+            first
+          />
           <Link to="/settings/system-settings/change-language" className="settingsCardItem">
-            <h3>{t('changeLanguage')}</h3>
+            <h4>{t('changeLanguage')}</h4>
             <div
               style={{
                 display: 'flex',
@@ -79,32 +81,28 @@ export default function SystemSettings() {
               <Icon name="chevron_right" weight={200} color="#505050" />
             </div>
           </Link>
-          <div className="settingsCardItem" onClick={clearCache}>
-            <h3>{t('clearCache')}</h3>
-            <Icon name="chevron_right" weight={200} color="#505050" />
-          </div>
-          <div className="settingsCardItem" onClick={clearChatHistory}>
-            <h3>{t('clearChatHistory')}</h3>
-            <Icon name="chevron_right" weight={200} color="#505050" />
-          </div>
-          <Link to="/settings/system-settings/about-us" className="settingsCardItem">
-            <h3>{t('aboutUs')}</h3>
-            <Icon name="chevron_right" weight={200} color="#505050" />
-          </Link>
+          <SettingsCardItem title={t('clearCache')} onClick={clearChatHistory} border />
+          <SettingsCardItem title={t('clearChatHistory')} onClick={clearChatHistory} border />
+          <SettingsCardItem title={t('aboutUs')} link={'/settings/system-settings/about-us'} last />
         </div>
-        <div className="settingsCard">
-          <div className="settingsCardItem">
-            <h3>{t('switchAccount')}</h3>
-            <Icon name="chevron_right" weight={200} color="#505050" />
-          </div>
-        </div>
-        <div className="settingsCard">
+
+        <SettingsCardItem title={t('switchAccount')} />
+        <div
+          className="settingsCard"
+          style={{ background: 'none', display: 'flex', justifyContent: 'flex-end' }}
+        >
           <div
             className="settingsCardItem"
-            style={{ color: 'red', justifyContent: 'center' }}
+            style={{
+              color: '#ff4d4f',
+              justifyContent: 'center',
+              background: '#ffffff',
+              borderRadius: 4,
+              width: '100%'
+            }}
             onClick={logout}
           >
-            <h3>{t('logout')}</h3>
+            <h4>{t('logout')}</h4>
           </div>
         </div>
       </div>

@@ -1,0 +1,39 @@
+.settingsCardList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 600px;
+    width: 100%;
+  }
+  .settingsCardLabel {
+    padding-left: 1.5rem;
+    font-size: 0.7rem;
+    color: #78787d;
+    margin-bottom: 0.3rem;
+  }
+  .settingsCard {
+    background-color: white;
+    width: 100%;
+    border-radius: 0.3rem;
+  }
+  .settingsCardItem {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    cursor: pointer;
+  
+    &:not(:last-child) {
+      border-bottom: 1px solid #e1e1e1;
+    }
+    &:hover {
+      box-shadow: 0 0 10px #e1e1e1;
+    }
+  }
+  
+  .small {
+    padding: 0.4rem 2rem;
+  }
+  

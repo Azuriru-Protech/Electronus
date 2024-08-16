@@ -24,11 +24,11 @@ export default function Notification() {
       <div className="settingsCardList">
         <div className="settingsCard">
           <div className="settingsCardItem">
-            <h3>{t('notification')}</h3>
+            <h4>{t('notification')}</h4>
             <Switch checked={notification} onChange={setNotification} size="small" />
           </div>
           <div className="settingsCardItem">
-            <h3>{t('notificationAlert')}</h3>
+            <h4>{t('notificationAlert')}</h4>
             <Switch checked={notificationAlert} onChange={setNotificationAlert} size="small" />
           </div>
         </div>
