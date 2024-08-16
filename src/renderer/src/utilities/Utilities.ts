@@ -29,3 +29,23 @@ export const makeRandomID = (length: number) => {
 export const padZero = (num: number, places: number = 2) => {
   return String(num).padStart(places, '0')
 }
+
+export const toReadableTime = (time?: string | Date | null) => {
+  if (!time) {
+    return ''
+  }
+  const d = new Date(time)
+  return d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
+}
+
+export const toReadableDate = (date?: string | Date | null, showYear = false) => {
+  if (!date) {
+    return ''
+  }
+  const d = new Date(date)
+  return d.toLocaleDateString(undefined, {
+    day: '2-digit',
+    month: '2-digit',
+    year: showYear ? 'numeric' : undefined
+  })
+}

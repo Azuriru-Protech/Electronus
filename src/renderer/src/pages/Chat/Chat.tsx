@@ -2,37 +2,21 @@ import Icon from '@renderer/components/widgets/Icon/Icon'
 import styles from './Chat.module.scss'
 import ChatSidebar from '@renderer/components/layouts/ChatSidebar/ChatSidebar'
 import { useParams } from 'react-router-dom'
-import {
-  Avatar,
-  Button,
-  Checkbox,
-  Drawer,
-  Dropdown,
-  FloatButton,
-  GetProp,
-  Input,
-  message,
-  Modal,
-  Popover
-} from 'antd'
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react'
-import { TextAreaRef } from 'antd/es/input/TextArea'
-import { padZero } from '@renderer/utilities/Utilities'
-import Separator from '@renderer/components/widgets/Separator/Separator'
+import { Avatar, Button, Checkbox, Dropdown, FloatButton, GetProp, message, Modal } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { padZero, toReadableDate } from '@renderer/utilities/Utilities'
 import ChatSettingsDrawer from '@renderer/components/widgets/ChatSettingsDrawer/ChatSettingsDrawer'
 import GroupSettingsDrawer from '@renderer/components/widgets/GroupSettingsDrawer/GroupSettingsDrawer'
 import Topbar from '@renderer/components/layouts/Topbar/Topbar'
 import { ChatRoom, Message, sampleChats, sampleMessages } from '@renderer/sampleData'
 import ForwardIcon from '@renderer/assets/images/icons/forward.svg'
+import ChatInput from '@renderer/components/widgets/ChatInput/ChatInput'
 
 export default function Chat() {
   const { chatId } = useParams()
-  const [chatType, setChatType] = useState('chat')
+  const [chatType, setChatType] = useState<'chat' | 'group'>('chat')
   const [chatInfo, setChatInfo] = useState<ChatRoom>(sampleChats[0])
-  const [inputValue, setInputValue] = useState('')
   const [messages, setMessages] = useState<Message[]>([])
-  const textareaRef = useRef<TextAreaRef>(null)
   const [selectionMode, setSelectionMode] = useState(false)
   const [selectedMessages, setSelectedMessages] = useState<number[]>([])
   const [isChatSettingsDrawerOpen, setIsChatSettingsDrawerOpen] = useState(false)
@@ -52,25 +36,6 @@ export default function Chat() {
     setChatInfo(chatInfo)
     setChatType(chatInfo?.type || 'chat')
   }, [chatId])
-
-  const inputOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    console.log('trigger onchange')
-    const value = e.target.value
-    setInputValue(value)
-  }
-  const onEmojiClick = (emoji: EmojiClickData, event: MouseEvent) => {
-    if (!textareaRef.current) {
-      return
-    }
-    const textarea = textareaRef.current.resizableTextArea?.textArea
-    const currentValue = textarea?.value || ''
-    const cursorPositionStart = textarea?.selectionStart || 0
-    const cursorPositionEnd = textarea?.selectionEnd || 0
-    const valueFront = currentValue.slice(0, cursorPositionStart)
-    const valueBack = currentValue.slice(cursorPositionEnd)
-    const newValue = valueFront + emoji.emoji + valueBack
-    setInputValue(newValue)
-  }
 
   const getReadableTimestamp = (timestamp: string) => {
     const d = new Date(timestamp)
@@ -124,12 +89,6 @@ export default function Chat() {
     return !isDateSame || !isMonthSame || !isYearSame
   }
 
-  const toReadableDate = (date: Date) => {
-    const month = date.getMonth() + 1
-    const day = date.getDate()
-    return `${padZero(month, 2)}/${padZero(day, 2)}`
-  }
-
   return (
     <>
       <div className={styles.wrapper}>
@@ -152,120 +111,141 @@ export default function Chat() {
               }}
             ></Button>
           </Topbar>
-          <Checkbox.Group className={styles.chatroom} onChange={onChange} value={selectedMessages}>
-            {messages.map((message, index) => (
-              <React.Fragment key={message.id}>
-                {isDateShow(messages[index - 1]?.sentAt || null, message.sentAt) && (
-                  <div className={styles.dateWrapper}>
-                    <div className={styles.dateContainer}>
-                      {toReadableDate(new Date(message.sentAt))}
-                    </div>
-                  </div>
-                )}
-                <div
-                  className={`${styles.messageItem} ${selectionMode && styles.selectionMode} ${
-                    selectedMessages.find((id) => id === message.id) && styles.selected
-                  }`}
-                  onClick={() => {
-                    selectMessage(message.id)
-                  }}
-                >
-                  {selectionMode && (
-                    <div className={styles.messageItemCheckboxWrapper}>
-                      <Checkbox value={message.id}></Checkbox>
+          <div className={styles.chatroomWrapper}>
+            <Checkbox.Group
+              className={styles.chatroom}
+              onChange={onChange}
+              value={selectedMessages}
+            >
+              {messages.map((message, index) => (
+                <React.Fragment key={message.id}>
+                  {isDateShow(messages[index - 1]?.sentAt || null, message.sentAt) && (
+                    <div className={styles.dateWrapper}>
+                      <div className={styles.dateContainer}>{toReadableDate(message.sentAt)}</div>
                     </div>
                   )}
-                  <Dropdown
-                    menu={{
-                      items: [
-                        {
-                          label: 'reply',
-                          key: 'reply',
-                          onClick: () => {
-                            setReplyChat(message)
-                          }
-                        },
-                        {
-                          label: 'forward',
-                          key: 'forward'
-                        },
-                        {
-                          label: 'select',
-                          key: 'select',
-                          onClick: () => {
-                            setSelectionMode(true)
-                            selectMessage(message.id)
-                          }
-                        },
-                        {
-                          label: 'copy',
-                          key: 'copy'
-                        },
-                        {
-                          label: 'pin',
-                          key: 'pin'
-                        },
-                        {
-                          label: 'save',
-                          key: 'save'
-                        },
-                        {
-                          label: 'delete',
-                          key: 'delete',
-                          onClick: () => {
-                            deleteMessage(message.id)
-                          }
-                        }
-                      ]
+                  <div
+                    className={`${styles.messageItem} ${selectionMode && styles.selectionMode} ${
+                      selectedMessages.find((id) => id === message.id) && styles.selected
+                    }`}
+                    onClick={() => {
+                      selectMessage(message.id)
                     }}
-                    trigger={['contextMenu']}
-                    className={styles.messageItemContent}
                   >
-                    <div
-                      className={`${styles.messageWrapper} ${message.sendByAuthor && styles.messageWrapperAuthor}`}
-                    >
-                      <div style={{ width: 32 }}>
-                        {index === 0 ? (
-                          <Avatar
-                            src={chatInfo.imageUrl}
-                            icon={<Icon name="person" fill size={24} />}
-                          />
-                        ) : (
-                          messages[index - 1].author !== message.author && (
-                            <Avatar
-                              src={chatInfo.imageUrl}
-                              icon={<Icon name="person" fill size={24} />}
-                            />
-                          )
-                        )}
+                    {selectionMode && (
+                      <div className={styles.messageItemCheckboxWrapper}>
+                        <Checkbox value={message.id}></Checkbox>
                       </div>
+                    )}
+                    <div className={styles.messageItemContent}>
                       <div
-                        className={`${styles.messageContainer} ${message.sendByAuthor && styles.messageContainerAuthor}`}
+                        className={`${styles.messageWrapper} ${message.sendByAuthor && styles.messageWrapperAuthor}`}
                       >
-                        <p className={styles.message}>{message.message}</p>
-                        <div className={styles.messageInfo}>
-                          <p className={styles.messageTimestamp}>
-                            {getReadableTimestamp(message.sentAt)}
-                          </p>
-                          {message.sendByAuthor && message.seenAt && (
-                            <Icon name="done_all" fill color="#9e9e9e" size={14} />
-                          )}
-                          {message.sendByAuthor && !message.seenAt && message.sentAt && (
-                            <Icon name="check" fill color="#9e9e9e" size={14} />
-                          )}
-                        </div>
+                        <Dropdown
+                          menu={{
+                            items: [
+                              { label: 'Mute', key: 'mute' },
+                              { label: 'Remove from Group', key: 'remove' }
+                            ]
+                          }}
+                          trigger={['contextMenu']}
+                        >
+                          <div style={{ width: 32 }}>
+                            {index === 0 ? (
+                              <Avatar
+                                src={chatInfo.imageUrl}
+                                icon={<Icon name="person" fill size={24} />}
+                              />
+                            ) : (
+                              messages[index - 1].author !== message.author && (
+                                <Avatar
+                                  src={chatInfo.imageUrl}
+                                  icon={<Icon name="person" fill size={24} />}
+                                />
+                              )
+                            )}
+                          </div>
+                        </Dropdown>
+                        <Dropdown
+                          menu={{
+                            items: [
+                              {
+                                label: 'reply',
+                                key: 'reply',
+                                onClick: () => {
+                                  setReplyChat(message)
+                                }
+                              },
+                              { label: 'forward', key: 'forward' },
+                              {
+                                label: 'select',
+                                key: 'select',
+                                onClick: () => {
+                                  setSelectionMode(true)
+                                  selectMessage(message.id)
+                                }
+                              },
+                              {
+                                label: 'copy',
+                                key: 'copy',
+                                onClick: async () => {
+                                  await navigator.clipboard.writeText(message.message)
+                                  const ready = await navigator.clipboard.readText()
+                                  if (ready === message.message) {
+                                    messageApi.open({
+                                      type: 'success',
+                                      content: 'Message copied successfully'
+                                    })
+                                  } else {
+                                    messageApi.open({
+                                      type: 'error',
+                                      content: 'Message copy failed'
+                                    })
+                                  }
+                                }
+                              },
+                              { label: 'pin', key: 'pin' },
+                              { label: 'save', key: 'save' },
+                              {
+                                label: 'delete',
+                                key: 'delete',
+                                onClick: () => {
+                                  deleteMessage(message.id)
+                                }
+                              }
+                            ]
+                          }}
+                          trigger={['contextMenu']}
+                        >
+                          <div
+                            className={`${styles.messageContainer} ${message.sendByAuthor && styles.messageContainerAuthor}`}
+                          >
+                            <p className={styles.message}>{message.message}</p>
+                            <div className={styles.messageInfo}>
+                              <p className={styles.messageTimestamp}>
+                                {getReadableTimestamp(message.sentAt)}
+                              </p>
+                              {message.sendByAuthor && message.seenAt && (
+                                <Icon name="done_all" fill color="#9e9e9e" size={14} />
+                              )}
+                              {message.sendByAuthor && !message.seenAt && message.sentAt && (
+                                <Icon name="check" fill color="#9e9e9e" size={14} />
+                              )}
+                            </div>
+                          </div>
+                        </Dropdown>
                       </div>
                     </div>
-                  </Dropdown>
-                </div>
-              </React.Fragment>
-            ))}
+                  </div>
+                </React.Fragment>
+              ))}
+            </Checkbox.Group>
             <FloatButton
               icon={<Icon name="arrow_downward" />}
               type="default"
               style={{ bottom: 20, position: 'absolute' }}
             />
-          </Checkbox.Group>
+          </div>
           {replyChat && (
             <div className={styles.replyPreviewWrapper}>
               <div className={styles.replyPreviewContent}>
@@ -348,40 +328,7 @@ export default function Chat() {
               </div>
             </div>
           ) : (
-            <div className={styles.messageInputWrapper}>
-              <Dropdown
-                menu={{
-                  items: [
-                    {
-                      icon: <Icon name="image" size={20} />,
-                      label: 'Image or Video',
-                      key: 'media'
-                    },
-                    { icon: <Icon name="folder_open" size={20} />, label: 'File', key: 'file' },
-                    { icon: <Icon name="id_card" size={20} />, label: 'Namecard', key: 'namecard' }
-                  ]
-                }}
-                placement="topLeft"
-                arrow={{ pointAtCenter: true }}
-              >
-                <Button icon={<Icon name="attach_file" />} type="text" shape="circle" />
-              </Dropdown>
-              <Input.TextArea
-                ref={textareaRef}
-                onChange={inputOnChange}
-                autoSize={{ minRows: 1, maxRows: 8 }}
-                variant="borderless"
-                value={inputValue}
-              />
-              <Popover
-                content={<EmojiPicker onEmojiClick={onEmojiClick} />}
-                trigger="click"
-                overlayInnerStyle={{ padding: 0 }}
-              >
-                <Button type="text" icon={<Icon name="mood" />} shape="circle" />
-              </Popover>
-              <Button icon={<Icon name="send" />} type="text" shape="circle" />
-            </div>
+            <ChatInput />
           )}
           <ChatSettingsDrawer
             isOpen={isChatSettingsDrawerOpen}

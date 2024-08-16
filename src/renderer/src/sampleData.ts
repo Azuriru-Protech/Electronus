@@ -11,56 +11,51 @@ export interface ChatRoom {
   unread: number | null
 }
 
-export const sampleChats: ChatRoom[] = [
-  {
-    title: 'Sample Group',
-    description: 'This is a group message',
-    pin: false,
-    muted: false,
-    timestamp: new Date(),
-    imageUrl: 'https://randomuser.me/api/portraits/men/75.jpg',
-    id: 1,
-    online: null,
-    type: 'group',
-    unread: 0
-  },
-  {
-    title: 'Sample Group 2',
-    description: 'another group message',
-    pin: true,
-    muted: false,
-    timestamp: new Date(),
-    imageUrl: null,
-    id: 2,
-    online: false,
-    type: 'group',
-    unread: 3
-  },
-  {
-    title: 'Sample Chat',
-    description: 'this is a chat message',
-    pin: false,
-    muted: true,
-    timestamp: new Date(),
-    imageUrl: null,
-    id: 3,
-    online: true,
-    type: 'chat',
-    unread: 2
-  },
-  {
-    title: 'Sample Chat 2',
-    description: 'this is another chat message',
-    pin: true,
-    muted: true,
-    timestamp: new Date(),
-    imageUrl: null,
-    id: 4,
-    online: true,
-    type: 'chat',
-    unread: 1
+const randomNumber = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+const randomGender = () => {
+  return randomNumber(0, 1) ? 'men' : 'women'
+}
+
+const randomImageUrl = () => {
+  return `https://randomuser.me/api/portraits/${randomGender()}/${randomNumber(0, 99)}.jpg`
+}
+
+const generateDates = (count: number, min: Date, max: Date) => {
+  const dates: Date[] = []
+  for (let i = 0; i < count; i++) {
+    const date = new Date(min.getTime() + Math.random() * (max.getTime() - min.getTime()))
+    dates.push(date)
   }
-] as const
+  return dates.sort((a, b) => b.getTime() - a.getTime())
+}
+
+const randomString = (min: number, max: number) => {
+  return Math.random().toString(36).substring(min, max)
+}
+
+export const generateChats = (count: number): ChatRoom[] => {
+  const dates = generateDates(count, new Date(2024, 7, 1), new Date())
+  return Array.from({ length: count }, (_, i) => {
+    const type = randomNumber(0, 1) ? 'chat' : 'group'
+    return {
+      title: `${type} ${i + 1}`,
+      description: randomString(10, 20),
+      pin: randomNumber(0, 1) ? true : false,
+      muted: randomNumber(0, 1) ? true : false,
+      timestamp: dates[i],
+      imageUrl: randomImageUrl(),
+      id: i + 1,
+      online: type === 'chat' ? (randomNumber(0, 1) ? true : false) : null,
+      type: type,
+      unread: randomNumber(0, 1) ? null : randomNumber(0, 1000)
+    }
+  })
+}
+
+export const sampleChats = generateChats(100)
 
 export type Message = {
   seenAt?: string | null
