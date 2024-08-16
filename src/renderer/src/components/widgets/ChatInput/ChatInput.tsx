@@ -1,4 +1,4 @@
-import { Button, Dropdown, Input, Mentions, Popover } from 'antd'
+import { Button, Dropdown, Mentions, Popover } from 'antd'
 import styles from './ChatInput.module.scss'
 import Icon from '../Icon/Icon'
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react'

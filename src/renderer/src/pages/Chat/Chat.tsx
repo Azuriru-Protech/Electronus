@@ -4,7 +4,7 @@ import ChatSidebar from '@renderer/components/layouts/ChatSidebar/ChatSidebar'
 import { useParams } from 'react-router-dom'
 import { Avatar, Button, Checkbox, Dropdown, FloatButton, GetProp, message, Modal } from 'antd'
 import React, { useEffect, useState } from 'react'
-import { padZero, toReadableDate } from '@renderer/utilities/Utilities'
+import { toReadableDate, toReadableTime } from '@renderer/utilities/Utilities'
 import ChatSettingsDrawer from '@renderer/components/widgets/ChatSettingsDrawer/ChatSettingsDrawer'
 import GroupSettingsDrawer from '@renderer/components/widgets/GroupSettingsDrawer/GroupSettingsDrawer'
 import Topbar from '@renderer/components/layouts/Topbar/Topbar'
@@ -36,11 +36,6 @@ export default function Chat() {
     setChatInfo(chatInfo)
     setChatType(chatInfo?.type || 'chat')
   }, [chatId])
-
-  const getReadableTimestamp = (timestamp: string) => {
-    const d = new Date(timestamp)
-    return `${padZero(d.getHours())}:${padZero(d.getMinutes())}`
-  }
 
   const onChange: GetProp<typeof Checkbox.Group<number>, 'onChange'> = (checkedValues) => {
     setSelectedMessages(checkedValues)
@@ -223,7 +218,7 @@ export default function Chat() {
                             <p className={styles.message}>{message.message}</p>
                             <div className={styles.messageInfo}>
                               <p className={styles.messageTimestamp}>
-                                {getReadableTimestamp(message.sentAt)}
+                                {toReadableTime(message.sentAt)}
                               </p>
                               {message.sendByAuthor && message.seenAt && (
                                 <Icon name="done_all" fill color="#9e9e9e" size={14} />
@@ -246,25 +241,21 @@ export default function Chat() {
               style={{ bottom: 20, position: 'absolute' }}
             />
           </div>
-          {replyChat && (
-            <div className={styles.replyPreviewWrapper}>
-              <div className={styles.replyPreviewContent}>
-                <div className={styles.replyPreviewLine}></div>
-                <div className={styles.replyPreview}>
-                  <p className={styles.replyPreviewTitle}>{replyChat.author}</p>
-                  <p className={styles.replyPreviewMessage}>{replyChat.message}</p>
-                </div>
-              </div>
-              <div>
-                <Button
-                  icon={<Icon name="close" />}
-                  type="text"
-                  shape="circle"
-                  onClick={() => setReplyChat(null)}
-                />
+          <div className={`${styles.replyPreviewWrapper} ${replyChat ? '' : styles.hide}`}>
+            <div className={styles.replyPreviewContent}>
+              <div className={styles.replyPreviewLine}></div>
+              <div className={styles.replyPreview}>
+                <p className={styles.replyPreviewTitle}>{replyChat?.author}</p>
+                <p className={styles.replyPreviewMessage}>{replyChat?.message}</p>
               </div>
             </div>
-          )}
+            <Button
+              icon={<Icon name="close" />}
+              type="text"
+              shape="circle"
+              onClick={() => setReplyChat(null)}
+            />
+          </div>
           {selectionMode ? (
             <div className={styles.selectionActionContainer}>
               <div className={styles.selectionActionWrapper}>

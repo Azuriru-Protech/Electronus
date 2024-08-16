@@ -23,7 +23,7 @@ export default function ChatSidebar() {
     <div className={styles.chatSidebar}>
       <div className={styles.chatSidebarUtils}>
         <Input prefix={<Icon name="search" size={16} />} variant="filled" />
-        <Button icon={<Icon name="person_add" size={16} />} />
+        <Button icon={<Icon name="person_add" size={16} />} type="text" />
       </div>
       <div className={styles.chatList}>
         <Link

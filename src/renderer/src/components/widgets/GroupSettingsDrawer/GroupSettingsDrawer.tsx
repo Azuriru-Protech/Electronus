@@ -84,7 +84,6 @@ export default function GroupSettingsDrawer({ isOpen, setIsOpen }: Props) {
         placement="right"
         onClose={() => setIsOpen(false)}
         open={isOpen}
-        getContainer={false}
         styles={{ body: { padding: 0, width: '100%' } }}
       >
         <div className={styles.groupSettingsProfile}>
