@@ -13,3 +13,9 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
 }
+
+.settingsCardItemContent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

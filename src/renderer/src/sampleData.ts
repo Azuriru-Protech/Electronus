@@ -107,3 +107,14 @@ export const sampleMessages: Message[] = [
     sendByAuthor: true
   }
 ]
+
+export const sampleUsers = [
+  {
+    name: 'John Doe',
+    id: 1,
+    imageUrl: 'https://randomuser.me/api/portraits/men/1.jpg',
+    remark: null,
+    signature: null,
+    isBlock: false
+  }
+]

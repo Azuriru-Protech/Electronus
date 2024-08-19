@@ -1,6 +1,6 @@
 import Icon from '@renderer/components/widgets/Icon/Icon'
 import '@renderer/styles/settings.scss'
-import { Avatar, Button, Input, Modal, Radio, RadioChangeEvent } from 'antd'
+import { Avatar, Button, Input, message, Modal, Radio, RadioChangeEvent } from 'antd'
 import { useState } from 'react'
 import SampleProfilePic from '@renderer/assets/images/sample-profile-pic.jpg'
 import SettingsTopbar from '@renderer/components/layouts/SettingsTopbar/SettingsTopbar'
@@ -19,10 +19,14 @@ export default function PersonalInformation() {
   const [signature, setSignature] = useState('')
   const [isMyQrOpen, setIsMyQrOpen] = useState(false)
   const [idModal, idContextHolder] = Modal.useModal()
+  const [messageApi, messageContextHolder] = message.useMessage()
 
   const onChange = (e: RadioChangeEvent) => {
-    console.log('radio checked', e.target.value)
     setValue(e.target.value)
+    messageApi.open({
+      type: 'success',
+      content: 'Gender changed successfully'
+    })
   }
 
   const showIdModal = async () => {
@@ -43,9 +47,7 @@ export default function PersonalInformation() {
       <div className="settingsCardList">
         <div className="settingsCard">
           <div className="settingsCardItem">
-            <div
-              style={{ display: 'flex', alignItems: 'center', gap: '1rem', position: 'relative' }}
-            >
+            <div className={styles.settingsCardItemContent} style={{ position: 'relative' }}>
               <label htmlFor="avatarInput">
                 <Avatar size={56} icon={<img src={SampleProfilePic} />} />
               </label>
@@ -67,28 +69,32 @@ export default function PersonalInformation() {
         <div className="settingsCard">
           <div className="settingsCardItem" onClick={() => showIdModal()}>
             <h4>ID</h4>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div className={styles.settingsCardItemContent}>
               1234
               <Icon name="chevron_right" weight={200} />
             </div>
           </div>
           <div className="settingsCardItem" onClick={() => setIsMyQrOpen(true)}>
             <h4>{t('myQrCode')}</h4>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div className={styles.settingsCardItemContent}>
               <Icon name="qr_code" weight={200} />
               <Icon name="chevron_right" weight={200} />
             </div>
           </div>
           <div className="settingsCardItem">
             <h4>{t('gender')}</h4>
-            <Radio.Group onChange={onChange} value={value} style={{ display: 'flex', gap: '1rem' }}>
+            <Radio.Group
+              onChange={onChange}
+              value={value}
+              className={styles.settingsCardItemContent}
+            >
               <Radio value="male">{t('male')}</Radio>
               <Radio value="female">{t('female')}</Radio>
             </Radio.Group>
           </div>
           <div className="settingsCardItem" onClick={() => setIsSignatureModalOpen(true)}>
             <h4>{t('personalizedSignature')}</h4>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div className={styles.settingsCardItemContent}>
               <p>{signature}</p>
               <Icon name="chevron_right" weight={200} />
             </div>
@@ -142,7 +148,8 @@ export default function PersonalInformation() {
       >
         <InvitationQr />
       </Modal>
-      {idContextHolder}
+      <div>{idContextHolder}</div>
+      <div>{messageContextHolder}</div>
     </>
   )
 }

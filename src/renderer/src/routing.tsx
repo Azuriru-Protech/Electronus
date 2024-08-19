@@ -24,6 +24,7 @@ import GroupAssistant from './pages/Contacts/GroupAssistant/GroupAssistant'
 import ContactsList from './pages/Contacts/ContactsList/ContactsList'
 import Chat from './pages/Chat/Chat'
 import ChatList from './pages/ChatList/ChatList'
+import BlacklistUser from './pages/Settings/Privacy/Blacklist/BlacklistUser/BlacklistUser'
 
 export const router = createHashRouter([
   {
@@ -46,6 +47,14 @@ export const router = createHashRouter([
           {
             path: 'privacy',
             element: <Privacy />
+          },
+          {
+            path: 'privacy/blacklist',
+            element: <Blacklist />
+          },
+          {
+            path: 'privacy/blacklist/:userId',
+            element: <BlacklistUser />
           },
           {
             path: 'personal-information',
@@ -74,10 +83,6 @@ export const router = createHashRouter([
           {
             path: 'customer-service',
             element: <CustomerService />
-          },
-          {
-            path: 'privacy/blacklist',
-            element: <Blacklist />
           },
           {
             path: 'system-settings/notification',
