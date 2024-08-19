@@ -1,14 +1,16 @@
 import Icon from '@renderer/components/widgets/Icon/Icon'
 import styles from './ChatSidebar.module.scss'
-import { Avatar, Badge, Button, Input, Modal } from 'antd'
+import { Avatar, Badge, Button, Dropdown, Input, message, Modal } from 'antd'
 import { useState } from 'react'
-import { padZero, toReadableDate, toReadableTime } from '@renderer/utilities/Utilities'
+import { toReadableDate, toReadableTime } from '@renderer/utilities/Utilities'
 import { Link, useLocation } from 'react-router-dom'
 import { sampleChats } from '@renderer/sampleData'
+import { contextMenuItemStyle, contextMenuStyle } from '@renderer/configs/common'
 
 export default function ChatSidebar() {
   const [chats, setChats] = useState(sampleChats)
   const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false)
+  const [messageApi, messageContextHolder] = message.useMessage()
   const { pathname } = useLocation()
   const getTimestamp = (timestamp: Date | string) => {
     const d = new Date(timestamp)
@@ -59,33 +61,107 @@ export default function ChatSidebar() {
           </Link>
           {chats &&
             chats.map((chat) => (
-              <Link
-                className={`${styles.chat} ${pathname.includes(`/chat/${chat.id}`) && styles.active}`}
-                to={`/chat/${chat.id}`}
-                key={chat.id}
+              <Dropdown
+                menu={{
+                  items: [
+                    {
+                      label: 'Pin',
+                      key: 'pin',
+                      style: contextMenuItemStyle,
+                      onClick: () => {
+                        messageApi.success('Pinned')
+                      }
+                    },
+                    {
+                      label: 'Mute',
+                      key: 'muted',
+                      style: contextMenuItemStyle,
+                      onClick: () => messageApi.success('Muted')
+                    },
+                    { type: 'divider' },
+                    {
+                      label:
+                        Number(chat.unread) > 0
+                          ? `Mark as Unread (${chat.unread})`
+                          : 'Mark as Unread',
+                      key: 'markAsUnread',
+                      style: contextMenuItemStyle,
+                      onClick: () => {}
+                    },
+                    {
+                      label: 'Clear Chat History',
+                      key: 'clearChatHistory',
+                      style: contextMenuItemStyle,
+                      onClick: () => {
+                        Modal.confirm({
+                          title: 'Clear Chat History',
+                          content: 'Are you sure you want to clear chat history?',
+                          okText: 'Confirm',
+                          cancelText: 'Cancel',
+                          icon: null,
+                          centered: true,
+                          onOk: () => {
+                            messageApi.success('Cleared')
+                          }
+                        })
+                      }
+                    },
+                    { type: 'divider' },
+                    {
+                      label: 'Delete Chat',
+                      key: 'deleteChat',
+                      style: contextMenuItemStyle,
+                      onClick: () => {
+                        Modal.confirm({
+                          title: 'Delete Chat',
+                          content: 'Are you sure you want to delete this chat?',
+                          okText: 'Confirm',
+                          cancelText: 'Cancel',
+                          icon: null,
+                          centered: true,
+                          onOk: () => {
+                            messageApi.success('Deleted')
+                          }
+                        })
+                      }
+                    }
+                  ],
+                  style: contextMenuStyle
+                }}
+                trigger={['contextMenu']}
               >
-                <Badge status="success" dot classNames={{ indicator: styles.avatarBadge }}>
-                  <Avatar src={chat.imageUrl} icon={<Icon name="person" fill size={24} />} />
-                </Badge>
-                <div className={styles.chatContent}>
-                  <div className={styles.chatContentUpper}>
-                    <div className={styles.chatContentTitle}>{chat.title}</div>
-                    <div className={styles.chatContentTimestamp}>
-                      {getTimestamp(chat.timestamp)}
+                <Link
+                  className={`${styles.chat} ${pathname.includes(`/chat/${chat.id}`) && styles.active}`}
+                  to={`/chat/${chat.id}`}
+                  key={chat.id}
+                >
+                  <Badge status="success" dot classNames={{ indicator: styles.avatarBadge }}>
+                    <Avatar src={chat.imageUrl} icon={<Icon name="person" fill size={24} />} />
+                  </Badge>
+                  <div className={styles.chatContent}>
+                    <div className={styles.chatContentUpper}>
+                      <div className={styles.chatContentTitle}>{chat.title}</div>
+                      <div className={styles.chatContentTimestamp}>
+                        {getTimestamp(chat.timestamp)}
+                      </div>
+                    </div>
+                    <div className={styles.chatContentLower}>
+                      <div className={styles.chatContentDescription}>{chat.description}</div>
+                      <div className={styles.chatContentIcon}>
+                        {chat.pin && <Icon name="keep" fill color="#9e9e9e" size={16}></Icon>}
+                        {chat.muted && (
+                          <Icon name="volume_off" fill color="#9e9e9e" size={16}></Icon>
+                        )}
+                        {!Number.isNaN(chat.unread) && chat.unread! > 0 && (
+                          <div className={styles.unreadBadge}>
+                            {chat.muted ? chat.unread : null}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <div className={styles.chatContentLower}>
-                    <div className={styles.chatContentDescription}>{chat.description}</div>
-                    <div className={styles.chatContentIcon}>
-                      {chat.pin && <Icon name="keep" fill color="#9e9e9e" size={16}></Icon>}
-                      {chat.muted && <Icon name="volume_off" fill color="#9e9e9e" size={16}></Icon>}
-                      {!Number.isNaN(chat.unread) && chat.unread! > 0 && (
-                        <div className={styles.unreadBadge}>{chat.muted ? chat.unread : null}</div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </Link>
+                </Link>
+              </Dropdown>
             ))}
         </div>
       </div>
@@ -123,6 +199,7 @@ export default function ChatSidebar() {
           </div>
         </div>
       </Modal>
+      {messageContextHolder}
     </>
   )
 }
