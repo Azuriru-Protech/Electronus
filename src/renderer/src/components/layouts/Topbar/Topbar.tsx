@@ -3,7 +3,7 @@ import styles from './Topbar.module.scss'
 
 type Props = {
   children: React.ReactNode
-  className: string
+  className?: string
   style?: React.CSSProperties
 }
 
