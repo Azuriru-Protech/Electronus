@@ -5,7 +5,9 @@ export default function ShareInvite() {
   return (
     <>
       <SettingsTopbar>Share Invite</SettingsTopbar>
-      <InvitationQr />
+      <div className="invitation-wrapper">
+        <InvitationQr />
+      </div>
     </>
   )
 }
