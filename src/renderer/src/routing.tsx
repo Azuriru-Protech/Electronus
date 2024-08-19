@@ -34,12 +34,18 @@ export const router = createHashRouter([
     children: [
       {
         path: 'chat',
-        element: <ChatList />
+        element: <ChatList />,
+        children: [
+          {
+            path: ':chatId',
+            element: <Chat />
+          }
+        ]
       },
-      {
-        path: 'chat/:chatId',
-        element: <Chat />
-      },
+      // {
+      //   path: 'chat/:chatId',
+      //   element: <Chat />
+      // },
       {
         path: 'settings',
         element: <Settings />,

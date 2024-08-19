@@ -1,15 +1,9 @@
-.wrapper {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  height: 100vh;
-  height: 100dvh;
-}
-
 .chatContainer {
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  height: 100%;
 }
 
 .chatTopbar {
