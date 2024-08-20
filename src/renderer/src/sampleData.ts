@@ -118,3 +118,29 @@ export const sampleUsers = [
     isBlock: false
   }
 ]
+
+import { User } from './models/models'
+import { faker } from '@faker-js/faker'
+
+export const currentUser = {
+  id: 1,
+  name: 'John',
+  imageUrl: null,
+  signature: null,
+  online: true,
+  lastSeen: new Date(),
+  createdAt: new Date()
+}
+
+export const generateUsers = (n: number): User[] => {
+  return Array.from({ length: n }).map((_, i) => ({
+    id: i + 2,
+    name: faker.internet.displayName(),
+    imageUrl: faker.image.avatar(),
+    signature: faker.person.jobTitle(),
+    online: faker.datatype.boolean(),
+    lastSeen: faker.date.past(),
+    createdAt: faker.date.past(),
+    isBlocked: false
+  }))
+}

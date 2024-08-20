@@ -1,17 +1,29 @@
 import Icon from '@renderer/components/widgets/Icon/Icon'
 import styles from './ChatSidebar.module.scss'
 import { Avatar, Badge, Button, Dropdown, Input, message, Modal } from 'antd'
-import { useState } from 'react'
-import { toReadableDate, toReadableTime } from '@renderer/utilities/Utilities'
+import { useEffect, useState } from 'react'
+import { getAllUsers, getData, toReadableDate, toReadableTime } from '@renderer/utilities/Utilities'
 import { Link, useLocation } from 'react-router-dom'
 import { sampleChats } from '@renderer/sampleData'
 import { contextMenuItemStyle, contextMenuStyle } from '@renderer/configs/common'
+import { User } from '@renderer/models/models'
+import Profile from '@renderer/components/widgets/Profile/Profile'
 
 export default function ChatSidebar() {
-  const [chats, setChats] = useState(sampleChats)
+  const [chats, setChats] = useState<any>(sampleChats)
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
   const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false)
   const [messageApi, messageContextHolder] = message.useMessage()
+  const [searchResult, setSearchResult] = useState<User[]>([])
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [mode, setMode] = useState<'search' | 'add'>('search')
   const { pathname } = useLocation()
+
+  useEffect(() => {
+    const currentUser = getData<User>('currentUser')
+    setCurrentUser(currentUser)
+  }, [])
+
   const getTimestamp = (timestamp: Date | string) => {
     const d = new Date(timestamp)
     if (d.getDate() === new Date().getDate()) {
@@ -23,8 +35,11 @@ export default function ChatSidebar() {
     return toReadableDate(timestamp, true)
   }
   const onSearch = (value: string) => {
-    // TODO
-    console.log(value)
+    const allUsers = getAllUsers()
+    const result = allUsers.filter(
+      (u) => u.name.toLowerCase().includes(value.toLowerCase()) || u.id.toString().includes(value)
+    )
+    setSearchResult(result)
   }
   return (
     <>
@@ -62,6 +77,8 @@ export default function ChatSidebar() {
           {chats &&
             chats.map((chat) => (
               <Dropdown
+                key={chat.id}
+                trigger={['contextMenu']}
                 menu={{
                   items: [
                     {
@@ -128,7 +145,6 @@ export default function ChatSidebar() {
                   ],
                   style: contextMenuStyle
                 }}
-                trigger={['contextMenu']}
               >
                 <Link
                   className={`${styles.chat} ${pathname.includes(`/chat/${chat.id}`) && styles.active}`}
@@ -166,11 +182,29 @@ export default function ChatSidebar() {
         </div>
       </div>
       <Modal
-        title="Add Friend"
+        title={
+          mode === 'search' ? (
+            'Add Friend'
+          ) : (
+            <Button
+              onClick={() => {
+                setMode('search')
+              }}
+              shape="circle"
+              type="text"
+            >
+              <Icon name="chevron_left" />
+            </Button>
+          )
+        }
         open={isAddFriendModalOpen}
         onOk={() => setIsAddFriendModalOpen(false)}
-        onCancel={() => setIsAddFriendModalOpen(false)}
+        onCancel={() => {
+          setSearchResult([])
+          setIsAddFriendModalOpen(false)
+        }}
         centered
+        destroyOnClose={true}
         footer={null}
         styles={{
           content: {
@@ -184,20 +218,38 @@ export default function ChatSidebar() {
           }
         }}
       >
-        <div className={styles.addFriendInputSection}>
-          <Input.Search placeholder="input search text" onSearch={onSearch} enterButton />
-          <p>My ID: 1234</p>
-        </div>
-        <div className={styles.addFriendResult}>
-          <p className={styles.addFriendResultTitle}>Search Result</p>
-          <div className={styles.addFriendItem}>
-            <Avatar icon={<Icon name="person" fill />} size={36} />
-            <div>
-              <h4>name</h4>
-              <p>ID: 1234</p>
+        {mode === 'search' && (
+          <>
+            <div className={styles.addFriendInputSection}>
+              <Input.Search placeholder="input search text" onSearch={onSearch} enterButton />
+              <p>My ID: {currentUser?.id}</p>
             </div>
+            <div className={styles.addFriendResult}>
+              <p className={styles.addFriendResultTitle}>Search Result</p>
+              {searchResult.map((user) => (
+                <div
+                  className={styles.addFriendItem}
+                  key={user.id}
+                  onClick={() => {
+                    setMode('add')
+                    setSelectedUser(user)
+                  }}
+                >
+                  <Avatar src={user.imageUrl} icon={<Icon name="person" fill />} size={36} />
+                  <div>
+                    <h4>{user.name}</h4>
+                    <p>ID: {user.id}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+        {mode === 'add' && selectedUser && (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Profile {...selectedUser} />
           </div>
-        </div>
+        )}
       </Modal>
       {messageContextHolder}
     </>

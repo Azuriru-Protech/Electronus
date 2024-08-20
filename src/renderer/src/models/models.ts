@@ -4,6 +4,7 @@ export interface User {
   imageUrl: string | null
   signature: string | null
   online: boolean | null
+  isBlocked: boolean
   lastSeen: Date | null
   createdAt: Date
 }
@@ -17,17 +18,13 @@ export interface UserFriend {
   createdAt: Date
 }
 
-type Chat = PersonalChat | GroupChat | SystemChat
+export type Chat = PersonalChat | GroupChat
 
-interface ChatBase {
+export interface ChatBase {
   id: number
   name: string
   imageUrl: string | null
   subtitle: string | null
-}
-
-export interface SystemChat extends ChatBase {
-  type: 'system'
 }
 
 export interface PersonalChat extends ChatBase {
