@@ -56,7 +56,7 @@ export default function DeviceManagement() {
             {device.current && (
               <div className={styles.deviceManagementCurrent}>{t('currentDevice')}</div>
             )}
-            <div className="settingsCardItem">
+            <div className="settingsCardItem padding-l">
               <div className={styles.deviceManagementDetailWrapper}>
                 <p className={styles.deviceManagementDetail}>
                   {device.model} ({device.name})

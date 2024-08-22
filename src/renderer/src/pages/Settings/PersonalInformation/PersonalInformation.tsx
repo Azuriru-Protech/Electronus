@@ -42,7 +42,7 @@ export default function PersonalInformation() {
       <SettingsTopbar>{t('personalInformation')}</SettingsTopbar>
       <div className="settingsCardList">
         <div className="settingsCard">
-          <div className="settingsCardItem">
+          <div className="settingsCardItem padding">
             <div
               style={{ display: 'flex', alignItems: 'center', gap: '1rem', position: 'relative' }}
             >
@@ -65,28 +65,28 @@ export default function PersonalInformation() {
           </div>
         </div>
         <div className="settingsCard">
-          <div className="settingsCardItem" onClick={() => showIdModal()}>
+          <div className="settingsCardItem padding-l" onClick={() => showIdModal()}>
             <h4>ID</h4>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               1234
               <Icon name="chevron_right" weight={200} />
             </div>
           </div>
-          <div className="settingsCardItem" onClick={() => setIsMyQrOpen(true)}>
+          <div className="settingsCardItem padding-l" onClick={() => setIsMyQrOpen(true)}>
             <h4>{t('myQrCode')}</h4>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Icon name="qr_code" weight={200} />
               <Icon name="chevron_right" weight={200} />
             </div>
           </div>
-          <div className="settingsCardItem">
+          <div className="settingsCardItem padding-l">
             <h4>{t('gender')}</h4>
             <Radio.Group onChange={onChange} value={value} style={{ display: 'flex', gap: '1rem' }}>
               <Radio value="male">{t('male')}</Radio>
               <Radio value="female">{t('female')}</Radio>
             </Radio.Group>
           </div>
-          <div className="settingsCardItem" onClick={() => setIsSignatureModalOpen(true)}>
+          <div className="settingsCardItem padding-l" onClick={() => setIsSignatureModalOpen(true)}>
             <h4>{t('personalizedSignature')}</h4>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <p>{signature}</p>

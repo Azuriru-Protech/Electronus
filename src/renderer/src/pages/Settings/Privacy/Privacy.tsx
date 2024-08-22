@@ -17,46 +17,48 @@ export default function Privacy(): JSX.Element {
     <>
       <SettingsTopbar>Privacy</SettingsTopbar>
       <div className="privacy-page-wrapper">
-        <div className="settingsCard">
-          <div className="settingsCardItem">
-            <h4> Adding Friend Verification</h4>
-            <Switch
-              defaultChecked
-              onChange={() => setAddingFriendVerification(!addingFriendVerification)}
-            />
+        <div className="settingsCardList">
+          <div className="settingsCard">
+            <div className="settingsCardItem padding-l">
+              <h4> Adding Friend Verification</h4>
+              <Switch
+                defaultChecked
+                onChange={() => setAddingFriendVerification(!addingFriendVerification)}
+              />
+            </div>
           </div>
         </div>
 
         <div className="settingsCardList">
           <div className="settingsCard">
-            <div className="settingsCardItem">
+            <div className="settingsCardItem padding-l">
               <h4>Phone Number</h4>
               <Switch defaultChecked onChange={() => setPhoneNumber(!phoneNumber)} />
             </div>
 
-            <div className="settingsCardItem">
+            <div className="settingsCardItem padding-l">
               <h4>FFSAY ID</h4>
               <Switch defaultChecked onChange={() => setFfsayID(!ffsayID)} />
             </div>
 
-            <div className="settingsCardItem">
+            <div className="settingsCardItem padding-l">
               <h4>Group</h4>
               <Switch defaultChecked onChange={() => setGroup(!group)} />
             </div>
 
-            <div className="settingsCardItem">
+            <div className="settingsCardItem padding-l">
               <h4>Business Card</h4>
               <Switch defaultChecked onChange={() => setBusinessCard(!businessCard)} />
             </div>
 
-            <div className="settingsCardItem">
+            <div className="settingsCardItem padding-l">
               <h4>My QR Code</h4>
               <Switch defaultChecked onChange={() => setMyQRCode(!myQRCode)} />
             </div>
           </div>
 
           <div className="settingsCard">
-            <div className="settingsCardItem">
+            <div className="settingsCardItem padding-l">
               <h4>Blacklist</h4>
               <Link to="/settings/privacy/blacklist">
                 <img onClick={() => {}} src={RightIcon} />

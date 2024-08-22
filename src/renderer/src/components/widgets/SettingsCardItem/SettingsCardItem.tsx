@@ -13,6 +13,7 @@ type Props = {
   link?: string | null
   avatar?: string | null
   content?: string | null
+  noPadding?: boolean
   onClick?: () => void
 }
 
@@ -26,7 +27,8 @@ export default function SettingsCardItem({
   onClick,
   small,
   avatar,
-  content
+  content,
+  noPadding
 }: Props) {
   const styling = () => {
     let styles = {}
@@ -84,7 +86,7 @@ export default function SettingsCardItem({
   return (
     <>
       {link ? (
-        <Link to={link} className="settingsCard" onClick={onClick}>
+        <Link to={link} className={`settingsCard ${noPadding && `noPadding`}`} onClick={onClick}>
           {innerDiv()}
         </Link>
       ) : (
