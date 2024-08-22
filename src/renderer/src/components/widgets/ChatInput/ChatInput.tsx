@@ -4,6 +4,7 @@ import Icon from '../Icon/Icon'
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react'
 import { useRef, useState } from 'react'
 import { MentionsRef } from 'antd/es/mentions'
+import { contextMenuItemStyle, contextMenuStyle } from '@renderer/configs/common'
 
 export default function ChatInput() {
   const textareaRef = useRef<MentionsRef>(null)
@@ -66,14 +67,26 @@ export default function ChatInput() {
     <div className={styles.messageInputWrapper}>
       <Dropdown
         menu={{
+          style: contextMenuStyle,
           items: [
             {
               icon: <Icon name="image" size={20} />,
               label: 'Image or Video',
-              key: 'media'
+              key: 'media',
+              style: contextMenuItemStyle
             },
-            { icon: <Icon name="folder_open" size={20} />, label: 'File', key: 'file' },
-            { icon: <Icon name="id_card" size={20} />, label: 'Namecard', key: 'namecard' }
+            {
+              icon: <Icon name="folder_open" size={20} />,
+              label: 'File',
+              key: 'file',
+              style: contextMenuItemStyle
+            },
+            {
+              icon: <Icon name="id_card" size={20} />,
+              label: 'Namecard',
+              key: 'namecard',
+              style: contextMenuItemStyle
+            }
           ]
         }}
         placement="topLeft"

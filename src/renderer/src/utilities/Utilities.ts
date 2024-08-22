@@ -1,3 +1,6 @@
+import { User } from '@renderer/models/models'
+import { generateUsers, currentUser as _currentUser } from '../sampleData'
+
 export const debugPrint = (...args: any) => {
   if (isDebug()) {
     console.log(...args)
@@ -48,4 +51,34 @@ export const toReadableDate = (date?: string | Date | null, showYear = false) =>
     month: '2-digit',
     year: showYear ? 'numeric' : undefined
   })
+}
+
+export const getData = <T = any>(key: string) => {
+  return window.electron.store.get<T>(key)
+}
+
+export const setData = <T = any>(key: string, val: T) => {
+  window.electron.store.set<T>(key, val)
+}
+
+export const getAllUsers = () => {
+  const users = getData<User[]>('users')
+  if (!users || !users.length) {
+    const newUsers = generateUsers(100)
+    setData('users', newUsers)
+    return newUsers
+  } else {
+    return users
+  }
+}
+
+export const joinBlocks = (users: User[]) => {
+  getAllUsers
+}
+
+export const getCurrentUser = () => {
+  const currentUser = getData<User>('currentUser')
+  if (!currentUser) {
+    setData('currentUser', _currentUser)
+  }
 }

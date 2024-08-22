@@ -3,6 +3,16 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
+import Store from 'electron-store'
+const store = new Store()
+// store.openInEditor()
+ipcMain.on('electron-store-get', async (event, val) => {
+  event.returnValue = store.get(val)
+})
+ipcMain.on('electron-store-set', async (event, key, val) => {
+  store.set(key, val)
+})
+
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -52,8 +62,9 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
+  ipcMain.on('get-locale', (event) => {
+    event.returnValue = app.getLocale()
+  })
 
   createWindow()
 

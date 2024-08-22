@@ -6,15 +6,22 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 type Props = {
-  imageUrl: string | null
+  imageUrl?: string | null
   name: string
   id: number
-  remark: string | null
-  isBlock: boolean
-  signature: string | null
+  remark?: string | null
+  isBlock?: boolean
+  signature?: string | null
 }
 
-export default function Profile({ imageUrl, name, id, remark, isBlock, signature }: Props) {
+export default function Profile({
+  imageUrl = null,
+  name,
+  id,
+  remark = null,
+  isBlock = false,
+  signature = null
+}: Props) {
   const [isBlockChecked, setIsBlockChecked] = useState(isBlock)
   const [remarkInput, setRemarkInput] = useState<string>()
   useEffect(() => {

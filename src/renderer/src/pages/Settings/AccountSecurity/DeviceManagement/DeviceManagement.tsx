@@ -10,7 +10,7 @@ const fakeDevices = [
   {
     name: 'John Doe',
     model: 'iPhone 13',
-    id: 'abcdefg1234567890',
+    id: 'abcdefg12345678901',
     current: true,
     lastActive: new Date()
   },
@@ -52,7 +52,7 @@ export default function DeviceManagement() {
 
       <div className="settingsCardList">
         {devices.map((device) => (
-          <div className="settingsCard" style={{ position: 'relative' }}>
+          <div className="settingsCard" style={{ position: 'relative' }} key={device.id}>
             {device.current && (
               <div className={styles.deviceManagementCurrent}>{t('currentDevice')}</div>
             )}
