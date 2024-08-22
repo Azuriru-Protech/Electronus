@@ -141,6 +141,7 @@ export const generateUsers = (n: number): User[] => {
     online: faker.datatype.boolean(),
     lastSeen: faker.date.past(),
     createdAt: faker.date.past(),
-    isBlocked: false
+    isBlocked: false,
+    status: 'pending'
   }))
 }
