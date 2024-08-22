@@ -1,7 +1,14 @@
 .share-invite-wrapper {
   @include flex-box(column, center, center, 1rem);
   background: #fff;
-  padding: 2em;
+  // padding: 2em;
+  // border-radius: 8px;
+}
+
+.generate-invite {
+  @include flex-box(column, center, center, 1rem);
+  background: #fff;
+  padding: 1rem;
   border-radius: 8px;
 }
 

@@ -1,56 +1,61 @@
-.share-invite-wrapper {
-  @include flex-box(column, center, center, 1rem);
-  background: #fff;
-  padding: 2em;
+.invitation-wrapper {
+  background-color: white;
+  padding: 2rem;
   border-radius: 8px;
 }
+// .share-invite-wrapper {
+//   @include flex-box(column, center, center, 1rem);
+//   background: #fff;
+//   padding: 2em;
+//   border-radius: 8px;
+// }
 
-.avatar-wrapper {
-  @include flex-box(row, start, center, 0.5rem);
-  width: 100%;
-}
+// .avatar-wrapper {
+//   @include flex-box(row, start, center, 0.5rem);
+//   width: 100%;
+// }
 
-.username {
-  font-size: 1rem;
-  font-weight: 700;
-}
+// .username {
+//   font-size: 1rem;
+//   font-weight: 700;
+// }
 
-.scan-details {
-  font-size: 0.8rem;
-  font-weight: 400;
-  color: #b6b6b6;
-}
+// .scan-details {
+//   font-size: 0.8rem;
+//   font-weight: 400;
+//   color: #b6b6b6;
+// }
 
-.detail-wrapper {
-  @include flex-box(column, center, start, 0.5rem);
-}
+// .detail-wrapper {
+//   @include flex-box(column, center, start, 0.5rem);
+// }
 
-.qr-code-wrapper {
-  @include flex-box(column, center, center, 0.5rem);
-  width: 100%;
-  text-align: center;
-  font-size: 0.8rem;
-}
+// .qr-code-wrapper {
+//   @include flex-box(column, center, center, 0.5rem);
+//   width: 100%;
+//   text-align: center;
+//   font-size: 0.8rem;
+// }
 
-.invite-description {
-  text-align: justify;
-  font-weight: 400;
-  font-size: 0.8rem;
-  color: #b6b6b6;
-  width: 400px;
-}
+// .invite-description {
+//   text-align: justify;
+//   font-weight: 400;
+//   font-size: 0.8rem;
+//   color: #b6b6b6;
+//   width: 400px;
+// }
 
-.update-qr-code-button {
-  @include flex-box(row, center, center, 0.5rem);
-  width: 100%;
-  text-align: center;
-  font-size: 0.8rem;
-  color: #6795ff;
-  cursor: pointer;
-}
+// .update-qr-code-button {
+//   @include flex-box(row, center, center, 0.5rem);
+//   width: 100%;
+//   text-align: center;
+//   font-size: 0.8rem;
+//   color: #6795ff;
+//   cursor: pointer;
+// }
 
-.button-wrapper {
-  @include flex-box(row, space-between, center, 1rem);
-  width: 100%;
-  margin-top: 1rem;
-}
+// .button-wrapper {
+//   @include flex-box(row, space-between, center, 1rem);
+//   width: 100%;
+//   margin-top: 1rem;
+// }
