@@ -5,7 +5,7 @@ import icon from '../../resources/icon.png?asset'
 
 import Store from 'electron-store'
 const store = new Store()
-store.openInEditor()
+// store.openInEditor()
 ipcMain.on('electron-store-get', async (event, val) => {
   event.returnValue = store.get(val)
 })
@@ -62,8 +62,9 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
+  ipcMain.on('get-locale', (event) => {
+    event.returnValue = app.getLocale()
+  })
 
   createWindow()
 

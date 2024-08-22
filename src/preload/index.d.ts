@@ -7,6 +7,7 @@ declare global {
         get: <T = any>(key: string) => T
         set: <T = any>(key: string, val: T) => void
       }
+      locale: () => string
     }
     api: unknown
   }

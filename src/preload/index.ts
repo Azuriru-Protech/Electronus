@@ -19,7 +19,9 @@ if (process.contextIsolated) {
           ipcRenderer.send('electron-store-set', property, val)
         }
         // Other method you want to add like has(), reset(), etc.
-      }
+      },
+      locale: () => ipcRenderer.sendSync('get-locale')
+
       // Any other methods you want to expose in the window object.
       // ...
     })

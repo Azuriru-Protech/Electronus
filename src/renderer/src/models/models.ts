@@ -4,19 +4,25 @@ export interface User {
   imageUrl: string | null
   signature: string | null
   online: boolean | null
-  isBlocked: boolean
+  isBlocked: boolean 
   lastSeen: Date | null
   createdAt: Date
+  status: 'pending' | 'accepted' | 'blocked'
 }
 
-export interface UserFriend {
-  id: number
-  userId: number
-  friendId: number
-  remark: string | null
-  status: 'pending' | 'accepted' | 'blocked'
-  createdAt: Date
-}
+// export interface UserFriend {
+//   id: number
+//   userId: number
+//   friendId: number
+//   remark: string | null
+//   createdAt: Date
+// }
+
+// export interface Blocked {
+//   id: number;
+//   userId: number;
+//   blockedId: string
+// }
 
 export type Chat = PersonalChat | GroupChat
 
