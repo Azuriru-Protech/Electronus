@@ -1,9 +1,10 @@
 .settingsCardList {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
   max-width: 600px;
   width: 100%;
+  padding: 0.6rem 1.4rem;
 }
 .settingsCardLabel {
   padding-left: 1.5rem;
@@ -12,6 +13,9 @@
   margin-bottom: 0.3rem;
 }
 .settingsCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
   background-color: white;
   width: 100%;
   border-radius: 0.3rem;
@@ -22,16 +26,16 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding: 1rem 2rem;
+  // padding: 0rem 2rem;
   cursor: pointer;
   width: 100%;
 
   &:not(:last-child) {
     border-bottom: 1px solid #e1e1e1;
   }
-  &:hover {
-    box-shadow: 0 0 10px #e1e1e1;
-  }
+  // &:hover {
+  //   box-shadow: 0 0 10px #e1e1e1;
+  // }
 }
 
 .settingsCardContainer {
@@ -40,12 +44,13 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  gap: 0.4rem;
 }
 
 .settingsCardContent {
   display: flex;
   justify-content: flex-start;
-  padding: 0rem 2rem 1rem 2rem;
+  // padding: 0rem 2rem;
 }
 
 .settingsCardItemBorderless {
@@ -54,12 +59,41 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 1rem;
-  padding: 0.6rem 2rem;
+  // padding: 0.6rem 2rem;
   cursor: pointer;
 
   // &:hover {
   //   box-shadow: 0 0 10px #e1e1e1;
   // }
+}
+
+.settingsCardItemBorderlessWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.6rem;
+  // padding: 0.6rem 2rem;
+  cursor: pointer;
+
+  .contentContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  .actionContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-start;
+
+    .actionSwitch {
+      scale: 1.2;
+    }
+  }
 }
 
 .small {
