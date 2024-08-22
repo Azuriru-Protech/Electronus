@@ -41,7 +41,11 @@ export default function Blacklist() {
       <div className="settingsCardList">
         <div className="settingsCard">
           {blacklistedUser.map((user) => (
-            <Link className="settingsCardItem" to={`/settings/privacy/blacklist/${user.id}`}>
+            <Link
+              className="settingsCardItem"
+              to={`/settings/privacy/blacklist/${user.id}`}
+              key={user.id}
+            >
               <div className={styles.userWrapper}>
                 <Avatar icon={<Icon name="person" fill />} src={user.imageUrl} />
                 <h4>{user.name}</h4>
