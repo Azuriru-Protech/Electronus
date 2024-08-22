@@ -62,31 +62,35 @@ export default function SystemSettings() {
       <SettingsTopbar>{t('systemSettings')}</SettingsTopbar>
       <div className="settingsCardList">
         <div className="settingsCard">
-          <SettingsCardItem
-            title={t('notification')}
-            link={'/settings/system-settings/notification'}
-            first
-          />
+          <Link className="settingsCardItem" to={'/settings/system-settings/notification'}>
+            <h4>{t('notification')}</h4>
+            <Icon name="chevron_right" weight={200} />
+          </Link>
           <Link to="/settings/system-settings/change-language" className="settingsCardItem">
             <h4>{t('changeLanguage')}</h4>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: '0.5rem'
-              }}
-            >
+            <div className="settingsCardItemContent">
               <p style={{ color: '#78787d' }}>{getCurrentLanguage()}</p>
               <Icon name="chevron_right" weight={200} color="#505050" />
             </div>
           </Link>
-          <SettingsCardItem title={t('clearCache')} onClick={clearChatHistory} border />
-          <SettingsCardItem title={t('clearChatHistory')} onClick={clearChatHistory} border />
-          <SettingsCardItem title={t('aboutUs')} link={'/settings/system-settings/about-us'} last />
+          <div className="settingsCardItem" onClick={clearChatHistory}>
+            <h4>{t('clearCache')}</h4>
+            <Icon name="chevron_right" weight={200} />
+          </div>
+          <div className="settingsCardItem" onClick={clearCache}>
+            <h4>{t('clearChatHistory')}</h4>
+            <Icon name="chevron_right" weight={200} />
+          </div>
+          <Link to={'/settings/system-settings/about-us'} className="settingsCardItem">
+            <h4>{t('aboutUs')}</h4> <Icon name="chevron_right" weight={200} />
+          </Link>
         </div>
-
-        <SettingsCardItem title={t('switchAccount')} />
+        <div className="settingsCard">
+          <div className="settingsCardItem" onClick={clearCache}>
+            <h4>{t('switchAccount')}</h4>
+            <Icon name="chevron_right" weight={200} />
+          </div>
+        </div>
         <div
           className="settingsCard"
           style={{ background: 'none', display: 'flex', justifyContent: 'flex-end' }}

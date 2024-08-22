@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Icon from '../Icon/Icon'
 import { Avatar, Switch } from 'antd'
+import styles from './SettingsCardItem.module.scss'
 
 type Props = {
   title?: string | null
@@ -13,7 +14,6 @@ type Props = {
   link?: string | null
   avatar?: string | null
   content?: string | null
-  noPadding?: boolean
   onClick?: () => void
 }
 
@@ -27,8 +27,7 @@ export default function SettingsCardItem({
   onClick,
   small,
   avatar,
-  content,
-  noPadding
+  content
 }: Props) {
   const styling = () => {
     let styles = {}
@@ -61,8 +60,8 @@ export default function SettingsCardItem({
 
   const innerDiv = () => {
     return (
-      <div className={`settingsCardContainer  ${small ? 'small' : ''}`} style={styling()}>
-        <div className={`settingsCardItem `} style={content ? { borderBottom: 'none' } : {}}>
+      <div className={` ${styles.cardContainer}  ${small ? 'small' : ''}`} style={styling()}>
+        <div className={`${styles.cardItem} `} style={content ? { borderBottom: 'none' } : {}}>
           {title && <h4>{title}</h4>}
           {avatar && <Avatar src={avatar} icon={<Icon name="group" fill />} size={42} />}
           <div className={`flex-center`}>
@@ -86,11 +85,11 @@ export default function SettingsCardItem({
   return (
     <>
       {link ? (
-        <Link to={link} className={`settingsCard ${noPadding && `noPadding`}`} onClick={onClick}>
+        <Link to={link} className="cardWrapper" onClick={onClick}>
           {innerDiv()}
         </Link>
       ) : (
-        <div className="settingsCard" onClick={onClick}>
+        <div className="cardWrapper" onClick={onClick}>
           {innerDiv()}
         </div>
       )}

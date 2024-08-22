@@ -67,21 +67,21 @@ export default function PersonalInformation() {
           </div>
         </div>
         <div className="settingsCard">
-          <div className="settingsCardItem padding-l" onClick={() => showIdModal()}>
+          <div className="settingsCardItem " onClick={() => showIdModal()}>
             <h4>ID</h4>
             <div className={styles.settingsCardItemContent}>
               1234
               <Icon name="chevron_right" weight={200} />
             </div>
           </div>
-          <div className="settingsCardItem padding-l" onClick={() => setIsMyQrOpen(true)}>
+          <div className="settingsCardItem " onClick={() => setIsMyQrOpen(true)}>
             <h4>{t('myQrCode')}</h4>
             <div className={styles.settingsCardItemContent}>
               <Icon name="qr_code" weight={200} />
               <Icon name="chevron_right" weight={200} />
             </div>
           </div>
-          <div className="settingsCardItem padding-l">
+          <div className="settingsCardItem ">
             <h4>{t('gender')}</h4>
             <Radio.Group
               onChange={onChange}
@@ -92,7 +92,7 @@ export default function PersonalInformation() {
               <Radio value="female">{t('female')}</Radio>
             </Radio.Group>
           </div>
-          <div className="settingsCardItem padding-l" onClick={() => setIsSignatureModalOpen(true)}>
+          <div className="settingsCardItem " onClick={() => setIsSignatureModalOpen(true)}>
             <h4>{t('personalizedSignature')}</h4>
             <div className={styles.settingsCardItemContent}>
               <p>{signature}</p>

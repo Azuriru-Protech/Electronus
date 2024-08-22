@@ -34,22 +34,22 @@ export default function AccountSecurity() {
       <SettingsTopbar>{t('accountSecurity')}</SettingsTopbar>
       <div className="settingsCardList">
         <div className="settingsCard">
-          <div className="settingsCardItem padding-l" onClick={() => setIsPhoneModalOpen(true)}>
+          <div className="settingsCardItem " onClick={() => setIsPhoneModalOpen(true)}>
             <h4>{t('phoneNumber')}</h4>
             <Icon name="chevron_right" weight={200} />
           </div>
-          <div className="settingsCardItem padding-l" onClick={() => setIsPasswordModalOpen(true)}>
+          <div className="settingsCardItem " onClick={() => setIsPasswordModalOpen(true)}>
             <h4>{t('changePassword')}</h4>
             <Icon name="chevron_right" weight={200} />
           </div>
         </div>
-        <div className="settingsCard padding-l">
+        <div className="settingsCard ">
           <Link to="/settings/account-security/device-management" className="settingsCardItem">
             <h4>{t('deviceManagement')}</h4>
             <Icon name="chevron_right" weight={200} />
           </Link>
         </div>
-        <div className="settingsCard padding-l">
+        <div className="settingsCard ">
           <div className="settingsCardItem" onClick={() => deleteAccount()}>
             <h4>{t('deleteAccount')}</h4>
             <Icon name="chevron_right" weight={200} />
