@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, Menu, Tray } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -12,6 +12,8 @@ ipcMain.on('electron-store-get', async (event, val) => {
 ipcMain.on('electron-store-set', async (event, key, val) => {
   store.set(key, val)
 })
+
+let tray: Tray | null = null
 
 function createWindow(): void {
   // Create the browser window.
@@ -46,12 +48,20 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  mainWindow.on('close', () => {})
 }
 
 app.setLoginItemSettings({
   openAtLogin: true,
   path: process.execPath
 })
+
+const handleQuit = () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -71,6 +81,11 @@ app.whenReady().then(() => {
     event.returnValue = app.getLocale()
   })
 
+  tray = new Tray(join(__dirname, '../../resources/icon.png'))
+  const contextMenu = Menu.buildFromTemplate([{ label: 'Quit', type: 'normal', click: handleQuit }])
+  tray.setContextMenu(contextMenu)
+  tray.addListener('click', () => createWindow())
+
   createWindow()
 
   app.on('activate', function () {
@@ -84,9 +99,9 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
+  // if (process.platform !== 'darwin') {
+  //   app.quit()
+  // }
 })
 
 // In this file you can include the rest of your app"s specific main process
