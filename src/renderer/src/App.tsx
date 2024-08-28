@@ -8,6 +8,10 @@ import { useEffect } from 'react'
 export default function App() {
   const { i18n } = useTranslation()
   useEffect(() => {
+    localeInit()
+  }, [])
+
+  const localeInit = () => {
     let locale = localStorage.getItem('locale')
 
     if (!locale) {
@@ -38,7 +42,7 @@ export default function App() {
       console.log('set to existing locale', locale)
       i18n.changeLanguage(locale)
     }
-  }, [])
+  }
 
   return (
     <ConfigProvider
