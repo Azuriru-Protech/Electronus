@@ -20,7 +20,8 @@ if (process.contextIsolated) {
         }
         // Other method you want to add like has(), reset(), etc.
       },
-      locale: () => ipcRenderer.sendSync('get-locale')
+      locale: () => ipcRenderer.sendSync('get-locale'),
+      cometchatInfo: () => ipcRenderer.sendSync('get-cometchat-info')
 
       // Any other methods you want to expose in the window object.
       // ...

@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import 'dotenv/config'
 
 import Store from 'electron-store'
 const store = new Store()
@@ -11,6 +12,14 @@ ipcMain.on('electron-store-get', async (event, val) => {
 })
 ipcMain.on('electron-store-set', async (event, key, val) => {
   store.set(key, val)
+})
+
+ipcMain.on('get-cometchat-info', (event) => {
+  event.returnValue = {
+    appId: process.env.COMETCHAT_APP_ID,
+    region: process.env.COMETCHAT_REGION,
+    authKey: process.env.COMETCHAT_AUTH_KEY
+  }
 })
 
 function createWindow(): void {

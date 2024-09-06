@@ -1,7 +1,7 @@
 import Icon from '@renderer/components/widgets/Icon/Icon'
 import styles from './Chat.module.scss'
 import ChatSidebar from '@renderer/components/layouts/ChatSidebar/ChatSidebar'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { Avatar, Button, Checkbox, Dropdown, FloatButton, GetProp, message, Modal } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { toReadableDate, toReadableTime } from '@renderer/utilities/Utilities'
@@ -11,48 +11,81 @@ import Topbar from '@renderer/components/layouts/Topbar/Topbar'
 import { ChatRoom, Message, sampleChats, sampleMessages } from '@renderer/sampleData'
 import ForwardIcon from '@renderer/assets/images/icons/forward.svg'
 import ChatInput from '@renderer/components/widgets/ChatInput/ChatInput'
+import {
+  BaseMessage,
+  Call,
+  CometChat,
+  Conversation,
+  Group,
+  InteractiveMessage,
+  MediaMessage,
+  TextMessage,
+  User
+} from '@cometchat/chat-sdk-javascript'
+import { v4 } from 'uuid'
+import { setUser } from '@renderer/lib/features/user/userSlice'
 
 export default function Chat() {
-  const { chatId } = useParams()
-  const [chatType, setChatType] = useState<'chat' | 'group'>('chat')
-  const [chatInfo, setChatInfo] = useState<ChatRoom>(sampleChats[0])
-  const [messages, setMessages] = useState<Message[]>([])
+  const { chatId, chatType } = useParams()
+  const { pathname } = useLocation()
+  const [conversation, setConversation] = useState<Conversation | null>()
+  const [messages, setMessages] = useState<BaseMessage[]>([])
   const [selectionMode, setSelectionMode] = useState(false)
-  const [selectedMessages, setSelectedMessages] = useState<number[]>([])
+  const [selectedMessageIds, setSelectedMessageIds] = useState<number[]>([])
   const [isChatSettingsDrawerOpen, setIsChatSettingsDrawerOpen] = useState(false)
   const [isGroupSettingsDrawerOpen, setIsGroupSettingsDrawerOpen] = useState(false)
   const [replyChat, setReplyChat] = useState<Message | null>(null)
   const [deleteMessageModal, deleteMessageContextHolder] = Modal.useModal()
   const [recallMessageModal, recallMessageContextHolder] = Modal.useModal()
   const [messageApi, messageContextHolder] = message.useMessage()
+  const [userPresenceListenerId, setUserPresenceListenerId] = useState<string>(v4())
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
 
   useEffect(() => {
-    const messages = sampleMessages.map((m) => ({ ...m, sendByAuthor: m.author === 1 }))
-    setMessages(messages)
-    if (Number.isNaN(Number(chatId))) {
-      return
+    getCurrentUser()
+  }, [])
+
+  useEffect(() => {
+    // setMessages(messages)
+    // setChatInfo(chatInfo)
+    // setChatType(chatInfo?.type || 'chat')
+    // console.log(chatId)
+    reset()
+    console.log('chatId: ', chatId)
+    getMessages()
+    getConversationDetail()
+    subUserPresence()
+    return () => {
+      CometChat.removeUserListener(userPresenceListenerId)
     }
-    const chatInfo = sampleChats.find((c) => c.id === Number(chatId))!
-    setChatInfo(chatInfo)
-    setChatType(chatInfo?.type || 'chat')
   }, [chatId])
 
+  const reset = () => {
+    setConversation(undefined)
+  }
+
   const onChange: GetProp<typeof Checkbox.Group<number>, 'onChange'> = (checkedValues) => {
-    setSelectedMessages(checkedValues)
+    setSelectedMessageIds(checkedValues)
+  }
+
+  const getCurrentUser = async () => {
+    const user = await CometChat.getLoggedInUser()
+    console.log(user)
+    setCurrentUser(user)
   }
 
   const selectMessage = (messageId: number) => {
     if (!selectionMode) {
       return
     }
-    if (selectedMessages.includes(messageId)) {
-      setSelectedMessages(selectedMessages.filter((id) => id !== messageId))
+    if (selectedMessageIds.includes(messageId)) {
+      setSelectedMessageIds(selectedMessageIds.filter((id) => id !== messageId))
       return
     }
-    if (selectedMessages.length === 0) {
-      setSelectedMessages([messageId])
+    if (selectedMessageIds.length === 0) {
+      setSelectedMessageIds([messageId])
     } else {
-      setSelectedMessages([...selectedMessages, messageId])
+      setSelectedMessageIds([...selectedMessageIds, messageId])
     }
   }
 
@@ -65,7 +98,7 @@ export default function Chat() {
     if (!confirm) {
       return
     }
-    setMessages(messages.filter((m) => m.id !== messageId))
+    // setMessages(messages.filter((m) => m.getId() !== messageId))
     messageApi.open({
       type: 'success',
       content: 'Message deleted successfully'
@@ -84,13 +117,73 @@ export default function Chat() {
     return !isDateSame || !isMonthSame || !isYearSame
   }
 
+  const getMessages = async () => {
+    const limit: number = 30
+    const messagesRequest = new CometChat.MessagesRequestBuilder().setLimit(limit)
+    if (chatType === 'group') {
+      messagesRequest.setGUID(chatId!)
+    } else {
+      messagesRequest.setUID(chatId!)
+    }
+    const messages = await messagesRequest.build().fetchPrevious()
+    setMessages(messages)
+  }
+
+  const getConversationDetail = async () => {
+    const conversation = await CometChat.getConversation(chatId!, chatType!)
+    setConversation(conversation)
+  }
+
+  const subUserPresence = () => {
+    CometChat.addUserListener(
+      userPresenceListenerId,
+      new CometChat.UserListener({
+        onUserOnline: (onlineUser: CometChat.User) => {
+          console.log('On User Online:', { onlineUser })
+        },
+        onUserOffline: (offlineUser: CometChat.User) => {
+          console.log('On User Offline:', { offlineUser })
+        }
+      })
+    )
+  }
+  const getConversationSubtitle = () => {
+    if (chatType === 'group') {
+      const group = conversation?.getConversationWith() as Group
+      if (group?.getMembersCount) {
+        return `${group.getMembersCount()} Members`
+      }
+    } else {
+      const user = conversation?.getConversationWith() as User
+      if (user?.getName()) {
+        return user.getName()
+      }
+    }
+    return ''
+  }
+
+  const getConversationImageUrl = () => {
+    if (chatType === 'group') {
+      const group = conversation?.getConversationWith() as Group
+      if (group?.getIcon) {
+        return group?.getIcon()
+      }
+    } else {
+      const user = conversation?.getConversationWith() as User
+      if (user?.getName()) {
+        return user.getName()
+      }
+    }
+    return ''
+  }
+
   return (
     <>
       <div className={styles.chatContainer}>
         <Topbar className={styles.chatTopbar}>
           <div>
-            <h5>Name</h5>
-            <p className={styles.chatSubtitle}>Online</p>
+            <h5>{conversation?.getConversationWith().getName()}</h5>
+            <p className={styles.chatSubtitle}>{getConversationSubtitle()}</p>
           </div>
           <Button
             type="text"
@@ -105,127 +198,188 @@ export default function Chat() {
           ></Button>
         </Topbar>
         <div className={styles.chatroomWrapper}>
-          <Checkbox.Group className={styles.chatroom} onChange={onChange} value={selectedMessages}>
+          <Checkbox.Group
+            className={styles.chatroom}
+            onChange={onChange}
+            value={selectedMessageIds}
+          >
             {messages.map((message, index) => (
-              <React.Fragment key={message.id}>
-                {isDateShow(messages[index - 1]?.sentAt || null, message.sentAt) && (
+              <React.Fragment key={message.getId()}>
+                {message.getCategory() !== 'action' && (
+                  <>
+                    {/* {isDateShow(messages[index - 1]?.sentAt || null, message.sentAt) && (
                   <div className={styles.dateWrapper}>
                     <div className={styles.dateContainer}>{toReadableDate(message.sentAt)}</div>
                   </div>
-                )}
-                <div
-                  className={`${styles.messageItem} ${selectionMode && styles.selectionMode} ${
-                    selectedMessages.find((id) => id === message.id) && styles.selected
-                  }`}
-                  onClick={() => {
-                    selectMessage(message.id)
-                  }}
-                >
-                  {selectionMode && (
-                    <div className={styles.messageItemCheckboxWrapper}>
-                      <Checkbox value={message.id}></Checkbox>
-                    </div>
-                  )}
-                  <div className={styles.messageItemContent}>
+                )} */}
                     <div
-                      className={`${styles.messageWrapper} ${message.sendByAuthor && styles.messageWrapperAuthor}`}
+                      className={`${styles.messageItem} ${selectionMode && styles.selectionMode} ${
+                        selectedMessageIds.find((id) => id === message.getId()) && styles.selected
+                      }`}
+                      onClick={() => {
+                        selectMessage(message.getId())
+                      }}
                     >
-                      <Dropdown
-                        menu={{
-                          items: [
-                            { label: 'Mute', key: 'mute' },
-                            { label: 'Remove from Group', key: 'remove' }
-                          ]
-                        }}
-                        trigger={['contextMenu']}
-                      >
-                        <div style={{ width: 32 }}>
-                          {index === 0 ? (
-                            <Avatar
-                              src={chatInfo.imageUrl}
-                              icon={<Icon name="person" fill size={24} />}
-                            />
-                          ) : (
-                            messages[index - 1].author !== message.author && (
-                              <Avatar
-                                src={chatInfo.imageUrl}
-                                icon={<Icon name="person" fill size={24} />}
-                              />
-                            )
-                          )}
+                      {selectionMode && (
+                        <div className={styles.messageItemCheckboxWrapper}>
+                          <Checkbox value={message.getId()}></Checkbox>
                         </div>
-                      </Dropdown>
-                      <Dropdown
-                        menu={{
-                          items: [
-                            {
-                              label: 'reply',
-                              key: 'reply',
-                              onClick: () => {
-                                setReplyChat(message)
-                              }
-                            },
-                            { label: 'forward', key: 'forward' },
-                            {
-                              label: 'select',
-                              key: 'select',
-                              onClick: () => {
-                                setSelectionMode(true)
-                                selectMessage(message.id)
-                              }
-                            },
-                            {
-                              label: 'copy',
-                              key: 'copy',
-                              onClick: async () => {
-                                await navigator.clipboard.writeText(message.message)
-                                const ready = await navigator.clipboard.readText()
-                                if (ready === message.message) {
-                                  messageApi.open({
-                                    type: 'success',
-                                    content: 'Message copied successfully'
-                                  })
-                                } else {
-                                  messageApi.open({
-                                    type: 'error',
-                                    content: 'Message copy failed'
-                                  })
-                                }
-                              }
-                            },
-                            { label: 'pin', key: 'pin' },
-                            { label: 'save', key: 'save' },
-                            {
-                              label: 'delete',
-                              key: 'delete',
-                              onClick: () => {
-                                deleteMessage(message.id)
-                              }
-                            }
-                          ]
-                        }}
-                        trigger={['contextMenu']}
-                      >
+                      )}
+                      <div className={styles.messageItemContent}>
                         <div
-                          className={`${styles.messageContainer} ${message.sendByAuthor && styles.messageContainerAuthor}`}
+                          className={`${styles.messageWrapper} ${message.getSender().getUid() === currentUser?.getUid() && styles.messageWrapperAuthor}`}
                         >
-                          <p className={styles.message}>{message.message}</p>
-                          <div className={styles.messageInfo}>
-                            <p className={styles.messageTimestamp}>
-                              {toReadableTime(message.sentAt)}
-                            </p>
-                            {message.sendByAuthor && message.seenAt && (
-                              <Icon name="done_all" fill color="#9e9e9e" size={14} />
-                            )}
-                            {message.sendByAuthor && !message.seenAt && message.sentAt && (
-                              <Icon name="check" fill color="#9e9e9e" size={14} />
-                            )}
-                          </div>
+                          <Dropdown
+                            menu={{
+                              items: [
+                                { label: 'Mute', key: 'mute' },
+                                { label: 'Remove from Group', key: 'remove' }
+                              ]
+                            }}
+                            trigger={['contextMenu']}
+                          >
+                            <div style={{ width: 32 }}>
+                              {(messages[index - 1]?.getSender().getUid() !==
+                                message.getSender().getUid() ||
+                                index === 0) && (
+                                <Avatar
+                                  src={message.getSender().getAvatar()}
+                                  icon={<Icon name="person" fill size={24} />}
+                                />
+                              )}
+                            </div>
+                          </Dropdown>
+                          <Dropdown
+                            menu={{
+                              items: [
+                                {
+                                  label: 'reply',
+                                  key: 'reply',
+                                  onClick: () => {
+                                    // setReplyChat(message)
+                                  }
+                                },
+                                { label: 'forward', key: 'forward' },
+                                {
+                                  label: 'select',
+                                  key: 'select',
+                                  onClick: () => {
+                                    setSelectionMode(true)
+                                    selectMessage(message.getId())
+                                  }
+                                },
+                                {
+                                  label: 'copy',
+                                  key: 'copy',
+                                  onClick: async () => {
+                                    const text = message.getData().getText()
+                                    await navigator.clipboard.writeText(text)
+                                    const ready = await navigator.clipboard.readText()
+                                    if (ready === text) {
+                                      messageApi.open({
+                                        type: 'success',
+                                        content: 'Message copied successfully'
+                                      })
+                                    } else {
+                                      messageApi.open({
+                                        type: 'error',
+                                        content: 'Message copy failed'
+                                      })
+                                    }
+                                  }
+                                },
+                                { label: 'pin', key: 'pin' },
+                                { label: 'save', key: 'save' },
+                                {
+                                  label: 'delete',
+                                  key: 'delete',
+                                  onClick: () => {
+                                    deleteMessage(message.getId())
+                                  }
+                                }
+                              ]
+                            }}
+                            trigger={['contextMenu']}
+                          >
+                            <div
+                              className={`${styles.messageContainer} ${message.getSender().getUid() === currentUser?.getUid() && styles.messageContainerAuthor}`}
+                            >
+                              {message.getCategory() === 'message' && !message.getDeletedAt() && (
+                                <>
+                                  {message.getType() === 'text' && (
+                                    <p className={styles.message}>
+                                      {(message as TextMessage).getText()}
+                                    </p>
+                                  )}
+                                  {message.getType() === 'video' && (
+                                    <p className={styles.message}>
+                                      this is a video message:{(message as MediaMessage).getURL()}
+                                      <video
+                                        src={(message as MediaMessage).getURL()}
+                                        controls
+                                        preload="none"
+                                        height={200}
+                                      ></video>
+                                    </p>
+                                  )}
+                                  {message.getType() === 'audio' && (
+                                    <p className={styles.message}>
+                                      this is a audio message:{(message as MediaMessage).getURL()}
+                                      <audio src={(message as MediaMessage).getURL()}></audio>
+                                    </p>
+                                  )}
+                                </>
+                              )}
+                              {message.getCategory() === 'message' && message.getDeletedAt() && (
+                                <p className={styles.message}>deleted</p>
+                              )}
+                              {message.getCategory() === 'call' && (
+                                <>
+                                  {message.getType() === 'audio' && (
+                                    <p className={styles.message}>this is a call</p>
+                                  )}
+                                  {message.getType() === 'video' && (
+                                    <p className={styles.message}>
+                                      {message.getSender().getName()} has{' '}
+                                      {(message as Call).getAction()} video call
+                                    </p>
+                                  )}
+                                </>
+                              )}
+                              {message.getCategory() === 'custom' && (
+                                <>
+                                  {message.getType() === 'meeting' && (
+                                    <p className={styles.message}>this is a meeting call</p>
+                                  )}
+                                </>
+                              )}
+                              <div className={styles.messageInfo}>
+                                <p className={styles.messageTimestamp}>
+                                  {toReadableTime(message.getSentAt())}
+                                </p>
+                                {message.getSender().getUid() === currentUser?.getUid() && (
+                                  <>
+                                    {message.getReadAt() && (
+                                      <Icon name="done_all" fill color="lightgreen" size={14} />
+                                    )}
+                                    {!message.getReadAt() && message.getDeliveredAt() && (
+                                      <Icon name="done_all" fill color="#9e9e9e" size={14} />
+                                    )}
+                                    {!message.getReadAt() &&
+                                      !message.getDeliveredAt() &&
+                                      message.getSentAt() && (
+                                        <Icon name="check" fill color="#9e9e9e" size={14} />
+                                      )}
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          </Dropdown>
                         </div>
-                      </Dropdown>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </>
+                )}
               </React.Fragment>
             ))}
           </Checkbox.Group>
@@ -306,7 +460,7 @@ export default function Chat() {
                   size="large"
                   onClick={() => {
                     setSelectionMode(false)
-                    setSelectedMessages([])
+                    setSelectedMessageIds([])
                   }}
                 />
               </div>

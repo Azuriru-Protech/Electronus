@@ -8,6 +8,11 @@ declare global {
         set: <T = any>(key: string, val: T) => void
       }
       locale: () => string
+      cometchatInfo: () => {
+        appId: string
+        region: string
+        authKey: string
+      }
     }
     api: unknown
   }

@@ -4,11 +4,13 @@ import { router } from './routing'
 import { ConfigProvider } from 'antd'
 import { useTranslation } from 'react-i18next'
 import { useEffect } from 'react'
+import { CometChat } from '@cometchat/chat-sdk-javascript'
 
 export default function App() {
   const { i18n } = useTranslation()
   useEffect(() => {
     localeInit()
+    cometInit()
   }, [])
 
   const localeInit = () => {
@@ -42,6 +44,33 @@ export default function App() {
       console.log('set to existing locale', locale)
       i18n.changeLanguage(locale)
     }
+  }
+
+  const cometInit = async () => {
+    // const a = await CometChat.login('cometchat-uid-1_1724815421c1f1e18848bcc8e4b61cbbe344d106')
+    const loggedInUser = await CometChat.getLoggedInUser()
+    console.log('loggedInUser: ', loggedInUser)
+    // await getFriends()
+    await getGroups()
+  }
+
+  const getFriends = async () => {
+    const limit: number = 30
+    const usersRequest = new CometChat.UsersRequestBuilder()
+      .setLimit(limit)
+      .friendsOnly(true)
+      .build()
+
+    const friends = await usersRequest.fetchNext()
+
+    console.log('friends: ', friends)
+  }
+
+  const getGroups = async () => {
+    const limit = 30
+    const groupsRequest = new CometChat.GroupsRequestBuilder().setLimit(limit).build()
+    const groups = await groupsRequest.fetchNext()
+    console.log(groups)
   }
 
   return (

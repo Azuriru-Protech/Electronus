@@ -33,11 +33,20 @@ export const padZero = (num: number, places: number = 2) => {
   return String(num).padStart(places, '0')
 }
 
-export const toReadableTime = (time?: string | Date | null) => {
+export const toReadableTime = (time?: string | Date | null | number) => {
   if (!time) {
     return ''
   }
-  const d = new Date(time)
+  let d
+  if (typeof time === 'number') {
+    if (time / 1000 < new Date().getTime() / 1000) {
+      d = new Date(time * 1000)
+    } else {
+      d = new Date(time)
+    }
+  } else {
+    d = new Date(time)
+  }
   return d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
 }
 
