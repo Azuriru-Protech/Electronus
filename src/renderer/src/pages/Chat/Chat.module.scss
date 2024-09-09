@@ -107,6 +107,16 @@
   font-weight: 500;
 }
 
+.messageDeleted {
+  font-style: italic;
+  word-break: break-word;
+  overflow: hidden;
+  font-size: 0.85rem;
+  font-weight: 500;
+  word-spacing: normal;
+  color: #1e1e1e90;
+}
+
 .messageInfo {
   display: flex;
   flex-direction: row;

@@ -45,6 +45,9 @@ export default function Sidebar({}: Props) {
         ))}
       </div>
       <div className={styles.sidebarBottomSection}>
+        <Link to="/login">
+          <Icon name="logout" fill className={styles.settingsIcon} />
+        </Link>
         <Link
           to="/settings"
           className={`${styles.iconWrapper} ${pathname.includes('/settings') && styles.active}`}

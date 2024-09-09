@@ -60,6 +60,7 @@ export default function LoginQr({ ...props }) {
                 className={styles.loginBtn}
                 onClick={() => {
                   setLoginStatus(1)
+                  window.location.href = '/chat'
                 }}
               >
                 Logged In

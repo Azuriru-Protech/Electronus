@@ -19,14 +19,14 @@ export default function Login() {
 
   const qrLogin = loginType === 1
 
-  useEffect(() => {
-    if (!reloadQr) {
-      console.log('reloading QR now 2')
-      setTimeout(() => {
-        setReloadQr(true)
-      }, 5000)
-    }
-  }, [reloadQr])
+  // useEffect(() => {
+  //   if (!reloadQr) {
+  //     console.log('reloading QR now 2')
+  //     setTimeout(() => {
+  //       setReloadQr(true)
+  //     }, 5000)
+  //   }
+  // }, [reloadQr])
 
   const showSpecificPage = (page: string) => {
     switch (page) {

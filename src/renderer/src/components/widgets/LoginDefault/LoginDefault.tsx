@@ -6,7 +6,7 @@ import styles from './LoginDefault.module.scss'
 import Icon from '../Icon/Icon'
 import { CountryCode } from '@renderer/utilities/Defaults'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const LoginTabs: string[] = ['Mobile Login', 'Account Login']
 
@@ -22,6 +22,8 @@ export default function LoginDefault({ ...props }) {
   const loginTab = props.loginTab
   const onLoginTabCallback = props.onLoginTabCallback
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     const countryList = CountryCode.map((code) => {
       return {
@@ -32,24 +34,24 @@ export default function LoginDefault({ ...props }) {
     setCountryCodeNumber(countryList)
   }, [])
 
-  useEffect(() => {
-    console.log(
-      invitationCode,
-      'invitationCode',
-      mobileCountry,
-      'mobileCountry',
-      rememberPassword,
-      'rememberPassword',
-      password,
-      'password',
-      mobileNumber,
-      'mobileNumber',
-      account,
-      'account',
-      readTnc,
-      'readTnc'
-    )
-  }, [invitationCode, mobileCountry, rememberPassword, password, mobileNumber, account, readTnc])
+  // useEffect(() => {
+  //   console.log(
+  //     invitationCode,
+  //     'invitationCode',
+  //     mobileCountry,
+  //     'mobileCountry',
+  //     rememberPassword,
+  //     'rememberPassword',
+  //     password,
+  //     'password',
+  //     mobileNumber,
+  //     'mobileNumber',
+  //     account,
+  //     'account',
+  //     readTnc,
+  //     'readTnc'
+  //   )
+  // }, [invitationCode, mobileCountry, rememberPassword, password, mobileNumber, account, readTnc])
 
   return (
     <div className={styles.cardBody}>
@@ -118,7 +120,8 @@ export default function LoginDefault({ ...props }) {
           icon={<Icon name="login" />}
           iconPosition="end"
           onClick={() => {
-            window.location.href = '/'
+            console.log('login')
+            navigate('/chat')
           }}
         >
           Login

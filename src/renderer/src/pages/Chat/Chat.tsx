@@ -377,7 +377,9 @@ export default function Chat() {
                                 </>
                               )}
                               {message.getCategory() === 'message' && message.getDeletedAt() && (
-                                <p className={styles.message}>deleted</p>
+                                <p className={styles.messageDeleted}>
+                                  This message has been deleted
+                                </p>
                               )}
                               {message.getCategory() === 'call' && (
                                 <>

@@ -42,10 +42,6 @@ export const router = createHashRouter([
           }
         ]
       },
-      // {
-      //   path: 'chat/:chatId',
-      //   element: <Chat />
-      // },
       {
         path: 'settings',
         element: <Settings />,
