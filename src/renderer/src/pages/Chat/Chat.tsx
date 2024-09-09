@@ -199,52 +199,25 @@ export default function Chat() {
       new CometChat.MessageListener({
         onMessageDeleted: (message: BaseMessage) => {
           // replace deleted message
-          const newMessages = messages.map((m) => {
-            if (m.getId() === message.getId()) {
-              return message
-            } else {
-              return m
-            }
+          setMessages((prevMessages) => {
+            const newMessages = prevMessages.map((m) => {
+              if (m.getId() === message.getId()) {
+                return message
+              } else {
+                return m
+              }
+            })
+            return newMessages
           })
-          setMessages(newMessages)
         },
         onTextMessageReceived: (textMessage: TextMessage) => {
-          // const a = [...messages, textMessage]
-          // console.log(a)
-
-          // console.log(messages, 'MEOW')
-          // const newMessages = messages
-          // newMessages.push(textMessage)
-          // setMessages(newMessages)
-          // const newMessages = structuredClone(messages)
-          // console.log(newMessages)
-
           setMessages((prevMessages) => [...prevMessages, textMessage])
-
-          // newMessages.push(textMessage)
-          // console.log(newMessages)
-          // // newMessages.forEach((m) => {
-          // //   console.log(m.getCategory())
-          // // })
-          // setMessages(newMessages)
-
-          // console.log(newMessages)
         },
         onMediaMessageReceived: (mediaMessage: MediaMessage) => {
-          console.log(messages)
-          const newMessages = structuredClone(messages)
-          console.log(newMessages)
-          newMessages.push(mediaMessage)
-          console.log(newMessages)
-          setMessages(newMessages)
+          setMessages((prevMessages) => [...prevMessages, mediaMessage])
         },
         onCustomMessageReceived: (customMessage: CustomMessage) => {
-          console.log(messages)
-          const newMessages = structuredClone(messages)
-          console.log(newMessages)
-          newMessages.push(customMessage)
-          console.log(newMessages)
-          setMessages(newMessages)
+          setMessages((prevMessages) => [...prevMessages, customMessage])
         }
       })
     )
