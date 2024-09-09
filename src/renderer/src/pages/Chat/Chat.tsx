@@ -209,7 +209,8 @@ export default function Chat() {
           setMessages(newMessages)
         },
         onTextMessageReceived: (textMessage: TextMessage) => {
-          console.log(messages)
+          // const a = [...messages, textMessage]
+          // console.log(a)
 
           // console.log(messages, 'MEOW')
           // const newMessages = messages
@@ -217,7 +218,16 @@ export default function Chat() {
           // setMessages(newMessages)
           // const newMessages = structuredClone(messages)
           // console.log(newMessages)
+
+          setMessages((prevMessages) => [...prevMessages, textMessage])
+
           // newMessages.push(textMessage)
+          // console.log(newMessages)
+          // // newMessages.forEach((m) => {
+          // //   console.log(m.getCategory())
+          // // })
+          // setMessages(newMessages)
+
           // console.log(newMessages)
         },
         onMediaMessageReceived: (mediaMessage: MediaMessage) => {
