@@ -47,11 +47,17 @@ export default function App() {
   }
 
   const cometInit = async () => {
-    // const a = await CometChat.login('cometchat-uid-1_1724815421c1f1e18848bcc8e4b61cbbe344d106')
-    const loggedInUser = await CometChat.getLoggedInUser()
-    console.log('loggedInUser: ', loggedInUser)
-    // await getFriends()
-    await getGroups()
+    // await logout()
+    // await login()
+    // await getGroups()
+  }
+
+  const logout = async () => {
+    await CometChat.logout()
+  }
+
+  const login = async () => {
+    await CometChat.login('cometchat-uid-5_172561479749dd62fc51292ca0cbdcd8eaeb0abc')
   }
 
   const getFriends = async () => {

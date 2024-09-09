@@ -16,6 +16,7 @@ import {
   Call,
   CometChat,
   Conversation,
+  CustomMessage,
   Group,
   InteractiveMessage,
   MediaMessage,
@@ -35,11 +36,12 @@ export default function Chat() {
   const [isChatSettingsDrawerOpen, setIsChatSettingsDrawerOpen] = useState(false)
   const [isGroupSettingsDrawerOpen, setIsGroupSettingsDrawerOpen] = useState(false)
   const [replyChat, setReplyChat] = useState<Message | null>(null)
-  const [deleteMessageModal, deleteMessageContextHolder] = Modal.useModal()
-  const [recallMessageModal, recallMessageContextHolder] = Modal.useModal()
+  const [modal, modalContextHolder] = Modal.useModal()
   const [messageApi, messageContextHolder] = message.useMessage()
   const [userPresenceListenerId, setUserPresenceListenerId] = useState<string>(v4())
+  const [messageListenerId, setMessageListenerId] = useState<string>(v4())
   const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const [groupDetail, setGroupDetail] = useState<Group | null>(null)
 
   useEffect(() => {
     getCurrentUser()
@@ -55,8 +57,11 @@ export default function Chat() {
     getMessages()
     getConversationDetail()
     subUserPresence()
+    subMessageListener()
+    getGroupDetail()
     return () => {
       CometChat.removeUserListener(userPresenceListenerId)
+      CometChat.removeMessageListener(messageListenerId)
     }
   }, [chatId])
 
@@ -89,8 +94,14 @@ export default function Chat() {
     }
   }
 
+  const getGroupDetail = async () => {
+    const group = await CometChat.getGroup(chatId!)
+    setGroupDetail(group)
+    console.log(group)
+  }
+
   const deleteMessage = async (messageId: number) => {
-    const confirm = await deleteMessageModal.confirm({
+    const confirm = await modal.confirm({
       title: 'Delete Message',
       content: 'Are you sure you want to delete this message?',
       centered: true
@@ -98,6 +109,8 @@ export default function Chat() {
     if (!confirm) {
       return
     }
+    const a = await CometChat.deleteMessage(messageId.toString()) //UNDO LATER
+
     // setMessages(messages.filter((m) => m.getId() !== messageId))
     messageApi.open({
       type: 'success',
@@ -132,6 +145,7 @@ export default function Chat() {
   const getConversationDetail = async () => {
     const conversation = await CometChat.getConversation(chatId!, chatType!)
     setConversation(conversation)
+    console.log(conversation)
   }
 
   const subUserPresence = () => {
@@ -175,6 +189,55 @@ export default function Chat() {
       }
     }
     return ''
+  }
+
+  const subMessageListener = () => {
+    console.log('start sub')
+
+    CometChat.addMessageListener(
+      messageListenerId,
+      new CometChat.MessageListener({
+        onMessageDeleted: (message: BaseMessage) => {
+          // replace deleted message
+          const newMessages = messages.map((m) => {
+            if (m.getId() === message.getId()) {
+              return message
+            } else {
+              return m
+            }
+          })
+          setMessages(newMessages)
+        },
+        onTextMessageReceived: (textMessage: TextMessage) => {
+          console.log(messages)
+
+          // console.log(messages, 'MEOW')
+          // const newMessages = messages
+          // newMessages.push(textMessage)
+          // setMessages(newMessages)
+          // const newMessages = structuredClone(messages)
+          // console.log(newMessages)
+          // newMessages.push(textMessage)
+          // console.log(newMessages)
+        },
+        onMediaMessageReceived: (mediaMessage: MediaMessage) => {
+          console.log(messages)
+          const newMessages = structuredClone(messages)
+          console.log(newMessages)
+          newMessages.push(mediaMessage)
+          console.log(newMessages)
+          setMessages(newMessages)
+        },
+        onCustomMessageReceived: (customMessage: CustomMessage) => {
+          console.log(messages)
+          const newMessages = structuredClone(messages)
+          console.log(newMessages)
+          newMessages.push(customMessage)
+          console.log(newMessages)
+          setMessages(newMessages)
+        }
+      })
+    )
   }
 
   return (
@@ -478,8 +541,7 @@ export default function Chat() {
           setIsOpen={setIsGroupSettingsDrawerOpen}
         />
       </div>
-      <div>{deleteMessageContextHolder}</div>
-      <div>{recallMessageContextHolder}</div>
+      <div>{modalContextHolder}</div>
       <div>{messageContextHolder}</div>
     </>
   )
