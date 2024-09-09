@@ -1,0 +1,277 @@
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+}
+
+.chatTopbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 !important;
+  padding: 1rem;
+  background-color: #f7f7f7;
+  border-left: 1px solid lightgray;
+}
+
+.chatSubtitle {
+  font-size: 0.7rem;
+  color: gray;
+}
+
+.chatroomWrapper {
+  flex-grow: 1;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.chatroom {
+  padding-top: 1rem;
+  height: 100%;
+  padding-bottom: 0.5rem;
+  overflow: auto;
+  background-color: lightblue;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  position: relative;
+}
+
+.messageItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 0.5rem;
+  &.selectionMode:hover {
+    cursor: pointer;
+    background-color: rgba($color: #ffffff, $alpha: 0.3);
+  }
+  &.selectionMode.selected {
+    background-color: rgba($color: #ffffff, $alpha: 0.5);
+  }
+}
+
+.dateWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dateContainer {
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.25rem;
+  background-color: #f7f7f7;
+  font-size: 0.7rem;
+}
+
+.messageItemCheckboxWrapper {
+  // margin-top: 0.5rem;
+}
+
+.messageItemContent {
+  flex-grow: 1;
+}
+
+.messageWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.messageWrapperAuthor {
+  flex-direction: row-reverse;
+}
+
+.messageContainer {
+  background-color: white;
+  max-width: 500px;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.25rem;
+  column-gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.messageContainerAuthor {
+  background-color: #d7effb;
+}
+
+.message {
+  word-break: break-word;
+  overflow: hidden;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.messageDeleted {
+  font-style: italic;
+  word-break: break-word;
+  overflow: hidden;
+  font-size: 0.85rem;
+  font-weight: 500;
+  word-spacing: normal;
+  color: #1e1e1e90;
+}
+
+.messageInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.2rem;
+}
+
+.messageTimestamp {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: gray;
+}
+
+.replyPreviewWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f3f3f3;
+  padding: 0.5rem 1rem;
+  height: 56px;
+  transition: height 0.3s ease;
+  &.hide {
+    opacity: 0;
+    height: 0;
+    padding: 0 1rem;
+    pointer-events: none;
+  }
+}
+
+.replyPreviewContent {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.replyPreviewLine {
+  height: 90%;
+  width: 2px;
+  background-color: #a4bbce;
+}
+
+.replyPreview {
+  display: flex;
+  flex-direction: column;
+  background-color: #f3f3f3;
+  padding-left: 0.5rem;
+}
+
+.replyPreviewTitle {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: gray;
+}
+
+.replyPreviewMessage {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: gray;
+}
+
+.selectionActionContainer {
+  display: flex;
+  justify-content: center;
+  background-color: #f3f3f3;
+  position: relative;
+}
+
+.selectionActionWrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.selectionAction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  cursor: pointer;
+  &:hover {
+    background-color: #dddddd;
+  }
+}
+
+.selectionActionText {
+  font-size: 0.8rem;
+}
+
+.selectionClose {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 2rem;
+}
+
+.chat {
+  height: 100%;
+  overflow: auto;
+  @include flex(column);
+  width: 100%;
+
+  .chatHeader {
+    @include flex(between, centerY);
+    padding: v(3);
+    border-bottom: 1px solid lightgray;
+  }
+
+  .chatTop {
+    @include flex(between, centerY);
+    padding: v(2) v(3);
+    background: rgb(239, 239, 239);
+
+    .chatDefault {
+      @include flex;
+      padding: v(1) v(2);
+      background: lightgray;
+      border-radius: v(1);
+    }
+  }
+
+  .chatMain {
+    @include flex(column);
+    height: 100%;
+    background-color: rgb(243, 255, 255);
+    gap: v(3);
+    padding: v(4);
+    overflow: auto;
+
+    .chatDate {
+      @include flex(center);
+      color: lightslategray;
+      font-size: 14px;
+    }
+
+    .chatMessage {
+      @include flex(column);
+      max-width: 80%;
+      background-color: rgb(186, 221, 219);
+      border-radius: v(1);
+      padding: v(1) v(2);
+
+      &.chatMessageMe {
+        margin-left: auto;
+      }
+
+      .chatMessageTimestamp {
+        margin-left: auto;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 12px;
+        color: rgb(6, 74, 73);
+      }
+    }
+  }
+}

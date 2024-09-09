@@ -22,9 +22,8 @@ import NewMessages from './pages/Contacts/NewMessages/NewMessages'
 import MyGroups from './pages/Contacts/MyGroups/MyGroups'
 import GroupAssistant from './pages/Contacts/GroupAssistant/GroupAssistant'
 import ContactsList from './pages/Contacts/ContactsList/ContactsList'
-import Chat from './pages/Chat/Chat'
-import ChatList from './pages/ChatList/ChatList'
 import BlacklistUser from './pages/Settings/Privacy/Blacklist/BlacklistUser/BlacklistUser'
+import ConversationList from './pages/ConversationList/ConversationList'
 
 export const router = createHashRouter([
   {
@@ -33,14 +32,8 @@ export const router = createHashRouter([
     errorElement: <Fallback />,
     children: [
       {
-        path: 'chat',
-        element: <ChatList />,
-        children: [
-          {
-            path: ':chatType/:chatId',
-            element: <Chat />
-          }
-        ]
+        path: 'conversation',
+        element: <ConversationList />
       },
       {
         path: 'settings',
