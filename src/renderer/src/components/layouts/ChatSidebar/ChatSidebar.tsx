@@ -4,13 +4,14 @@ import { Avatar, Badge, Button, Dropdown, Input, message, Modal } from 'antd'
 import { useEffect, useState } from 'react'
 import { getAllUsers, getData, toReadableDate, toReadableTime } from '@renderer/utilities/Utilities'
 import { Link, useLocation } from 'react-router-dom'
-import { sampleChats } from '@renderer/sampleData'
 import { contextMenuItemStyle, contextMenuStyle } from '@renderer/configs/common'
 
 import Profile from '@renderer/components/widgets/Profile/Profile'
-import { CometChat, Conversation, Group, TextMessage, User } from '@cometchat/chat-sdk-javascript'
+import { CometChat, Conversation, Group, User } from '@cometchat/chat-sdk-javascript'
+import { v4 } from 'uuid'
 
 export default function ChatSidebar() {
+  const { pathname } = useLocation()
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [currentUser, setCurrentUser] = useState<any | null>(null)
   const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false)
@@ -18,12 +19,16 @@ export default function ChatSidebar() {
   const [searchResult, setSearchResult] = useState<any[]>([])
   const [selectedUser, setSelectedUser] = useState<any | null>(null)
   const [mode, setMode] = useState<'search' | 'add'>('search')
-  const { pathname } = useLocation()
+  const [userPresenceListenerId, setUserPresenceListenerId] = useState<string>(v4())
 
   useEffect(() => {
     const currentUser = getData<any>('currentUser')
     setCurrentUser(currentUser)
     getConversations()
+    subUserPresence()
+    return () => {
+      CometChat.removeUserListener(userPresenceListenerId)
+    }
   }, [])
 
   const getConversations = async () => {
@@ -31,9 +36,6 @@ export default function ChatSidebar() {
     const conversationRequest = new CometChat.ConversationsRequestBuilder().setLimit(limit).build()
     const conversations = await conversationRequest.fetchNext()
     setConversations(conversations)
-    // conversations.forEach((c) => {
-    //   console.log('conversation: ', c)
-    // })
   }
 
   const getTimestamp = (timestamp: Date | string | number) => {
@@ -55,6 +57,7 @@ export default function ChatSidebar() {
     }
     return toReadableDate(d, true)
   }
+
   const onSearch = (value: string) => {
     const allUsers = getAllUsers()
     const result = allUsers.filter(
@@ -62,6 +65,34 @@ export default function ChatSidebar() {
     )
     setSearchResult(result)
   }
+
+  const subUserPresence = () => {
+    CometChat.addUserListener(
+      userPresenceListenerId,
+      new CometChat.UserListener({
+        onUserOnline: (onlineUser: CometChat.User) => {
+          updateConversation(onlineUser)
+        },
+        onUserOffline: (offlineUser: CometChat.User) => {
+          updateConversation(offlineUser)
+        }
+      })
+    )
+  }
+
+  const updateConversation = (conversationWith: User) => {
+    setConversations((prevConversations) => {
+      return prevConversations.map((c) => {
+        if (c.getConversationType() === 'user') {
+          if ((c.getConversationWith() as User).getUid() === conversationWith.getUid()) {
+            c.setConversationWith(conversationWith)
+          }
+        }
+        return c
+      })
+    })
+  }
+
   return (
     <>
       <div className={styles.chatSidebar}>
@@ -172,7 +203,19 @@ export default function ChatSidebar() {
                   to={`/chat/${conversation.getConversationType()}/${conversation.getConversationType() === 'group' ? (conversation.getConversationWith() as Group).getGuid() : (conversation.getConversationWith() as User).getUid()}`}
                   key={conversation.getConversationId()}
                 >
-                  <Badge status="success" dot classNames={{ indicator: styles.avatarBadge }}>
+                  {conversation.getConversationType() === 'user' &&
+                  (conversation.getConversationWith() as User).getStatus() === 'online' ? (
+                    <Badge status="success" dot classNames={{ indicator: styles.avatarBadge }}>
+                      <Avatar
+                        src={
+                          conversation.getConversationType() === 'group'
+                            ? (conversation.getConversationWith() as Group).getIcon()
+                            : (conversation.getConversationWith() as User).getAvatar()
+                        }
+                        icon={<Icon name="person" fill size={24} />}
+                      />
+                    </Badge>
+                  ) : (
                     <Avatar
                       src={
                         conversation.getConversationType() === 'group'
@@ -181,14 +224,14 @@ export default function ChatSidebar() {
                       }
                       icon={<Icon name="person" fill size={24} />}
                     />
-                  </Badge>
+                  )}
                   <div className={styles.chatContent}>
                     <div className={styles.chatContentUpper}>
                       <div className={styles.chatContentTitle}>
                         {conversation.getConversationWith().getName()}
                       </div>
                       <div className={styles.chatContentTimestamp}>
-                        {getTimestamp(conversation.getLastMessage().sentAt)}
+                        {getTimestamp(conversation.getLastMessage().getSentAt())}
                       </div>
                     </div>
                     <div className={styles.chatContentLower}>
