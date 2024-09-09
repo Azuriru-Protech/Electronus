@@ -21,10 +21,12 @@
     "build:linux": "electron-vite build && electron-builder --linux"
   },
   "dependencies": {
+    "@cometchat/chat-sdk-javascript": "^4.0.10",
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
     "@reduxjs/toolkit": "^2.2.7",
-    "antd": "^5.20.0",
+    "antd": "^5.20.5",
+    "dotenv": "^16.4.5",
     "electron-store": "8.2.0",
     "electron-updater": "^6.1.7",
     "emoji-picker-react": "^4.11.1",

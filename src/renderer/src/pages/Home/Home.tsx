@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 export default function Home() {
   const navigate = useNavigate()
   useEffect(() => {
-    navigate('/chat/system-notification')
+    navigate('/chat')
   }, [])
   return (
     <div className={styles.wrapper}>

@@ -6,33 +6,54 @@ import { getAllUsers, getData, toReadableDate, toReadableTime } from '@renderer/
 import { Link, useLocation } from 'react-router-dom'
 import { sampleChats } from '@renderer/sampleData'
 import { contextMenuItemStyle, contextMenuStyle } from '@renderer/configs/common'
-import { User } from '@renderer/models/models'
+
 import Profile from '@renderer/components/widgets/Profile/Profile'
+import { CometChat, Conversation, Group, TextMessage, User } from '@cometchat/chat-sdk-javascript'
 
 export default function ChatSidebar() {
-  const [chats, setChats] = useState<any>(sampleChats)
-  const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const [conversations, setConversations] = useState<Conversation[]>([])
+  const [currentUser, setCurrentUser] = useState<any | null>(null)
   const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false)
   const [messageApi, messageContextHolder] = message.useMessage()
-  const [searchResult, setSearchResult] = useState<User[]>([])
-  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [searchResult, setSearchResult] = useState<any[]>([])
+  const [selectedUser, setSelectedUser] = useState<any | null>(null)
   const [mode, setMode] = useState<'search' | 'add'>('search')
   const { pathname } = useLocation()
 
   useEffect(() => {
-    const currentUser = getData<User>('currentUser')
+    const currentUser = getData<any>('currentUser')
     setCurrentUser(currentUser)
+    getConversations()
   }, [])
 
-  const getTimestamp = (timestamp: Date | string) => {
-    const d = new Date(timestamp)
+  const getConversations = async () => {
+    const limit = 30
+    const conversationRequest = new CometChat.ConversationsRequestBuilder().setLimit(limit).build()
+    const conversations = await conversationRequest.fetchNext()
+    setConversations(conversations)
+    // conversations.forEach((c) => {
+    //   console.log('conversation: ', c)
+    // })
+  }
+
+  const getTimestamp = (timestamp: Date | string | number) => {
+    let d
+    if (typeof timestamp === 'number') {
+      if (timestamp / 1000 < new Date().getTime() / 1000) {
+        d = new Date(timestamp * 1000)
+      } else {
+        d = new Date(timestamp)
+      }
+    } else {
+      d = new Date(timestamp)
+    }
     if (d.getDate() === new Date().getDate()) {
-      return toReadableTime(timestamp)
+      return toReadableTime(d)
     }
     if (d.getDate() === new Date().getDate() - 1) {
       return 'Yesterday'
     }
-    return toReadableDate(timestamp, true)
+    return toReadableDate(d, true)
   }
   const onSearch = (value: string) => {
     const allUsers = getAllUsers()
@@ -53,7 +74,7 @@ export default function ChatSidebar() {
           />
         </div>
         <div className={styles.chatList}>
-          <Link
+          {/* <Link
             className={`${styles.chat} ${pathname.includes('/system-notification') && styles.active}`}
             to={`/chat/system-notification`}
           >
@@ -73,11 +94,11 @@ export default function ChatSidebar() {
                 </div>
               </div>
             </div>
-          </Link>
-          {chats &&
-            chats.map((chat) => (
+          </Link> */}
+          {conversations &&
+            conversations.map((conversation) => (
               <Dropdown
-                key={chat.id}
+                key={conversation.getConversationId()}
                 trigger={['contextMenu']}
                 menu={{
                   items: [
@@ -98,8 +119,8 @@ export default function ChatSidebar() {
                     { type: 'divider' },
                     {
                       label:
-                        Number(chat.unread) > 0
-                          ? `Mark as Unread (${chat.unread})`
+                        Number(conversation.getUnreadMessageCount()) > 0
+                          ? `Mark as Unread (${conversation.getUnreadMessageCount()})`
                           : 'Mark as Unread',
                       key: 'markAsUnread',
                       style: contextMenuItemStyle,
@@ -147,30 +168,41 @@ export default function ChatSidebar() {
                 }}
               >
                 <Link
-                  className={`${styles.chat} ${pathname.includes(`/chat/${chat.id}`) && styles.active}`}
-                  to={`/chat/${chat.id}`}
-                  key={chat.id}
+                  className={`${styles.chat} ${pathname.includes(`/chat/${conversation.getConversationId()}`) && styles.active}`}
+                  to={`/chat/${conversation.getConversationType()}/${conversation.getConversationType() === 'group' ? (conversation.getConversationWith() as Group).getGuid() : (conversation.getConversationWith() as User).getUid()}`}
+                  key={conversation.getConversationId()}
                 >
                   <Badge status="success" dot classNames={{ indicator: styles.avatarBadge }}>
-                    <Avatar src={chat.imageUrl} icon={<Icon name="person" fill size={24} />} />
+                    <Avatar
+                      src={
+                        conversation.getConversationType() === 'group'
+                          ? (conversation.getConversationWith() as Group).getIcon()
+                          : (conversation.getConversationWith() as User).getAvatar()
+                      }
+                      icon={<Icon name="person" fill size={24} />}
+                    />
                   </Badge>
                   <div className={styles.chatContent}>
                     <div className={styles.chatContentUpper}>
-                      <div className={styles.chatContentTitle}>{chat.title}</div>
+                      <div className={styles.chatContentTitle}>
+                        {conversation.getConversationWith().getName()}
+                      </div>
                       <div className={styles.chatContentTimestamp}>
-                        {getTimestamp(chat.timestamp)}
+                        {getTimestamp(conversation.getLastMessage().sentAt)}
                       </div>
                     </div>
                     <div className={styles.chatContentLower}>
-                      <div className={styles.chatContentDescription}>{chat.description}</div>
+                      <div className={styles.chatContentDescription}>
+                        {conversation.getLastMessage().getCategory() === 'message'
+                          ? conversation.getLastMessage().getText()
+                          : ''}
+                      </div>
                       <div className={styles.chatContentIcon}>
-                        {chat.pin && <Icon name="keep" fill color="#9e9e9e" size={16}></Icon>}
-                        {chat.muted && (
-                          <Icon name="volume_off" fill color="#9e9e9e" size={16}></Icon>
-                        )}
-                        {!Number.isNaN(chat.unread) && chat.unread! > 0 && (
+                        {/* <Icon name="keep" fill color="#9e9e9e" size={16}></Icon>
+                        <Icon name="volume_off" fill color="#9e9e9e" size={16}></Icon> */}
+                        {conversation.getUnreadMessageCount() > 0 && (
                           <div className={styles.unreadBadge}>
-                            {chat.muted ? chat.unread : null}
+                            {conversation.getUnreadMessageCount()}
                           </div>
                         )}
                       </div>
