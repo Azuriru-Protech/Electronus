@@ -57,7 +57,7 @@ export default function App() {
   }
 
   const login = async () => {
-    await CometChat.login('cometchat-uid-5_172561479749dd62fc51292ca0cbdcd8eaeb0abc')
+    await CometChat.login('cometchat-uid-1_17256071393b214d6b7c567770254e31f4d70750')
   }
 
   const getFriends = async () => {

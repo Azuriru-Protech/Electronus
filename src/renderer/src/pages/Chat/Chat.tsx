@@ -192,8 +192,6 @@ export default function Chat() {
   }
 
   const subMessageListener = () => {
-    console.log('start sub')
-
     CometChat.addMessageListener(
       messageListenerId,
       new CometChat.MessageListener({
