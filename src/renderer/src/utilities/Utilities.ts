@@ -47,8 +47,6 @@ export const toReadableTime = (time?: string | Date | null | number) => {
   } else {
     d = new Date(time)
   }
-  console.log(d)
-
   return d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
 }
 

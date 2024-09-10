@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react'
 import styles from './ConversationList.module.scss'
-import { CometChat, Group, User } from '@cometchat/chat-sdk-javascript'
+import {
+  BaseMessage,
+  CometChat,
+  CustomMessage,
+  Group,
+  MediaMessage,
+  TextMessage,
+  User
+} from '@cometchat/chat-sdk-javascript'
 import { v4 } from 'uuid'
 import { Avatar, Badge, Button, Dropdown, Input, message, Modal } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
@@ -14,19 +22,24 @@ export default function ConversationList() {
   const { pathname } = useLocation()
   const [conversations, setConversations] = useState<CometChat.Conversation[]>([])
   const [currentUser, setCurrentUser] = useState<any | null>(null)
-  const [userPresenceListenerId, setUserPresenceListenerId] = useState<string>(v4())
   const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false)
   const [messageApi, messageContextHolder] = message.useMessage()
   const [searchResult, setSearchResult] = useState<any[]>([])
   const [selectedUser, setSelectedUser] = useState<any | null>(null)
   const [mode, setMode] = useState<'search' | 'add'>('search')
   const [activeConversation, setActiveConversation] = useState<CometChat.Conversation | null>(null)
+  const [messageListenerId, setMessageListenerId] = useState<string>(v4())
+  const [userPresenceListenerId, setUserPresenceListenerId] = useState<string>(v4())
 
   useEffect(() => {
     getCurrentUser()
     getConversations()
+
+    subMessageListener()
     subUserPresence()
+
     return () => {
+      CometChat.removeMessageListener(messageListenerId)
       CometChat.removeUserListener(userPresenceListenerId)
     }
   }, [])
@@ -36,6 +49,7 @@ export default function ConversationList() {
     const conversationRequest = new CometChat.ConversationsRequestBuilder().setLimit(limit).build()
     const conversations = await conversationRequest.fetchNext()
     setConversations(conversations)
+    console.log(conversations)
   }
 
   const subUserPresence = () => {
@@ -98,6 +112,52 @@ export default function ConversationList() {
     setSearchResult(result)
   }
 
+  const updateConversationList = async (
+    message:
+      | CometChat.BaseMessage
+      | CometChat.TextMessage
+      | CometChat.MediaMessage
+      | CometChat.CustomMessage
+  ) => {
+    const result = await CometChat.CometChatHelper.getConversationFromMessage(message)
+    console.log(result)
+    console.log(1)
+  }
+  const subMessageListener = () => {
+    CometChat.addMessageListener(
+      messageListenerId,
+      new CometChat.MessageListener({
+        onMessageDeleted: (message: CometChat.BaseMessage) => {
+          // replace deleted message
+          // setMessages((prevMessages) => {
+          //   const newMessages = prevMessages.map((m) => {
+          //     if (m.getId() === message.getId()) {
+          //       return message
+          //     } else {
+          //       return m
+          //     }
+          //   })
+          //   return newMessages
+          // })
+          updateConversationList(message)
+        },
+        onTextMessageReceived: (textMessage: CometChat.TextMessage) => {
+          console.log(textMessage)
+
+          // setMessages((prevMessages) => [...prevMessages, textMessage])
+          updateConversationList(textMessage)
+        },
+        onMediaMessageReceived: (mediaMessage: CometChat.MediaMessage) => {
+          // setMessages((prevMessages) => [...prevMessages, mediaMessage])
+          updateConversationList(mediaMessage)
+        },
+        onCustomMessageReceived: (customMessage: CometChat.CustomMessage) => {
+          // setMessages((prevMessages) => [...prevMessages, customMessage])
+          updateConversationList(customMessage)
+        }
+      })
+    )
+  }
   return (
     <>
       <style jsx>
@@ -358,6 +418,7 @@ export default function ConversationList() {
               key={activeConversation.getConversationId()}
               conversation={activeConversation}
               currentUser={currentUser}
+              updateConversationList={updateConversationList}
             />
           )}
         </div>

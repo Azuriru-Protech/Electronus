@@ -9,27 +9,24 @@ import Topbar from '@renderer/components/layouts/Topbar/Topbar'
 import { Message } from '@renderer/sampleData'
 import ForwardIcon from '@renderer/assets/images/icons/forward.svg'
 import ChatInput from '@renderer/components/widgets/ChatInput/ChatInput'
-import {
-  BaseMessage,
-  Call,
-  CometChat,
-  CustomMessage,
-  Group,
-  InteractiveMessage,
-  MediaMessage,
-  TextMessage,
-  User
-} from '@cometchat/chat-sdk-javascript'
+import { Call, CometChat, Group, User } from '@cometchat/chat-sdk-javascript'
 import { v4 } from 'uuid'
 import { setUser } from '@renderer/lib/features/user/userSlice'
 
 type Props = {
   conversation: CometChat.Conversation
   currentUser: User
+  updateConversationList: (
+    message:
+      | CometChat.BaseMessage
+      | CometChat.TextMessage
+      | CometChat.MediaMessage
+      | CometChat.CustomMessage
+  ) => void
 }
 
-export default function Conversation({ conversation, currentUser }: Props) {
-  const [messages, setMessages] = useState<BaseMessage[]>([])
+export default function Conversation({ conversation, currentUser, updateConversationList }: Props) {
+  const [messages, setMessages] = useState<CometChat.BaseMessage[]>([])
   const [selectionMode, setSelectionMode] = useState(false)
   const [selectedMessageIds, setSelectedMessageIds] = useState<number[]>([])
   const [isChatSettingsDrawerOpen, setIsChatSettingsDrawerOpen] = useState(false)
@@ -148,7 +145,7 @@ export default function Conversation({ conversation, currentUser }: Props) {
     CometChat.addMessageListener(
       messageListenerId,
       new CometChat.MessageListener({
-        onMessageDeleted: (message: BaseMessage) => {
+        onMessageDeleted: (message: CometChat.BaseMessage) => {
           // replace deleted message
           setMessages((prevMessages) => {
             const newMessages = prevMessages.map((m) => {
@@ -160,15 +157,21 @@ export default function Conversation({ conversation, currentUser }: Props) {
             })
             return newMessages
           })
+          // updateConversationList(message)
         },
-        onTextMessageReceived: (textMessage: TextMessage) => {
+        onTextMessageReceived: (textMessage: CometChat.TextMessage) => {
+          console.log(textMessage)
+
           setMessages((prevMessages) => [...prevMessages, textMessage])
+          // updateConversationList(textMessage)
         },
-        onMediaMessageReceived: (mediaMessage: MediaMessage) => {
+        onMediaMessageReceived: (mediaMessage: CometChat.MediaMessage) => {
           setMessages((prevMessages) => [...prevMessages, mediaMessage])
+          // updateConversationList(mediaMessage)
         },
-        onCustomMessageReceived: (customMessage: CustomMessage) => {
+        onCustomMessageReceived: (customMessage: CometChat.CustomMessage) => {
           setMessages((prevMessages) => [...prevMessages, customMessage])
+          // updateConversationList(customMessage)
         }
       })
     )
@@ -305,14 +308,15 @@ export default function Conversation({ conversation, currentUser }: Props) {
                                 <>
                                   {message.getType() === 'text' && (
                                     <p className={styles.message}>
-                                      {(message as TextMessage).getText()}
+                                      {(message as CometChat.TextMessage).getText()}
                                     </p>
                                   )}
                                   {message.getType() === 'video' && (
                                     <p className={styles.message}>
-                                      this is a video message:{(message as MediaMessage).getURL()}
+                                      this is a video message:
+                                      {(message as CometChat.MediaMessage).getURL()}
                                       <video
-                                        src={(message as MediaMessage).getURL()}
+                                        src={(message as CometChat.MediaMessage).getURL()}
                                         controls
                                         preload="none"
                                         height={200}
@@ -321,8 +325,11 @@ export default function Conversation({ conversation, currentUser }: Props) {
                                   )}
                                   {message.getType() === 'audio' && (
                                     <p className={styles.message}>
-                                      this is a audio message:{(message as MediaMessage).getURL()}
-                                      <audio src={(message as MediaMessage).getURL()}></audio>
+                                      this is a audio message:
+                                      {(message as CometChat.MediaMessage).getURL()}
+                                      <audio
+                                        src={(message as CometChat.MediaMessage).getURL()}
+                                      ></audio>
                                     </p>
                                   )}
                                 </>
@@ -466,7 +473,7 @@ export default function Conversation({ conversation, currentUser }: Props) {
             </div>
           </div>
         ) : (
-          <ChatInput />
+          <ChatInput conversation={conversation} />
         )}
         <ChatSettingsDrawer
           isOpen={isChatSettingsDrawerOpen}

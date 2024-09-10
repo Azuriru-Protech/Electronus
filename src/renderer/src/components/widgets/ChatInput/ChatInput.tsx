@@ -5,8 +5,13 @@ import EmojiPicker, { EmojiClickData } from 'emoji-picker-react'
 import { useRef, useState } from 'react'
 import { MentionsRef } from 'antd/es/mentions'
 import { contextMenuItemStyle, contextMenuStyle } from '@renderer/configs/common'
+import { CometChat, Group, User } from '@cometchat/chat-sdk-javascript'
 
-export default function ChatInput() {
+type Props = {
+  conversation: CometChat.Conversation
+}
+
+export default function ChatInput({ conversation }: Props) {
   const textareaRef = useRef<MentionsRef>(null)
   const [inputValue, setInputValue] = useState('')
 
@@ -58,7 +63,16 @@ export default function ChatInput() {
     }
   }
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    let receiverID: string
+    if (conversation.getConversationType() === 'group') {
+      receiverID = (conversation.getConversationWith() as Group).getGuid()
+    } else if (conversation.getConversationType() === 'user') {
+      receiverID = (conversation.getConversationWith() as User).getUid()
+    }
+    const receiverType = conversation.getConversationType()
+    const textMessage = new CometChat.TextMessage(receiverID!, inputValue, receiverType)
+    const message = await CometChat.sendMessage(textMessage)
     console.log('inputValue: ', inputValue)
     setInputValue('')
   }

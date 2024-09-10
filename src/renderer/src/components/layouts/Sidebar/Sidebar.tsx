@@ -17,7 +17,7 @@ type SidebarContent = {
 
 const SidebarTabs: SidebarContent[] = [
   {
-    link: '/chat',
+    link: '/conversation',
     icon: 'chat'
   },
   {
@@ -45,9 +45,6 @@ export default function Sidebar({}: Props) {
         ))}
       </div>
       <div className={styles.sidebarBottomSection}>
-        <Link to="/conversation">
-          <Icon name="garden_cart" fill className={styles.settingsIcon} />
-        </Link>
         <Link to="/login">
           <Icon name="logout" fill className={styles.settingsIcon} />
         </Link>
