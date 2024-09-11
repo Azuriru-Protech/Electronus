@@ -12,6 +12,7 @@ import ChatInput from '@renderer/components/widgets/ChatInput/ChatInput'
 import { Call, CometChat, Group, User } from '@cometchat/chat-sdk-javascript'
 import { v4 } from 'uuid'
 import { setUser } from '@renderer/lib/features/user/userSlice'
+import { CometChatOngoingCall, CometChatOutgoingCall } from '@cometchat/chat-uikit-react'
 
 type Props = {
   conversation: CometChat.Conversation
@@ -34,7 +35,7 @@ export default function Conversation({ conversation, currentUser, updateConversa
   const [replyChat, setReplyChat] = useState<Message | null>(null)
   const [modal, modalContextHolder] = Modal.useModal()
   const [messageApi, messageContextHolder] = message.useMessage()
-
+  const [call, setCall] = useState<CometChat.Call | null>(null)
   const [messageListenerId, setMessageListenerId] = useState<string>(v4())
 
   useEffect(() => {
@@ -109,6 +110,7 @@ export default function Conversation({ conversation, currentUser, updateConversa
     }
     const messages = await messagesRequest.build().fetchPrevious()
     setMessages(messages)
+    console.log(messages)
   }
 
   const getConversationSubtitle = () => {
@@ -120,7 +122,6 @@ export default function Conversation({ conversation, currentUser, updateConversa
       if (user.getStatus() === 'online') {
         return 'Online'
       } else {
-        console.log(user.getLastActiveAt())
         return toReadableTime(user.getLastActiveAt())
       }
     }
@@ -176,26 +177,51 @@ export default function Conversation({ conversation, currentUser, updateConversa
       })
     )
   }
+  const startVideoCall = async () => {
+    const callType: string = CometChat.CALL_TYPE.VIDEO
+    const receiverType: string = CometChat.RECEIVER_TYPE.USER
+    const callRequest = new CometChat.Call(
+      (conversation.getConversationWith() as User).getUid(),
+      callType,
+      receiverType
+    )
+    const call = await CometChat.initiateCall(callRequest)
+
+    setCall(call)
+  }
+
+  const cancelCall = async () => {
+    //your custom close click actions
+    if (!call) {
+      return
+    }
+    await CometChat.endCall(call.getSessionId())
+    setCall(null)
+  }
 
   return (
     <>
+      {call && <CometChatOutgoingCall call={call} onCloseClicked={() => cancelCall} />}
       <div className={styles.chatContainer}>
         <Topbar className={styles.chatTopbar}>
           <div>
             <h5>{conversation?.getConversationWith().getName()}</h5>
             <p className={styles.chatSubtitle}>{getConversationSubtitle()}</p>
           </div>
-          <Button
-            type="text"
-            icon={<Icon name="more_horiz" />}
-            onClick={() => {
-              if (conversation.getConversationType() === 'group') {
-                setIsGroupSettingsDrawerOpen(true)
-              } else {
-                setIsChatSettingsDrawerOpen(true)
-              }
-            }}
-          ></Button>
+          <div>
+            <Button onClick={() => startVideoCall()}>video</Button>
+            <Button
+              type="text"
+              icon={<Icon name="more_horiz" />}
+              onClick={() => {
+                if (conversation.getConversationType() === 'group') {
+                  setIsGroupSettingsDrawerOpen(true)
+                } else {
+                  setIsChatSettingsDrawerOpen(true)
+                }
+              }}
+            />
+          </div>
         </Topbar>
         <div className={styles.chatroomWrapper}>
           <Checkbox.Group
@@ -479,10 +505,13 @@ export default function Conversation({ conversation, currentUser, updateConversa
           isOpen={isChatSettingsDrawerOpen}
           setIsOpen={setIsChatSettingsDrawerOpen}
         />
-        <GroupSettingsDrawer
-          isOpen={isGroupSettingsDrawerOpen}
-          setIsOpen={setIsGroupSettingsDrawerOpen}
-        />
+        {conversation.getConversationType() === 'group' && (
+          <GroupSettingsDrawer
+            isOpen={isGroupSettingsDrawerOpen}
+            setIsOpen={setIsGroupSettingsDrawerOpen}
+            group={conversation.getConversationWith() as Group}
+          />
+        )}
       </div>
       <div>{modalContextHolder}</div>
       <div>{messageContextHolder}</div>

@@ -1,13 +1,14 @@
 .wrapper {
-  display: grid;
-  grid-template-columns: auto 1fr;
+  display: flex;
+  width: 100%;
   height: 100vh;
   height: 100dvh;
 }
 
 .chatSidebar {
-  background-color: #f7f7f7;
-  width: 260px;
+  background-color: #f5f7f9;
+  width: 25%;
+  min-width: 266px;
   height: 100vh;
   height: 100dvh;
   display: flex;
@@ -21,45 +22,75 @@
   }
 }
 
-.chatSidebarUtils {
-  display: grid;
-  grid-template-columns: 1fr auto;
+.chatSidebarHeader {
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
+  padding: 16px;
+  gap: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.conversationTitleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.conversationTitle {
+  font-size: 18px;
+  font-weight: 600;
+}
+.conversationActionIcon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.conversationContent {
   height: 100%;
-  min-height: 56px;
-  max-height: 56px;
-  padding: 0rem 1rem;
 }
 
 .chatList {
   flex-grow: 1;
   overflow: auto;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.conversationSearch {
+  padding: 0.5rem;
+}
+
+.conversationSearchInput {
+  border: 0;
+}
+
+.conversationSearchIcon {
+  width: 12px;
+  height: 12px;
 }
 
 .chat {
   cursor: pointer;
-  background-color: white;
   width: 100%;
-  height: 100%;
-  max-height: 72px;
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 0.6rem;
-  padding: 1rem;
-  height: 72px;
+  padding: 0.5rem;
+  height: 68px;
+  border-radius: 0.6rem;
   &:hover {
-    background-color: #ededed;
+    background-color: rgba($color: #615ef0, $alpha: 0.06);
     transition: all 0.15s ease-in-out;
-  }
-
-  &:not(:last-child) {
-    border-bottom: 1px solid #e6e6e6;
   }
 }
 .chat.active {
-  background-color: #d8d8d8;
+  background-color: rgba($color: #615ef0, $alpha: 0.06);
 }
 .notificationIcon {
   display: flex;
@@ -86,17 +117,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+
   .chatContentTitle {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    font-weight: 500;
-    font-size: 0.9rem;
   }
   .chatContentTimestamp {
     color: #9e9e9e;
-    font-size: 0.7rem;
     text-wrap: nowrap;
   }
 }
@@ -106,8 +136,9 @@
   align-items: center;
   justify-content: space-between;
   .chatContentDescription {
-    color: #9e9e9e;
-    font-size: 0.8rem;
+    color: rgba($color: #000000, $alpha: 0.4);
+    font-size: 0.7rem;
+    font-weight: 600;
     flex-grow: 1;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -161,4 +192,9 @@
   &:hover {
     background-color: lightgray;
   }
+}
+
+.conversationContainer {
+  flex-grow: 1;
+  width: 100%;
 }

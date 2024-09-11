@@ -6,43 +6,26 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 type Props = {
-  imageUrl?: string | null
-  name: string
-  id: number
-  remark?: string | null
-  isBlock?: boolean
-  signature?: string | null
+  user: CometChat.User
 }
 
-export default function Profile({
-  imageUrl = null,
-  name,
-  id,
-  remark = null,
-  isBlock = false,
-  signature = null
-}: Props) {
-  const [isBlockChecked, setIsBlockChecked] = useState(isBlock)
+export default function Profile({ user }: Props) {
+  const [isBlockChecked, setIsBlockChecked] = useState(user.getBlockedByMe())
   const [remarkInput, setRemarkInput] = useState<string>()
-  useEffect(() => {
-    setIsBlockChecked(isBlock)
-  }, [isBlock])
-  useEffect(() => {
-    setRemarkInput(remark || '')
-  }, [remark])
+
   return (
     <div className={styles.profileWrapper}>
       <div className={styles.profileContainer}>
         <div>
-          <Avatar src={imageUrl} icon={<Icon name="person" fill size={36} />} size={56}>
+          <Avatar src={user.getAvatar()} icon={<Icon name="person" fill size={36} />} size={56}>
             asd
           </Avatar>
         </div>
         <div className={styles.profileContent}>
-          <h3>{remark ? remark : name}</h3>
+          <h3>test</h3>
           <div>
-            <p className={styles.profileSubTitle}>Name: {name}</p>
-            <p className={styles.profileSubTitle}>ID: {id}</p>
+            <p className={styles.profileSubTitle}>Name: {user.getName()}</p>
+            <p className={styles.profileSubTitle}>ID: {user.getUid()}</p>
           </div>
         </div>
       </div>
@@ -52,7 +35,7 @@ export default function Profile({
         <p>Grouping</p>
         <Select />
         <p>What's Up</p>
-        <p>{signature}</p>
+        <p>test</p>
         <p>Block</p>
         <div>
           <Switch
@@ -64,7 +47,7 @@ export default function Profile({
       </div>
       <Separator />
       <div className={styles.actionWrapper}>
-        <Link to={`/chat/${id}`}>
+        <Link to={`/conversation`}>
           <Button block type="primary">
             Start Chatting
           </Button>

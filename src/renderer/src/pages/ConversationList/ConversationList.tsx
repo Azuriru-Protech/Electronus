@@ -17,6 +17,8 @@ import Icon from '@renderer/components/widgets/Icon/Icon'
 import { contextMenuItemStyle, contextMenuStyle } from '@renderer/configs/common'
 import Profile from '@renderer/components/widgets/Profile/Profile'
 import Conversation from '../../components/widgets/Conversation/Conversation'
+import AddCircleIcon from '@renderer/assets/images/icons/add-circle.svg'
+import SearchIcon from '@renderer/assets/images/icons/search.svg'
 
 export default function ConversationList() {
   const { pathname } = useLocation()
@@ -49,7 +51,6 @@ export default function ConversationList() {
     const conversationRequest = new CometChat.ConversationsRequestBuilder().setLimit(limit).build()
     const conversations = await conversationRequest.fetchNext()
     setConversations(conversations)
-    console.log(conversations)
   }
 
   const subUserPresence = () => {
@@ -179,38 +180,47 @@ export default function ConversationList() {
         `}
       </style>
       <div className={styles.wrapper}>
-        <div className="chat-sidebar-wrapper">
-          <div className={styles.chatSidebar}>
-            <div className={styles.chatSidebarUtils}>
-              <Input prefix={<Icon name="search" size={16} />} variant="filled" />
-              <Button
-                icon={<Icon name="person_add" size={16} />}
-                type="text"
-                onClick={() => setIsAddFriendModalOpen(true)}
+        <div className={styles.chatSidebar}>
+          <div className={styles.chatSidebarHeader}>
+            <div className={styles.conversationTitleWrapper}>
+              <p className={styles.conversationTitle}>Chats</p>
+              <Badge count={5} />
+            </div>
+            {/* <Input prefix={<Icon name="search" size={16} />} variant="filled" /> */}
+            <Dropdown
+              trigger={['click']}
+              menu={{
+                items: [
+                  {
+                    label: <div>创建个人聊天</div>,
+                    key: '0'
+                  },
+                  {
+                    label: <div>创建群聊</div>,
+                    key: '1'
+                  },
+                  {
+                    type: 'divider'
+                  },
+                  {
+                    label: <div>登出</div>,
+                    key: '3'
+                  }
+                ]
+              }}
+            >
+              <img src={AddCircleIcon} className={styles.conversationActionIcon} />
+            </Dropdown>
+          </div>
+          <div className={styles.conversationContent}>
+            <div className={styles.conversationSearch}>
+              <Input
+                className={styles.conversationSearchInput}
+                size="large"
+                prefix={<img src={SearchIcon} className={styles.conversationSearchIcon} />}
               />
             </div>
             <div className={styles.chatList}>
-              {/* <Link
-            className={`${styles.chat} ${pathname.includes('/system-notification') && styles.active}`}
-            to={`/chat/system-notification`}
-          >
-            <div>
-              <div className={styles.notificationIcon}>
-                <Icon name="notifications" fill size={20} color="white" />
-              </div>
-            </div>
-            <div className={styles.chatContent}>
-              <div className={styles.chatContentUpper}>
-                <div className={styles.chatContentTitle}>System Notification</div>
-                <div className={styles.chatContentTimestamp}>{getTimestamp(new Date())}</div>
-              </div>
-              <div className={styles.chatContentLower}>
-                <div className={styles.chatContentDescription}>
-                  欢迎使用欢迎使用欢迎使用欢迎使用欢迎使用欢迎使用
-                </div>
-              </div>
-            </div>
-          </Link> */}
               {conversations &&
                 conversations.map((conversation) => (
                   <Dropdown
@@ -296,6 +306,7 @@ export default function ConversationList() {
                                 ? (conversation.getConversationWith() as Group).getIcon()
                                 : (conversation.getConversationWith() as User).getAvatar()
                             }
+                            size={40}
                             icon={<Icon name="person" fill size={24} />}
                           />
                         </Badge>
@@ -306,6 +317,7 @@ export default function ConversationList() {
                               ? (conversation.getConversationWith() as Group).getIcon()
                               : (conversation.getConversationWith() as User).getAvatar()
                           }
+                          size={40}
                           icon={<Icon name="person" fill size={24} />}
                         />
                       )}
@@ -340,79 +352,80 @@ export default function ConversationList() {
                 ))}
             </div>
           </div>
-          <Modal
-            title={
-              mode === 'search' ? (
-                'Add Friend'
-              ) : (
-                <Button
-                  onClick={() => {
-                    setMode('search')
-                  }}
-                  shape="circle"
-                  type="text"
-                >
-                  <Icon name="chevron_left" />
-                </Button>
-              )
-            }
-            open={isAddFriendModalOpen}
-            onOk={() => setIsAddFriendModalOpen(false)}
-            onCancel={() => {
-              setSearchResult([])
-              setIsAddFriendModalOpen(false)
-            }}
-            centered
-            destroyOnClose={true}
-            footer={null}
-            styles={{
-              content: {
-                padding: 0
-              },
-              header: {
-                padding: '1rem'
-              },
-              footer: {
-                borderRadius: '1rem'
-              }
-            }}
-          >
-            {mode === 'search' && (
-              <>
-                <div className={styles.addFriendInputSection}>
-                  <Input.Search placeholder="input search text" onSearch={onSearch} enterButton />
-                  <p>My ID: {currentUser?.id}</p>
-                </div>
-                <div className={styles.addFriendResult}>
-                  <p className={styles.addFriendResultTitle}>Search Result</p>
-                  {searchResult.map((user) => (
-                    <div
-                      className={styles.addFriendItem}
-                      key={user.id}
-                      onClick={() => {
-                        setMode('add')
-                        setSelectedUser(user)
-                      }}
-                    >
-                      <Avatar src={user.imageUrl} icon={<Icon name="person" fill />} size={36} />
-                      <div>
-                        <h4>{user.name}</h4>
-                        <p>ID: {user.id}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-            {mode === 'add' && selectedUser && (
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Profile {...selectedUser} />
-              </div>
-            )}
-          </Modal>
-          {messageContextHolder}
         </div>
-        <div className="chat-content-wrapper">
+        <Modal
+          title={
+            mode === 'search' ? (
+              'Add Friend'
+            ) : (
+              <Button
+                onClick={() => {
+                  setMode('search')
+                }}
+                shape="circle"
+                type="text"
+              >
+                <Icon name="chevron_left" />
+              </Button>
+            )
+          }
+          open={isAddFriendModalOpen}
+          onOk={() => setIsAddFriendModalOpen(false)}
+          onCancel={() => {
+            setSearchResult([])
+            setIsAddFriendModalOpen(false)
+          }}
+          centered
+          destroyOnClose={true}
+          footer={null}
+          styles={{
+            content: {
+              padding: 0
+            },
+            header: {
+              padding: '1rem'
+            },
+            footer: {
+              borderRadius: '1rem'
+            }
+          }}
+        >
+          {mode === 'search' && (
+            <>
+              <div className={styles.addFriendInputSection}>
+                <Input.Search placeholder="input search text" onSearch={onSearch} enterButton />
+                <p>My ID: {currentUser?.id}</p>
+              </div>
+              <div className={styles.addFriendResult}>
+                <p className={styles.addFriendResultTitle}>Search Result</p>
+                {searchResult.map((user) => (
+                  <div
+                    className={styles.addFriendItem}
+                    key={user.id}
+                    onClick={() => {
+                      setMode('add')
+                      setSelectedUser(user)
+                    }}
+                  >
+                    <Avatar src={user.imageUrl} icon={<Icon name="person" fill />} size={36} />
+                    <div>
+                      <h4>{user.name}</h4>
+                      <p>ID: {user.id}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+          {mode === 'add' && selectedUser && (
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Profile {...selectedUser} />
+            </div>
+          )}
+        </Modal>
+        {messageContextHolder}
+
+        <div className={styles.conversationContainer}>
           {activeConversation && (
             <Conversation
               key={activeConversation.getConversationId()}

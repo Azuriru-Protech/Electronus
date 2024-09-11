@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import styles from './Home.module.scss'
 import { useEffect } from 'react'
 import { CometChat } from '@cometchat/chat-sdk-javascript'
+import { CometChatIncomingCall, CometChatOngoingCall } from '@cometchat/chat-uikit-react'
 
 export default function Home() {
   const navigate = useNavigate()
@@ -17,8 +18,17 @@ export default function Home() {
       navigate('/login')
     }
   }
+
+  const handleOnAccept = (e) => {
+    console.log(e)
+
+    console.log('custom on accept action')
+  }
+
   return (
     <div className={styles.wrapper}>
+      <CometChatIncomingCall />
+      {/* <CometChatOngoingCall /> */}
       <Sidebar />
       <Outlet />
     </div>
