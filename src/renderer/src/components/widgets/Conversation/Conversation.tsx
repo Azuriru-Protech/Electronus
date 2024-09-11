@@ -186,7 +186,6 @@ export default function Conversation({ conversation, currentUser, updateConversa
       receiverType
     )
     const call = await CometChat.initiateCall(callRequest)
-
     setCall(call)
   }
 
@@ -201,7 +200,7 @@ export default function Conversation({ conversation, currentUser, updateConversa
 
   return (
     <>
-      {call && <CometChatOutgoingCall call={call} onCloseClicked={() => cancelCall} />}
+      {/* {call && <CometChatOutgoingCall call={call} />} */}
       <div className={styles.chatContainer}>
         <Topbar className={styles.chatTopbar}>
           <div>
