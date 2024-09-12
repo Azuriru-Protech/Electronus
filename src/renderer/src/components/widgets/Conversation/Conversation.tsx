@@ -12,7 +12,11 @@ import ChatInput from '@renderer/components/widgets/ChatInput/ChatInput'
 import { Call, CometChat, Group, User } from '@cometchat/chat-sdk-javascript'
 import { v4 } from 'uuid'
 import { setUser } from '@renderer/lib/features/user/userSlice'
-import { CometChatOngoingCall, CometChatOutgoingCall } from '@cometchat/chat-uikit-react'
+import {
+  CometChatCallButtons,
+  CometChatOngoingCall,
+  CometChatOutgoingCall
+} from '@cometchat/chat-uikit-react'
 
 type Props = {
   conversation: CometChat.Conversation
@@ -177,26 +181,25 @@ export default function Conversation({ conversation, currentUser, updateConversa
       })
     )
   }
-  const startVideoCall = async () => {
-    const callType: string = CometChat.CALL_TYPE.VIDEO
-    const receiverType: string = CometChat.RECEIVER_TYPE.USER
-    const callRequest = new CometChat.Call(
-      (conversation.getConversationWith() as User).getUid(),
-      callType,
-      receiverType
-    )
-    const call = await CometChat.initiateCall(callRequest)
-    setCall(call)
-  }
+  // const startVideoCall = async () => {
+  //   const callType: string = CometChat.CALL_TYPE.VIDEO
+  //   const receiverType: string = CometChat.RECEIVER_TYPE.USER
+  //   const callRequest = new CometChat.Call(
+  //     (conversation.getConversationWith() as User).getUid(),
+  //     callType,
+  //     receiverType
+  //   )
+  //   const call = await CometChat.initiateCall(callRequest)
+  //   setCall(call)
+  // }
 
-  const cancelCall = async () => {
-    //your custom close click actions
-    if (!call) {
-      return
-    }
-    await CometChat.endCall(call.getSessionId())
-    setCall(null)
-  }
+  // const cancelCall = async () => {
+  //   if (!call) {
+  //     return
+  //   }
+  //   await CometChat.endCall(call.getSessionId())
+  //   setCall(null)
+  // }
 
   return (
     <>
@@ -208,7 +211,8 @@ export default function Conversation({ conversation, currentUser, updateConversa
             <p className={styles.chatSubtitle}>{getConversationSubtitle()}</p>
           </div>
           <div>
-            <Button onClick={() => startVideoCall()}>video</Button>
+            {/* <Button onClick={() => startVideoCall()}>video</Button> */}
+            <CometChatCallButtons user={conversation.getConversationWith() as User} />
             <Button
               type="text"
               icon={<Icon name="more_horiz" />}
