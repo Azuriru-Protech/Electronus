@@ -1,9 +1,30 @@
+.wrapper {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.settingsWrapper {
+  width: 0;
+  min-width: 0;
+  height: 100%;
+  transition: all 0.3s ease;
+  overflow-x: hidden;
+  &.active {
+    width: 25%;
+    min-width: 266px;
+  }
+}
+
 .chatContainer {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: hidden;
   position: relative;
-  height: 100%;
+  height: 100vh;
+  height: 100dvh;
 }
 
 .chatTopbar {
@@ -12,13 +33,18 @@
   justify-content: space-between;
   margin: 0 !important;
   padding: 1rem;
-  background-color: #f7f7f7;
-  border-left: 1px solid lightgray;
+  border-left: 1px solid rgba($color: #000000, $alpha: 0.08);
 }
 
 .chatSubtitle {
   font-size: 0.7rem;
   color: gray;
+}
+
+.chatAction {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .chatroomWrapper {

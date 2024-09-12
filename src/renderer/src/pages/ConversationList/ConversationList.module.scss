@@ -9,8 +9,7 @@
   background-color: #f5f7f9;
   width: 25%;
   min-width: 266px;
-  height: 100vh;
-  height: 100dvh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -195,6 +194,7 @@
 }
 
 .conversationContainer {
+  height: 100%;
   flex-grow: 1;
   width: 100%;
 }
