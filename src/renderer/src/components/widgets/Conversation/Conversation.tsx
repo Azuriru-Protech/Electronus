@@ -367,7 +367,12 @@ export default function Conversation({ conversation, currentUser, updateConversa
                             >
                               <div style={{ position: 'relative' }}>
                                 <div
-                                  className={`${styles.messageContainer} ${message.getSender().getUid() === currentUser?.getUid() && styles.messageContainerAuthor}`}
+                                  className={`${styles.messageContainer} ${message.getSender().getUid() === currentUser?.getUid() && styles.messageContainerAuthor} ${
+                                    (messages[index - 1]?.getSender().getUid() !==
+                                      message.getSender().getUid() ||
+                                      index === 0) &&
+                                    styles.messageContainerFirst
+                                  }`}
                                 >
                                   {message.getCategory() === 'message' &&
                                     !message.getDeletedAt() && (

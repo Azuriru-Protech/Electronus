@@ -122,7 +122,10 @@ $messageContainerBorderRadius: 0.5rem;
   border-top-left-radius: 0;
   column-gap: 0.5rem;
   flex-wrap: wrap;
-  &:after {
+  &:not(.messageContainerFirst) {
+    border-radius: $messageContainerBorderRadius;
+  }
+  &.messageContainerFirst:after {
     position: absolute;
     content: '';
     width: 0;
@@ -136,14 +139,15 @@ $messageContainerBorderRadius: 0.5rem;
 }
 
 .messageContainerAuthor {
-  background-color: #d7effb;
+  color: white;
+  background-color: #1774f7;
   border-top-left-radius: $messageContainerBorderRadius;
   border-top-right-radius: 0;
   margin-left: 0;
   margin-right: 10px;
-  &:after {
+  &.messageContainerFirst:after {
     border-width: 0 0 10px 10px;
-    border-color: transparent transparent transparent #d7effb;
+    border-color: transparent transparent transparent #1774f7;
     left: auto;
     right: 0;
   }
