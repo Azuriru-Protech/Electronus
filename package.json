@@ -1,6 +1,6 @@
 {
   "name": "protech-chat-desktop",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An Electron application with React and TypeScript",
   "main": "./out/main/index.js",
   "author": "example.com",
@@ -18,7 +18,8 @@
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
     "build:mac": "electron-vite build && electron-builder --mac",
-    "build:linux": "electron-vite build && electron-builder --linux"
+    "build:linux": "electron-vite build && electron-builder --linux",
+    "release": "electron-builder --config electron-builder.yml"
   },
   "dependencies": {
     "@cometchat/calls-sdk-javascript": "^4.0.10",
@@ -29,6 +30,7 @@
     "@reduxjs/toolkit": "^2.2.7",
     "antd": "^5.20.5",
     "dotenv": "^16.4.5",
+    "electron-log": "^5.2.0",
     "electron-store": "8.2.0",
     "electron-updater": "^6.1.7",
     "emoji-picker-react": "^4.11.1",

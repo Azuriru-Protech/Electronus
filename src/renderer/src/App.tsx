@@ -13,6 +13,7 @@ export default function App() {
     cometInit()
   }, [])
 
+  console.log('This is the v0.0.2')
   const localeInit = () => {
     let locale = localStorage.getItem('locale')
 
