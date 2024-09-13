@@ -34,14 +34,14 @@ export default function ContactsList() {
       <div className="flex-center max-wh">
         {currentContactView ? (
           <div className={styles.contactCardWrapper}>
-            <Profile
+            {/* <Profile
               imageUrl={currentContactView.profileImg}
               id={currentContactView.id}
               name={currentContactView.name}
               remark={currentContactView.remark}
               signature={currentContactView.whatsUp}
               isBlock={false}
-            />
+            /> */}
           </div>
         ) : (
           <div className="flex-center max-wh">

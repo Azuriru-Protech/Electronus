@@ -124,7 +124,7 @@ export default function GroupSettingsDrawer({ isOpen, setIsOpen, group }: Props)
         <Separator />
         {groupMembers &&
           groupMembers.map((member) => (
-            <ProfilePopover key={member.getUid()} member={member}>
+            <ProfilePopover key={member.getUid()} user={member}>
               <div className={styles.groupSettingsMemberWrapper}>
                 <Avatar src={member.getAvatar()} icon={<Icon name="person" fill size={20} />} />
                 <p>{member.getName()}</p>
