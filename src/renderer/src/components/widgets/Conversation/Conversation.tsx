@@ -214,45 +214,12 @@ export default function Conversation({ conversation, currentUser, updateConversa
       .setIsAudioOnlyCall(false)
       .setCallListener(
         new CometChatCalls.OngoingCallListener({
-          onUserListUpdated: (userList) => {
-            console.log('user list:', userList)
-          },
-          onCallEnded: () => {
+          onCallEndButtonPressed: () => {
             divRef.current!.style.display = 'none'
-
-            console.log('Call ended')
           },
           onError: (error) => {
             console.log('Error :', error)
-          },
-          onMediaDeviceListUpdated: (deviceList) => {
-            console.log('Device List:', deviceList)
-          },
-          onUserMuted: (event) => {
-            // This event will work in JS SDK v3.0.2-beta1 & later.
-            console.log('Listener => onUserMuted:', {
-              userMuted: event.muted,
-              userMutedBy: event.mutedBy
-            })
-          },
-          onScreenShareStarted: () => {
-            // This event will work in JS SDK v3.0.3 & later.
-            console.log('Screen sharing started.')
-          },
-          onScreenShareStopped: () => {
-            // This event will work in JS SDK v3.0.3 & later.
-            console.log('Screen sharing stopped.')
-          },
-          onCallSwitchedToVideo: (event) => {
-            // This event will work in JS SDK v3.0.8 & later.
-            console.log('call switched to video:', {
-              sessionId: event.sessionId,
-              callSwitchInitiatedBy: event.initiator,
-              callSwitchAcceptedBy: event.responder
-            })
-          },
-          onUserJoined: (user) => console.log('event => onUserJoined', user),
-          onUserLeft: (user) => console.log('event => onUserLeft', user)
+          }
         })
       )
       .build()
@@ -262,7 +229,6 @@ export default function Conversation({ conversation, currentUser, updateConversa
 
   return (
     <>
-      {/* {call && <CometChatOutgoingCall call={call} />} */}
       <div className={`${styles.wrapper} ${isConversationSettingsOpen && styles.settingsOpen}`}>
         <div className={styles.chatContainer}>
           <Topbar className={styles.chatTopbar}>
@@ -271,7 +237,6 @@ export default function Conversation({ conversation, currentUser, updateConversa
               <p className={styles.chatSubtitle}>{getConversationSubtitle()}</p>
             </div>
             <div className={styles.chatAction}>
-              {/* <Button onClick={() => startVideoCall()}>video</Button> */}
               {conversation.getConversationType() === 'group' && (
                 <CometChatCallButtons
                   group={conversation.getConversationWith() as CometChat.Group}
@@ -400,93 +365,97 @@ export default function Conversation({ conversation, currentUser, updateConversa
                               }}
                               trigger={['contextMenu']}
                             >
-                              <div
-                                className={`${styles.messageContainer} ${message.getSender().getUid() === currentUser?.getUid() && styles.messageContainerAuthor}`}
-                              >
-                                {message.getCategory() === 'message' && !message.getDeletedAt() && (
-                                  <>
-                                    {message.getType() === 'text' && (
-                                      <p className={styles.message}>
-                                        {(message as CometChat.TextMessage).getText()}
-                                      </p>
-                                    )}
-                                    {message.getType() === 'video' && (
-                                      <p className={styles.message}>
-                                        this is a video message:
-                                        {(message as CometChat.MediaMessage).getURL()}
-                                        <video
-                                          src={(message as CometChat.MediaMessage).getURL()}
-                                          controls
-                                          preload="none"
-                                          height={200}
-                                        ></video>
-                                      </p>
-                                    )}
-                                    {message.getType() === 'audio' && (
-                                      <p className={styles.message}>
-                                        this is a audio message:
-                                        {(message as CometChat.MediaMessage).getURL()}
-                                        <audio
-                                          src={(message as CometChat.MediaMessage).getURL()}
-                                        ></audio>
-                                      </p>
-                                    )}
-                                  </>
-                                )}
-                                {message.getCategory() === 'message' && message.getDeletedAt() && (
-                                  <p className={styles.messageDeleted}>
-                                    This message has been deleted
-                                  </p>
-                                )}
-                                {message.getCategory() === 'call' && (
-                                  <>
-                                    {message.getType() === 'audio' && (
-                                      <p className={styles.message}>this is a call</p>
-                                    )}
-                                    {message.getType() === 'video' && (
-                                      <p className={styles.message}>
-                                        {message.getSender().getName()} has{' '}
-                                        {(message as CometChat.Call).getAction()} video call
-                                      </p>
-                                    )}
-                                  </>
-                                )}
-                                {message.getCategory() === 'custom' && (
-                                  <>
-                                    {message.getType() === 'meeting' && (
+                              <div style={{ position: 'relative' }}>
+                                <div
+                                  className={`${styles.messageContainer} ${message.getSender().getUid() === currentUser?.getUid() && styles.messageContainerAuthor}`}
+                                >
+                                  {message.getCategory() === 'message' &&
+                                    !message.getDeletedAt() && (
                                       <>
-                                        <p className={styles.message}>this is a meeting call</p>
-                                        <Button
-                                          type="primary"
-                                          onClick={() =>
-                                            joinMeeting(message as CometChat.CustomMessage)
-                                          }
-                                        >
-                                          Join Meeting
-                                        </Button>
+                                        {message.getType() === 'text' && (
+                                          <p className={styles.message}>
+                                            {(message as CometChat.TextMessage).getText()}
+                                          </p>
+                                        )}
+                                        {message.getType() === 'video' && (
+                                          <p className={styles.message}>
+                                            this is a video message:
+                                            {(message as CometChat.MediaMessage).getURL()}
+                                            <video
+                                              src={(message as CometChat.MediaMessage).getURL()}
+                                              controls
+                                              preload="none"
+                                              height={200}
+                                            ></video>
+                                          </p>
+                                        )}
+                                        {message.getType() === 'audio' && (
+                                          <p className={styles.message}>
+                                            this is a audio message:
+                                            {(message as CometChat.MediaMessage).getURL()}
+                                            <audio
+                                              src={(message as CometChat.MediaMessage).getURL()}
+                                            ></audio>
+                                          </p>
+                                        )}
                                       </>
                                     )}
-                                  </>
-                                )}
-                                <div className={styles.messageInfo}>
-                                  <p className={styles.messageTimestamp}>
-                                    {toReadableTime(message.getSentAt())}
-                                  </p>
-                                  {message.getSender().getUid() === currentUser?.getUid() && (
+                                  {message.getCategory() === 'message' &&
+                                    message.getDeletedAt() && (
+                                      <p className={styles.messageDeleted}>
+                                        This message has been deleted
+                                      </p>
+                                    )}
+                                  {message.getCategory() === 'call' && (
                                     <>
-                                      {message.getReadAt() && (
-                                        <Icon name="done_all" fill color="lightgreen" size={14} />
+                                      {message.getType() === 'audio' && (
+                                        <p className={styles.message}>this is a call</p>
                                       )}
-                                      {!message.getReadAt() && message.getDeliveredAt() && (
-                                        <Icon name="done_all" fill color="#9e9e9e" size={14} />
+                                      {message.getType() === 'video' && (
+                                        <p className={styles.message}>
+                                          {message.getSender().getName()} has{' '}
+                                          {(message as CometChat.Call).getAction()} video call
+                                        </p>
                                       )}
-                                      {!message.getReadAt() &&
-                                        !message.getDeliveredAt() &&
-                                        message.getSentAt() && (
-                                          <Icon name="check" fill color="#9e9e9e" size={14} />
-                                        )}
                                     </>
                                   )}
+                                  {message.getCategory() === 'custom' && (
+                                    <>
+                                      {message.getType() === 'meeting' && (
+                                        <>
+                                          <p className={styles.message}>this is a meeting call</p>
+                                          <Button
+                                            type="primary"
+                                            onClick={() =>
+                                              joinMeeting(message as CometChat.CustomMessage)
+                                            }
+                                          >
+                                            Join Meeting
+                                          </Button>
+                                        </>
+                                      )}
+                                    </>
+                                  )}
+                                  <div className={styles.messageInfo}>
+                                    <p className={styles.messageTimestamp}>
+                                      {toReadableTime(message.getSentAt())}
+                                    </p>
+                                    {message.getSender().getUid() === currentUser?.getUid() && (
+                                      <>
+                                        {message.getReadAt() && (
+                                          <Icon name="done_all" fill color="lightgreen" size={14} />
+                                        )}
+                                        {!message.getReadAt() && message.getDeliveredAt() && (
+                                          <Icon name="done_all" fill color="#9e9e9e" size={14} />
+                                        )}
+                                        {!message.getReadAt() &&
+                                          !message.getDeliveredAt() &&
+                                          message.getSentAt() && (
+                                            <Icon name="check" fill color="#9e9e9e" size={14} />
+                                          )}
+                                      </>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             </Dropdown>

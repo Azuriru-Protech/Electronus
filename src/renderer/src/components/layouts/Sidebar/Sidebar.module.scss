@@ -2,9 +2,10 @@
   height: 100vh;
   height: 100dvh;
   width: 56px;
-  background-color: #f0f1f4;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.05) !important;
   display: flex;
   flex-direction: column;
+  z-index: 1;
 }
 
 .sidebarUpperSection {
