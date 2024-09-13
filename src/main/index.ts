@@ -7,19 +7,12 @@ import { autoUpdater } from 'electron-updater'
 import log from 'electron-log'
 import 'dotenv/config'
 
-
 autoUpdater.logger = log
 log.info('App starting...')
 
 const template = [];
 
 let mainWindow;
-
-function sendStatusToWindow(text) {
-  log.info(text)
-  mainWindow.webContents.send('message', text)
-}
-
 
 const store = new Store()
 // store.openInEditor()
@@ -74,6 +67,10 @@ function createWindow(): void {
   }
 
   mainWindow.on('close', () => {})
+}
+
+function sendStatusToWindow(text) {
+  log.info(text)
 }
 
 autoUpdater.on('checking-for-update', () => {

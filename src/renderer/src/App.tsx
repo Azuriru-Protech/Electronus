@@ -9,11 +9,11 @@ import { CometChat } from '@cometchat/chat-sdk-javascript'
 export default function App() {
   const { i18n } = useTranslation()
   useEffect(() => {
+    console.log('This is the v0.0.5')
     localeInit()
     cometInit()
   }, [])
 
-  console.log('This is the v0.0.3')
   const localeInit = () => {
     let locale = localStorage.getItem('locale')
 
