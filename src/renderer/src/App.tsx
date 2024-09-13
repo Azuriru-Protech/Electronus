@@ -16,7 +16,7 @@ export default function App() {
   const localeInit = () => {
     let locale = localStorage.getItem('locale')
 
-    console.log('This is the v0.0.6');
+    console.log('This is the v0.0.7');
 
     if (!locale) {
       console.log('set locale to system')
